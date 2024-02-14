@@ -1,0 +1,135 @@
+# Funkcija processingDoubles(table, occurances) apstrādā tās dubultās rindas, 
+# kur ir abi datumi gan sākuma kodam ailē [sak_darbu], gan ailē [beidz_darbu].
+# Dubultās rindas vai vieninieki, kuriem ir datumi tikai vienā no šīm ailēm -
+# vai nu ailē [sak_darbu], vai ailē [beidz_darbu], bet ne abās.
+# apstrādāja attiecīgās funkcijās processingtwoes(x,o) un processingOnes(x).
+
+processingDoubles <- function(x, o) {
+  #1 Pārbauda, vai tabula ir atbilstošā formātā:
+  #  Tas ir, ka katrā pāra rindā, ir viens NA ailē [sak_darbu] un
+  #  viens NA ailē [beidz_darbu] ailē, bet ne vienā rindā abi, vai vienā ailē abi.
+  #  Šajā kodā tos dēvē 'Īstie dubultnieki'.
+  x <- x[order(x$PS_CODE, x$NR_CODE, x$NDZ_sanemsanas_datums), ]
+  temp <- data.frame()
+
+  for(k in seq(1, nrow(x), by = 2)) {
+    if (is.na(x$sak_darbu)[k] && is.na(x$beidz_darbu[k + 1])
+        || is.na(x$sak_darbu)[k + 1] && is.na(x$beidz_darbu[k])) {
+      temp <- rbind(temp, x[c(k, k + 1),])
+    }
+  }
+  rm(k)
+  
+  if(nrow(temp) == nrow(x)) {
+    cat("PĀRBAUDE IZIETA: Visas rindas ir Īstie Divnieki.\n
+    Īstie Divnieki nozīmē, ka ierakstu pārī, kur PS_CODE un NR_CODE sakrīt, viena rinda ir ar sak_darbu
+    ierakstu otra ar beidz_darbu ierakstu, bet nevienā rindā nav abi: gan sak_darbu, gan beidz_darbu datumi.
+    Īstie Divnieki ir rindas, kuras ir savienojamas uz vienu ierakstu, kurā būs gan sak_darbu datums,
+    gan beidz_darbu datums.")
+    rm(temp)
+  } else {
+    stop(cat("ERROR: Visas rindas NAV Īstie Divnieki. Pārskatīt tabulu.\n
+       Īstie Divnieki nozīmē, ka ierakstu pārī, kur PS_CODE un NR_CODE sakrīt, viena rinda ir ar sak_darbu
+       ierakstu otra ar beidz_darbu ierakstu, bet nevienā rindā nav abi: gan sak_darbu, gan beidz_darbu datumi.
+       Īstie Divnieki ir rindas, kuras ir savienojamas uz vienu ierakstu, kurā būs gan sak_darbu datums,
+       gan beidz_darbu datums."))
+  }
+
+#Atkarībā no occurances numura 'O', sadalām tā, lai ir tikai oriģināli divnieki.
+t <- 0
+subtab_vec <- character()
+check_rows <- 0
+
+  for (O in 1:floor(as.integer(o)/2)) {
+    subtab_name <- paste0("x", O)
+    temp_df <- data.frame()
+    for(b in seq(O+t, nrow(x), by = floor(as.integer(o)/2)*2)){
+      temp_df <- rbind(temp_df, x[c(b, b+1), ])
+    }
+    assign(subtab_name, temp_df)
+    check_rows <- check_rows + nrow(temp_df)
+    subtab_vec <- append(subtab_vec, subtab_name)
+    rm(subtab_name, temp_df, b)
+    if((nrow(x) < floor(as.integer(o)/2)) && (check_rows == nrow(x))) {
+      break
+    }
+    t <- t + 1
+  }
+
+rm(t, x, check_rows)
+
+    #2 Savienojam duplikātu rindas tā, lai sākuma un beigu datumi ir vienā ailē
+  # !! Ok, šis dod ziņojumu, ka kaut kas nav līdz galam tā, kā vajag, bet rēķina pareizi.
+x_savienotieDivnieki <- data.frame()
+
+for (O in 1:length(subtab_vec)) {
+  x <- get(subtab_vec[O])
+  result <- x %>%
+    group_by(period, PS_CODE, dn_code, NR_CODE) %>%
+    summarise(
+      start = max(as.character(start), na.rm = TRUE),
+      sak_darbu = max(sak_darbu, na.rm = TRUE),
+      end = max(as.character(end), na.rm = TRUE),
+      beidz_darbu = max(beidz_darbu, na.rm = TRUE),
+      prof = max(as.character(prof), na.rm = TRUE),
+      last_date = max(last_date, na.rm = TRUE)
+    ) %>%
+    arrange(PS_CODE)
+  
+  
+  #3 Pārbaudām vai izdalītās rindas sakrīt, vai ailēs [sak_darbu] un [beidz_darbu] nav NAs.
+  #Pārbaude uz dubultniekiem.
+  
+  if (nrow(result) * 2 == nrow(x)) {
+    if (sum(is.na(result$sak_darbu)) == 0) {
+      if (sum(is.na(result$beidz_darbu)) == 0) {
+        if(nrow(result[duplicated(result[c("PS_CODE", "NR_CODE")]),]) == 0){
+          x_savienotieDivnieki <- rbind(x_savienotieDivnieki, result)  
+          cat("Jaunizveidotā tabula x_savienotieDivnieki ir izgājusi pārbaudes un tālāk var sarēķināt dienas")
+          rm(result, x)
+        } else {
+          stop(cat("Apstrādātajā tabulā, kurā jāveidz dubulto datumu apstrāde, atrasti duplikāti, kuriem PS_CODE un NR_CODE sakrīt!"))
+        }
+      } else {
+        stop(cat("Datumu ailē [beidz_darbu] ir NA vienības."))
+      }
+    } else {
+      stop(cat("Datumu ailē [sak_darbu] ir NA vienības."))
+    }
+  } else {
+    stop(cat("No Īsto Divnieku tabulas izvilktāts rindas nesakrīt."))
+  }
+  rm(list = subtab_vec[O])
+}
+rm(subtab_vec, O)
+
+#4 Tabulu x_savienotieDivnieki apstrādā sekojošos punktos.
+# Piezīme, lai nesajauktu: 
+# Lai arī tabulā x_savienotieDivnieki rindas ir pa vienai, datumi ir dubulti.
+# Ar funkciju processingOnes() apstrādā tikai tos vieniniekus, 
+# kuriem ir vai nu datums ailē [sak_darbu] vai ailē [beidz_darbu], 
+# bet ne abās.
+
+# Ja datumi ir abās ailēs, kā tās ir tabulās, ko apstrādā šī funkcija
+# processingDoubles(), kas pārbauda un savieno vērtības, 
+# tad dienu aprēķins tiek arī veikts tepat. 
+# Un tad pārsūtīts uz temp_NDZ.
+  
+#5 Sakārto tabulu
+  x <- x_savienotieDivnieki
+  x <- x[order(x$PS_CODE, x$NR_CODE), ]
+  rownames(x) <- NULL
+
+#6 Aprēķini dienas no sak_darbu līdz beidz_darbu un ievieto tās ailē [dienas].
+
+#LĒMUMS: Tika pieņemts lēmums rindu sarēķinam, 
+#        kas iekļaujas tā paša mēneša apjomos pieskaitīt 1.
+#        Skatīt C:\Users\atetere\Desktop\Dati\AttīstībasDarbs\dati\tabulas_Irenai\RAW_Irenai_yyyymm_woMU\lēmumi un apstrāde\2_NDZ_dayCalculations
+x$dienas1 <- as.numeric(difftime(as.Date(x$beidz_darbu), as.Date(x$sak_darbu), units = "days")) + 1  
+  x$dienas <- x$dienas1[(!is.na(x$sak_darbu))]
+  x$dienas1 <- NULL
+  rm(x_savienotieDivnieki)
+  
+  x <- x[order(x$PS_CODE, x$NR_CODE), ]
+ return(x)
+  }
