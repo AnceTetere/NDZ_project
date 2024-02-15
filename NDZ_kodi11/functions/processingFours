@@ -1,0 +1,245 @@
+processingFours <- function(x, o) {
+
+  x4_uzVieniniekiem <- data.frame()
+  x4_trueDoubles <- data.frame()
+  x4_uzTrijniekiem <- data.frame()
+  check_rows <- 0
+  
+  x <- x[order(x$period, x$ps_code, x$dn_code, x$nm_code, x$NDZ_sanemsanas_datums), ]
+
+for (r in seq(1, nrow(x), by = 4)) {
+  #TESTĒŠANAI r <- sample(1:nrow(x), size = 1, replace = TRUE)
+  x4 <- x[x$ps_code == x$ps_code[r], ]
+  # TESTĒŠANAI: x[x$ps_code == x$ps_code[r], ]
+  
+  if(!(doublesTest(1, x4) && doublesTest(3, x4))) {
+    stop(cat("Četrinieku apstrādes tabulā, ko izstrādā caur funkciju processingFours(), 
+               rindās no", r, "līdz", r + 3, "nesakrīt ps_code, nm_code, dn_code, period kombinācija visās četrās rindās."))
+  } else if ((((x4$start[1] == "1" && x4$end[2] == "2") && (x4$NDZ_sanemsanas_datums[1] <= x4$NDZ_sanemsanas_datums[2]))||((x4$end[1] == "2" && x4$start[2] == "1") && (x4$NDZ_sanemsanas_datums[1] == x4$NDZ_sanemsanas_datums[2]))) &&  (((x4$start[3] == "1" && x4$end[4] == "2") && (x4$NDZ_sanemsanas_datums[3] <= x4$NDZ_sanemsanas_datums[4])) || ((x4$end[3] == "2" && x4$start[4] == "1") && (x4$NDZ_sanemsanas_datums[3] = x4$NDZ_sanemsanas_datums[4])))) {
+    x4_trueDoubles <- rbind(x4_trueDoubles, x4)
+    check_rows <- check_rows + 4
+  } else if ((x4$start[1] == "1" && x4$start[2] == "1") && (x4$end[3] == "2" && x4$start[4] == "1")) {
+    if (x4$NDZ_sanemsanas_datums[3] != x4$NDZ_sanemsanas_datums [4]) {
+      x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[4, ]) 
+      x4_uzTrijniekiem <- rbind(x4_uztrijniekiem, x4[1:3, ])
+      check_rows <- check_rows + 4
+    } else if ((x4$NDZ_sanemsanas_datums[2] <= x4$NDZ_sanemsanas_datums [3]) && (abs(as.numeric(difftime(x4$NDZ_sanemsanas_datums[2], x4$NDZ_sanemsanas_datums [1], units = "days"))) < 5)) {
+      x4_uzTrijniekiem <- rbind(x4_uztrijniekiem, x4[2:4, ])
+      check_rows <- check_rows + 4
+    } else {
+      stop(cat("Šeit četrinieku izstrādes tabulas rindām", r, "līdz", r+3, "trūkst apstrādes koda."))
+    } 
+  } else if (((x4$end[1] == "2" && x4$start[2] == "1") && (x4$end[3] == "2" && x4$start[4] == "1")) && (x4$NDZ_sanemsanas_datums[1] != x4$NDZ_sanemsanas_datums[2])) {
+    x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[1, ])
+    x4_uzTrijniekiem <- rbind(x4_uzTrijniekiem, x4[2:4, ])
+    check_rows <- check_rows + 4
+  } else if ((((x4$start[1] == "1" && x4$end[2] == "2") && (x4$NDZ_sanemsanas_datums[1] <= x4$NDZ_sanemsanas_datums[2])) || ((x4$end[1] == "2" && x4$start[2] == "1") && (x4$NDZ_sanemsanas_datums[1] == x4$NDZ_sanemsanas_datums[2]))) && (((x4$start[3] == "1" && x4$start[4] == "1") || (x4$end[3] == "2" && x4$end[4] == "2")) && (as.numeric(difftime(x4$NDZ_sanemsanas_datums[4], x4$NDZ_sanemsanas_datums[3], units = "days" )) < 5))){
+    x4_trueDoubles <- rbind(x4_trueDoubles, x4[1:2, ])
+    x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[4, ])
+    check_rows <- check_rows + 4
+  } else if ((sum(x4$start == "1") == 4) || (sum(x4$end == "2") == 4)) {
+    x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, codes_match(x4))
+    check_rows <- check_rows + 4
+  } else {
+    stop(cat("Šeit četrinieku izstrādes tabulas rindām", r, "līdz", r+3, "trūkst apstrādes koda."))
+  }
+rm(x4)
+}
+      
+# check_rows nesakrītīs ar pārdalīto tabulu rindu summu, jo ja tām kodi un datumi sakrita, 
+# tad tika paturēta tikai viena rinda, vai citreiz nogriezta pirmā vai pēdēja, un atstātas
+# tikai trīs, tāpēc ieliku check_rows ciparu, kas seko līdz, kuras rindas ir apstrādātas,
+# un sekojošajā pārbaudē tam būtu jāsakrīt ar izejas tabulas rindu skaitu pirms to noņem.
+
+#PĀRBAUDE
+  if(nrow(x) == check_rows) {
+    cat("PAZIŅOJUMS NO FUNKCIJAS processingFours:\n
+        Četrinieku tabula veiksmīgi pārdalījusies apakštabulās.")
+    rm(x, check_rows, r)
+  } else {
+    stop(cat("PAZIŅOJUMS NO FUNKCIJAS processingFours:\n
+        Četrinieku tabula NAV pārdalījusies.\n
+             check_rows cipars nesakrīt ar rindu skaitu izejas tabulā.
+             Meklē kļūdas."))  
+  }
+  
+  cat("SKAIDROJUMS: Četrinieku tabula sadalīta tabulās \n
+      x4_uzVieniniekiem:", nrow(x4_uzVieniniekiem), "rindas;\n
+      x4_trueDoubles:", nrow(x4_trueDoubles), "rindas; un\n
+      x4_uzTrijniekiem:", nrow(x4_uzTrijniekiem), "rindas. \n
+    \nTabulā x4_uzVieniniekiem ir tikai sākuma [start] vai beigu [end] ziņojumu kodi,\n
+    bet ne abi.\n
+    \nTabulā x4_trueDoubles rindu pārī ir gan sākuma kods ailē [start]\n
+    gan beigu kodu ailē [end] un vajadzētu būt savienojamiem uz rindu.\n 
+    \nTabula x4_uztrijniekiem tālāk jāpārdala caur funkciju processing threes.")
+  
+  
+  
+  #3 Sadalām tabulu x4_uzVieniniekiem apakštabulās x2 un x3.
+  # Tabulā x1 katrās divās rindās atkārtojas vai nu sākuma kods ailē [start] vai beigu kods ailē [end].
+  # Tabulā x2 nošķiram tos dubultniekus, kuriem ziņijuma kodi ailē [zinkod] neatšķiras. 
+  # Piemēram, vienā rindā ir sākuma kods ailē [start] un otrā rindā ir sākuma kods ailē [start],
+  #           un abās rindās ailē [zinkod] ir kods '11'. 
+  # Tabulā x3 nošķiram tos, kuriem ziņojuma oriģinālie kodi [zinkod] atšķiras.
+  # Piemēram, vienā rindā ir beigu kods ailē [end] un otrā rindā arī ir beigu kods ailē [end],
+  #           - tā, kā tam jābūt, jo tabulā x1 gāja tikai kodi, kuri divās rindās neatšķīrās -
+  #           taču starp šīm rindām atšķiras īsties ziņojumu kodi ailē [zinkod], piemēram,
+  #           '24' un '62', kas abi ir beigu kodi. 
+  # Ja testDouble() funkcija uzrāda FALSE, tas nozīmē, ka starp rindām vai nu ps_code
+  # vai uzņēmuma numuri atšķiras. Tādā ziņā, šie divi tiek uzsatīti par unikāliem gadījumiem katrs,
+  # un netiek tālāk apstrādāts.
+  
+    x1 <- x4_uzVieniniekiem
+    x1 <- x1[order(x1$period, x1$ps_code, x1$dn_code, x1$nm_code), ] 
+    
+    if(nrow(x1) > 0) {
+      x_uzVieniniekiem <- data.frame()
+      
+      x2 <- data.frame()
+      x3 <- data.frame()
+      
+      if (length(unique(x1$ps_code)) == nrow(x1)) {
+        x_uzVieniniekiem <- x1
+      } else {
+        for (r in seq(1, nrow(x1) - 1, by = 2)) {
+          if (doublesTest(r, x1)) {
+            if (x1$zinkod[r] == x1$zinkod[r + 1]) {
+              x2 <- rbind(x2, x1[c(r, r + 1),])
+            } else {
+              x3 <- rbind(x3, x1[c(r, r + 1),])
+            }
+          } else {
+            x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x1[c(r, r + 1),])
+          }
+        }
+        if(nrow(x1) == nrow(x2) + nrow(x3) + nrow(x_uzVieniniekiem)){
+          rm(r, x1)
+        } else {
+          stop(cat("ERROR: Atvasināto tabulu x2 un x3 nesakrīt ar mātes tabulu x1."))
+        }
+        
+        
+        if(nrow(x2) > 0) {x_uzVieniniekiem <- rbind(x_uzVieniniekiem, F_doubleStartEnd_codesMatch(x2))}
+        if(nrow(x3) > 0) {x_uzVieniniekiem <- rbind(x_uzVieniniekiem, F_doubleStartEnd_codesMatch(x3))}
+        
+      }
+    }
+    rm(x1, x2, x3)
+
+# Nosūti vieninieku apstrādei
+if(nrow(x_uzVieniniekiem) > 0) {
+  sendTo_tempNDZ(processingOnes(x_uzVieniniekiem))
+} else {
+  cat("No četriniekiem pārsūtāmajā vieninieku tabulā nebija nevienas rindas.")
+}
+rm(x_uzVieniniekiem, x4_uzVieniniekiem)
+    
+#4 Atvasināto tabulu x4_trueDoubles sūta caur processingtwoes
+if(nrow(x4_trueDoubles) > 0) {
+  processingTwoes(x4_trueDoubles, o)
+} else {
+  cat("No četriniekiem pārsūtāmajā divnieku tabulā nebija nevienas rindas.")
+}
+rm(x4_trueDoubles)
+
+#4 Atvasināto tabulu x4_uzTrijniekiem sūta caur processingThrees
+if(nrow(x4_uzTrijniekiem) > 0) {
+  processingThrees(x4_uzTrijniekiem, o)
+} else {
+  cat("No četriniekiem pārsūtāmajā trijnieku tabulā nebija nevienas rindas.")
+}
+rm(x4_uzTrijniekiem)
+
+
+
+
+
+
+
+
+
+
+#6 Atkarībā no cipara, kas lietots occurances o, šo sūta pa riņķi
+      #if(p < floor(as.numeric(o)/2) && (nrow(x2_finish) + nrow(x3_finish)) > 1) {
+        if(nrow(x2) > 0 && nrow(x3) > 0) {
+          x1 <- rbind(x2_finish, x3_finish)
+          rm(x2_finish, x3_finish)
+        } else if (nrow(x2) > 0) {
+          x1 <- x2_finish
+          rm(x2_finish)
+        } else {
+          x1 <- x3_finish
+          rm(x3_finish)
+        }
+        rm(x2, x3)
+      } else {
+        if(nrow(x2) > 0 && nrow(x3) > 0) {
+          x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x2_finish, x3_finish)
+          rm(x2_finish, x3_finish, x2, x3)
+          break
+        } else if (nrow(x2) > 0) {
+          x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x2_finish)
+          rm(x2_finish, x3_finish, x2, x3)
+          break
+        } else {
+          x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x3_finish)
+          rm(x2_finish, x3_finish, x2, x3)
+          break
+        }
+      }
+    }
+    rm(p)
+    
+    #7 tabulu x_uzVieniniekiem sūta uz vieninieku apstrādi.
+    #7.1 Pārbaude vai nav dubultnieki
+    y <- x_uzVieniniekiem[order(x_uzVieniniekiem$ps_code, x_uzVieniniekiem$nm_code), ]
+    test <- 0
+    test_number <- nrow(y) - 1
+    
+    if(nrow(y) > 1) {
+      for (r in seq(1, test_number, by = 1)) {
+        if (!doublesTest(r, y)) {
+          test <- test + 1
+        }
+      }
+      
+      if(test == test_number) {
+        cat("PĀRBAUDE IZIETA: \n
+      Tabulā, kas tiek sūtīta uz vieninieku apstrādi, dubultnieki nav atrasti.")
+      } else {
+        stop(cat("PĀRBAUDE NAV IZIETA:\n 
+           Tabulā, kas tiek sūtīta uz vieninieku apstrādi, atrasti dubultnieki."))  
+      }
+    } else {
+      cat("Tabulā, kas tiek sūtīta uz vieninieku apstrādi, ir tikai viena rinda.")
+      }
+  rm(y, test, test_number)
+  
+  processingOnes(x_uzVieniniekiem)
+  rm(x_uzVieniniekiem)
+} else {
+  rm(x1)
+}
+
+#8 Izstrādā x_trueDoubles
+#8.1. Pārbaude vai šie visi ir īstie dubultnieki
+y <- x_trueDoubles[order(x_trueDoubles$ps_code, x_trueDoubles$nm_code), ]
+test <- 0
+
+for (r in seq(1, nrow(y), by = 2)) {
+  if (doublesTest(r, y))
+    test <- test + 2
+}
+
+if(test == nrow(y)) {
+  cat("PĀRBAUDE IZIETA: \n
+      Tabulā visi ir īstie dubultnieki, ar sākuma un beigu kodu")
+  rm(y, test, r)
+} else {
+  stop(cat("PĀRBAUDE NAV IZIETA:\n 
+           Tabulā NAV tikai dubultnieki!"))  
+}
+
+processingTwoes(x_trueDoubles, o)
+rm(x_trueDoubles)
+}
