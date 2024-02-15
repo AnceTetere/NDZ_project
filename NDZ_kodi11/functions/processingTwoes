@@ -1,0 +1,87 @@
+# Divnieku apstrāde notiek divos soļos
+# 1) Pirmajā funkcijā processingTwoes(table, occurances)
+#    No tabulas tiek nošķirti tie divnieki,
+#    kuriem ir tikai divi sākuma kodi ailē [start],
+#    vai tikai divi beigu kodi beigu kodi ailē [end].
+#    No tiem, savukārt, tiek izlasīti tie, kuriem ziņojuma īstais kods sakrīt
+#    no tiem, kam tie atšķiras.
+#
+#    Šim dalījumam pakārtota apakšfunkcionalitāte -
+#    funkcija F_doubleStartEnd_codesMatch(x2) un algoritms F_doubleStartEnd_codesDiffer(x3)
+#    par īpašu apstrādi šīm rindām.
+#
+#    Apstrādes rezultātā šie rezultāti kļūst par vieninieku ierakstiem un
+#    tiek pārsūtīta uz funkciju processingOnes(x, o), caur kuru tie sasniedz gala tabulu,
+#    temp_NDZ, ko šis kods būvē.
+#
+#2) Otrā funkcija, processingDoubles(table, occurances), kas pakārtojas šai
+#   funkcijai processingTwoes(table, occurances) apstrādā tos unikālos indivīdus,
+#   kam rindu dubultniekā ir gan sākuma, gan beigu kodi.
+
+processingTwoes <- function(x, o) {
+  #x - table; o - occurences
+
+  # No divniekiem izdali tos, kam ir divi vienādi sākuma vai beigu kodi vienā mēnesī
+
+  x1 <- data.frame()
+  x_trueDoubles <- data.frame()
+  
+  for (r in seq(1, nrow(x), by = 2)) {
+    if ((x$start[r] == x$start[r + 1]) || (x$end[r] == x$end[r + 1])) {
+      x1 <- rbind(x1, x[c(r, r + 1),]) 
+    } else {
+      x_trueDoubles <- rbind(x_trueDoubles, x[c(r, r + 1),])
+    }
+  }
+  rm(x, r)
+  
+  if(nrow(x1) > 0) {
+    #3 Sadalām tabulu x1 apakštabulās x2 un x3,
+    # no kurām tabula x2 nes tos dubultniekus, kuru [zinkod] neatšķiras.
+    # x3 nes tos, kuriem ziņojuma oriģinālie kodi [zinkod] atšķiras.
+    x2 <- data.frame()
+    x3 <- data.frame()
+    
+    if (nrow(x1) > 0) {
+      for (r in seq(1, nrow(x1), by = 2)) {
+        if (x1$zinkod[r] == x1$zinkod[r + 1]) {
+          x2 <- rbind(x2, x1[c(r, r + 1), ])
+        } else {
+          x3 <- rbind(x3, x1[c(r, r + 1), ]) 
+        }
+      }
+      
+      
+      if (nrow(x1) == nrow(x2) + nrow(x3)) {
+        rm(r, x1)
+      } else {
+        stop(cat(
+          "ERROR: Atvasināto tabulu x2 un x3 nesakrīt ar mātes tabulu x1."
+        ))
+      }
+
+      #4 Apakštabulu x2 izstrādā izvelkot lielāko datumu funkcijā, kas paņem x2 un atgriež x2_finish
+      x2_finish <- F_doubleStartEnd_codesMatch(x2)
+      rm(x2)
+      
+      #5 Apakštabulu x3 izstrādā pēc algoritma
+      # jāiestrādā funkcijā: argumenti x3 ; return x3_finish
+      x3_finish <- F_doubleStartEnd_codesDiffer(x3)
+      rm(x3)
+      
+      #6 Sašuj abas kopā, un sūta uz vieninieku apstrādi.
+      x_uzVieniniekiem <- rbind(x2_finish, x3_finish)
+      rm(x2_finish, x3_finish)
+      
+      processingOnes(x_uzVieniniekiem)
+      rm(x_uzVieniniekiem)
+      
+    } else {
+      rm(x1, x2, x3)
+    }
+  } else {rm(x1)}
+  
+  #7 Izstrādā x_trueDoubles
+  sendTo_tempNDZ(processingDoubles(x_trueDoubles, o))
+  rm(x_trueDoubles)
+}
