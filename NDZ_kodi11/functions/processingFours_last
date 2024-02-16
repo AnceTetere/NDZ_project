@@ -5,7 +5,7 @@ processingFours <- function(x, o) {
   x4_uzTrijniekiem <- data.frame()
   check_rows <- 0
   
-  x <- x[order(x$period, x$ps_code, x$pdn_code, x$nm_code, x$NDZ_sanemsanas_datums), ]
+  x <- x[order(x$period, x$ps_code, x$dn_code, x$nr_code, x$NDZ_sanemsanas_datums), ]
 
 for (r in seq(1, nrow(x), by = 4)) {
   #TESTĒŠANAI r <- sample(1:nrow(x), size = 1, replace = TRUE)
@@ -14,7 +14,7 @@ for (r in seq(1, nrow(x), by = 4)) {
   
   if(!(doublesTest(1, x4) && doublesTest(3, x4))) {
     stop(cat("Četrinieku apstrādes tabulā, ko izstrādā caur funkciju processingFours(), 
-               rindās no", r, "līdz", r + 3, "nesakrīt ps_code, nm_code, pdn_code, period kombinācija visās četrās rindās."))
+               rindās no", r, "līdz", r + 3, "nesakrīt ps_code, nr_code, dn_code, period kombinācija visās četrās rindās."))
   } else if ((((x4$start[1] == "1" && x4$end[2] == "2") && (x4$NDZ_sanemsanas_datums[1] <= x4$NDZ_sanemsanas_datums[2]))||((x4$end[1] == "2" && x4$start[2] == "1") && (x4$NDZ_sanemsanas_datums[1] == x4$NDZ_sanemsanas_datums[2]))) &&  (((x4$start[3] == "1" && x4$end[4] == "2") && (x4$NDZ_sanemsanas_datums[3] <= x4$NDZ_sanemsanas_datums[4])) || ((x4$end[3] == "2" && x4$start[4] == "1") && (x4$NDZ_sanemsanas_datums[3] = x4$NDZ_sanemsanas_datums[4])))) {
     x4_trueDoubles <- rbind(x4_trueDoubles, x4)
     check_rows <- check_rows + 4
@@ -74,7 +74,7 @@ rm(x4)
     \nTabula x4_uztrijniekiem tālāk jāpārdala caur funkciju processing threes.")
   
   
-  
+###################
   #3 Sadalām tabulu x4_uzVieniniekiem apakštabulās x2 un x3.
   # Tabulā x1 katrās divās rindās atkārtojas vai nu sākuma kods ailē [start] vai beigu kods ailē [end].
   # Tabulā x2 nošķiram tos dubultniekus, kuriem ziņijuma kodi ailē [zinkod] neatšķiras. 
@@ -90,7 +90,7 @@ rm(x4)
   # un netiek tālāk apstrādāts.
   
     x1 <- x4_uzVieniniekiem
-    x1 <- x1[order(x1$period, x1$ps_code, x1$pdn_code, x1$nm_code), ] 
+    x1 <- x1[order(x1$period, x1$ps_code, x1$dn_code, x1$nr_code), ] #saglabāt šo kārtību ir vissvārīgākais šajā projektā
     
     if(nrow(x1) > 0) {
       x_uzVieniniekiem <- data.frame()
@@ -125,7 +125,7 @@ rm(x4)
       }
     }
     rm(x1, x2, x3)
-
+##################################
 # Nosūti vieninieku apstrādei
 if(nrow(x_uzVieniniekiem) > 0) {
   sendTo_tempNDZ(processingOnes(x_uzVieniniekiem))
