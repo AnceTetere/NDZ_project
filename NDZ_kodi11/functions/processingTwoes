@@ -6,9 +6,13 @@
 #    No tiem, savukārt, tiek izlasīti tie, kuriem ziņojuma īstais kods sakrīt
 #    no tiem, kam tie atšķiras.
 #
+#    Piemēram, vienam unikālam indivīdam,
+#    kuru šajā projektā mēs definējam kā period == ps_code == dn_code == nm_code,
+#    sākuma ziņojuma kodi var būt 11 un 14.
+#
 #    Šim dalījumam pakārtota apakšfunkcionalitāte -
 #    funkcija F_doubleStartEnd_codesMatch(x2) un algoritms F_doubleStartEnd_codesDiffer(x3)
-#    par īpašu apstrādi šīm rindām.
+#    par īpašu apstrādi šīm rundām.
 #
 #    Apstrādes rezultātā šie rezultāti kļūst par vieninieku ierakstiem un
 #    tiek pārsūtīta uz funkciju processingOnes(x, o), caur kuru tie sasniedz gala tabulu,
@@ -19,69 +23,195 @@
 #   kam rindu dubultniekā ir gan sākuma, gan beigu kodi.
 
 processingTwoes <- function(x, o) {
-  #x - table; o - occurences
-
-  # No divniekiem izdali tos, kam ir divi vienādi sākuma vai beigu kodi vienā mēnesī
+  
+  # No divniekiem izdali tos, kam ir divi vienādi sākuma vai beigu kodi
 
   x1 <- data.frame()
   x_trueDoubles <- data.frame()
   
   for (r in seq(1, nrow(x), by = 2)) {
-    if ((x$start[r] == x$start[r + 1]) || (x$end[r] == x$end[r + 1])) {
-      x1 <- rbind(x1, x[c(r, r + 1),]) 
+    if (doublesTest(r, x)) {
+      if ((x$start[r] == x$start[r + 1]) || (x$end[r] == x$end[r + 1])) {
+        x1 <- rbind(x1, x[c(r, r + 1),])   
+      } else {
+        x_trueDoubles <- rbind(x_trueDoubles, x[c(r, r + 1),]) 
+        if (!(x$ps_code[r] == x$ps_code[r + 1] &&
+              x$dn_code[r] == x$dn_code[r + 1]) &&
+            (x$nm_code[r] == x$nm_code[r + 1])) {
+          stop(cat("Rindās ", r, " un ", r + 1, " ir nesakritības."))
+        }
+      }
     } else {
-      x_trueDoubles <- rbind(x_trueDoubles, x[c(r, r + 1),])
+      cat("Rindās", r, "un", r + 1, "pamatkodi atšķiras.")
     }
   }
+  
+  cat(
+    "SKAIDROJUMS: Pāra tabula sadalīta tabulās x1:",
+    nrow(x1),
+    "rindas; un x_trueDoubles: ",
+    nrow(x_trueDoubles),
+    "rindas.\n
+    Tabulā x1 sākuma vai beigu ziņojumu kodi, kas \n
+    attiecīgi atrodas ailēs [start] vai [end], katrās divās rindās atkārtojas.\n
+    Tabula x_trueDoubles nes gan sākuma kodu ailē [start] vienā rindā ar datumu ailē [sak_darbu] \n
+    un beigu kodu [end] otrā rindā ar datumu ailē [beidz_darbu],\n
+    un ziņojumu kodi [zinkod] šajās divās rindās atšķiras viens no otra."
+  )
+  
   rm(x, r)
   
-  if(nrow(x1) > 0) {
-    #3 Sadalām tabulu x1 apakštabulās x2 un x3,
-    # no kurām tabula x2 nes tos dubultniekus, kuru [zinkod] neatšķiras.
-    # x3 nes tos, kuriem ziņojuma oriģinālie kodi [zinkod] atšķiras.
-    x2 <- data.frame()
-    x3 <- data.frame()
+  
+  #    #3 Sadalām tabulu x1 apakštabulās x2 un x3,
+  # no kurām tabula x2 nes tos dubultniekus, kuru [zinkod] neatšķiras.
+  # x3 nes tos, kuriem ziņojuma oriģinālie kodi [zinkod] atšķiras.
+  
+  # 3 Sadalām tabulu x1 apakštabulās x2 un x3.
+  # Tabulā x1 katrās divās rindās atkārtojas vai nu sākuma kods ailē [start] vai beigu kods ailē [end].
+  # Tabulā x2 nošķiram tos dubultniekus, kuriem ziņijuma kodi ailē [zinkod] neatšķiras.
+  # Piemēram, vienā rindā ir sākuma kods ailē [start] un otrā rindā ir sākuma kods ailē [start],
+  #           un abās rindās ailē [zinkod] ir kods '11'.
+  # Tabulā x3 nošķiram tos, kuriem ziņojuma oriģinālie kodi [zinkod] atšķiras.
+  # Piemēram, vienā rindā ir beigu kods ailē [end] un otrā rindā arī ir beigu kods ailē [end],
+  #           - tā, kā tam jābūt, jo tabulā x1 gāja tikai kodi, kuri divās rindās neatšķīrās -
+  #           taču starp šīm rindām atšķiras īsties ziņojumu kodi ailē [zinkod], piemēram,
+  #           '24' un '62', kas abi ir beigu kodi.
+  # Ja testDouble() funkcija uzrāda FALSE, tas nozīmē, ka starp rindām vai nu ps_code
+  # vai numuri atšķiras. Tādā ziņā, šie divi tiek uzsatīti par unikāliem gadījumiem katrs,
+  # un netiek tālāk apstrādāts.
+  
+  
+  if (nrow(x1) > 0) {
+    x_uzVieniniekiem <- data.frame()
     
-    if (nrow(x1) > 0) {
+    for (p in 1:floor((as.numeric(o) / 2))) {
+      x2 <- data.frame()
+      x3 <- data.frame()
+      
       for (r in seq(1, nrow(x1), by = 2)) {
-        if (x1$zinkod[r] == x1$zinkod[r + 1]) {
-          x2 <- rbind(x2, x1[c(r, r + 1), ])
+        if (doublesTest(r, x1)) {
+          if (x1$zinkod[r] == x1$zinkod[r + 1]) {
+            x2 <- rbind(x2, x1[c(r, r + 1),])
+          } else {
+            x3 <- rbind(x3, x1[c(r, r + 1),])
+          }
         } else {
-          x3 <- rbind(x3, x1[c(r, r + 1), ]) 
+          x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x1[c(r, r + 1),])
         }
       }
       
-      
-      if (nrow(x1) == nrow(x2) + nrow(x3)) {
+      if (nrow(x1) == nrow(x2) + nrow(x3) + nrow(x_uzVieniniekiem)) {
         rm(r, x1)
       } else {
         stop(cat(
           "ERROR: Atvasināto tabulu x2 un x3 nesakrīt ar mātes tabulu x1."
         ))
       }
-
-      #4 Apakštabulu x2 izstrādā izvelkot lielāko datumu funkcijā, kas paņem x2 un atgriež x2_finish
-      x2_finish <- F_doubleStartEnd_codesMatch(x2)
-      rm(x2)
+      
+      
+      #4 Apakštabulu x2 izstrādā, izvēloties rindu ar lielāko datumu.
+      # Funkcija F_doubleStartEnd_codesMatch(x2) paņem x2 un atgriež x2_finish
+      x2_finish <- data.frame()
+      if (nrow(x2) > 0) {
+        x2_finish <- F_doubleStartEnd_codesMatch(x2)
+      }
       
       #5 Apakštabulu x3 izstrādā pēc algoritma
-      # jāiestrādā funkcijā: argumenti x3 ; return x3_finish
-      x3_finish <- F_doubleStartEnd_codesDiffer(x3)
-      rm(x3)
+      # Funkcija F_doubleStartEnd_codesDiffer(x3) kā argumentu ņem x3 un atgriež x3_finish
+      x3_finish <- data.frame()
+      if (nrow(x3) > 0) {
+        x3_finish <- F_doubleStartEnd_codesDiffer(x3)
+      }
       
-      #6 Sašuj abas kopā, un sūta uz vieninieku apstrādi.
-      x_uzVieniniekiem <- rbind(x2_finish, x3_finish)
-      rm(x2_finish, x3_finish)
-      
-      processingOnes(x_uzVieniniekiem)
-      rm(x_uzVieniniekiem)
-      
-    } else {
-      rm(x1, x2, x3)
+      #6 Atkarībā no cipara, kas lietots occurances o, šo sūta pa riņķi
+      if (p < floor(as.numeric(o) / 2) &&
+          (nrow(x2_finish) + nrow(x3_finish)) > 1) {
+        if (nrow(x2) > 0 && nrow(x3) > 0) {
+          x1 <- rbind(x2_finish, x3_finish)
+          rm(x2_finish, x3_finish)
+        } else if (nrow(x2) > 0) {
+          x1 <- x2_finish
+          rm(x2_finish)
+        } else {
+          x1 <- x3_finish
+          rm(x3_finish)
+        }
+        rm(x2, x3)
+      } else {
+        if (nrow(x2) > 0 && nrow(x3) > 0) {
+          x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x2_finish, x3_finish)
+          rm(x2_finish, x3_finish, x2, x3)
+          break
+        } else if (nrow(x2) > 0) {
+          x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x2_finish)
+          rm(x2_finish, x3_finish, x2, x3)
+          break
+        } else {
+          x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x3_finish)
+          rm(x2_finish, x3_finish, x2, x3)
+          break
+        }
+      }
     }
-  } else {rm(x1)}
+    rm(p)
+    
+    #7 tabulu x_uzVieniniekiem sūta uz vieninieku apstrādi.
+    #7.1 Pārbaude vai nav dubultnieki
+    y <-
+      x_uzVieniniekiem[order(x_uzVieniniekiem$ps_code, x_uzVieniniekiem$nm_code),]
+    test <- 0
+    test_number <- nrow(y) - 1
+    
+    if (nrow(y) > 1) {
+      for (r in seq(1, test_number, by = 1)) {
+        if (!doublesTest(r, y)) {
+          test <- test + 1
+        }
+      }
+      if (test == test_number) {
+        cat(
+          "PĀRBAUDE IZIETA: \n
+      Tabulā, kas tiek sūtīta uz vieninieku apstrādi, dubultnieki nav atrasti."
+        )
+      } else {
+        stop(
+          cat(
+            "PĀRBAUDE NAV IZIETA:\n
+           Tabulā, kas tiek sūtīta uz vieninieku apstrādi, atrasti dubultnieki."
+          )
+        )
+      }
+    } else {
+      cat("Tabulā, kas tiek sūtīta uz vieninieku apstrādi, ir tikai viena rinda.")
+    }
+    rm(y, test, test_number)
+    
+    sendTo_tempNDZ(processingOnes(x_uzVieniniekiem, o))
+    rm(x_uzVieniniekiem)
+  } else {
+    rm(x1)
+  }
+
   
-  #7 Izstrādā x_trueDoubles
+  #8 Izstrādā x_trueDoubles
+  #8.1. Pārbaude vai šie visi ir īstie dubultnieki
+  y <-
+    x_trueDoubles[order(x_trueDoubles$ps_code, x_trueDoubles$nm_code),]
+  test <- 0
+  
+  for (r in seq(1, nrow(y), by = 2)) {
+    if (doublesTest(r, y))
+      test <- test + 2
+  }
+  if (test == nrow(y)) {
+    cat("PĀRBAUDE IZIETA: \n
+      Tabulā visi ir īstie dubultnieki, ar sākuma un beigu kodu")
+    rm(y, test, r)
+  } else {
+    stop(cat("PĀRBAUDE NAV IZIETA:\n
+           Tabulā NAV tikai dubultnieki!"))
+  }
+  
   sendTo_tempNDZ(processingDoubles(x_trueDoubles, o))
   rm(x_trueDoubles)
 }
