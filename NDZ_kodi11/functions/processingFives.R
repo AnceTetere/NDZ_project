@@ -15,13 +15,9 @@ processingFives <- function(x, o) {
       rm(x_vieninieki)
     } else if (sum(x5$start == "1") == 4){
       if (sum(x5$sak_darbu[x5$start == "1"] <= x5$beidz_darbu[x5$end == "2"]) == 4) {
-        day_diff <- abs(as.numeric(difftime(x5$sak_darbu[x5$start == "1"], x5$beidz_darbu[x5$end == "2"], units = "days")))
-        min_day_diff <- min(day_diff)
-        
-        matching_rows <- x5$sak_darbu[x5$start == "1"] == x5$sak_darbu[day_diff == min_day_diff]
-        
-        x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[x5$start == "1", ][matching_rows, ], x5[x5$end == "2", ])
-        rm(min_day_diff, day_diff, matching_rows)
+        logVec_forStart <- ifelse(is.na(x5$sak_darbu == x5$sak_darbu[x5$start == "1"][(abs(as.numeric(difftime(x5$sak_darbu[x5$start == "1"], x5$beidz_darbu[x5$end == "2"], units = "days"))) == min(abs(as.numeric(difftime(x5$sak_darbu[x5$start == "1"], x5$beidz_darbu[x5$end == "2"], units = "days")))))]), FALSE, x5$sak_darbu == x5$sak_darbu[x5$start == "1"][(abs(as.numeric(difftime(x5$sak_darbu[x5$start == "1"], x5$beidz_darbu[x5$end == "2"], units = "days"))) == min(abs(as.numeric(difftime(x5$sak_darbu[x5$start == "1"], x5$beidz_darbu[x5$end == "2"], units = "days")))))])
+        x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[logVec_forStart, ], x5[x5$end == "2", ]) 
+        rm(logVec_forStart)
       } else if ((x5$start[1] == "1" && x5$start[2] == "1" && x5$end[3] == "2" && x5$start[4] == "1" && x5$start[5] == "1") && (x5$NDZ_sanemsanas_datums[1] != x5$NDZ_sanemsanas_datums[2] && x5$NDZ_sanemsanas_datums[3] != x5$NDZ_sanemsanas_datums[4])) {
         x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[2:3, ])
         x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[5, ])
