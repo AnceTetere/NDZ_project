@@ -1,6 +1,0 @@
-#doublesTest() funkcija pārbauda vai loopā ik pa divi periods, ps_code, dn_code un nr_code kodi sakrīt.
-
-doublesTest <-  function(r, x) {
-  x$period[r] == x$period[r+1] && x$ps_code[r] == x$ps_code[r+1] &&
-  x$dn_code[r] == x$dn_code[r+1] && x$nr_codekod[r] == x$nr_codekod[r+1]
-}
