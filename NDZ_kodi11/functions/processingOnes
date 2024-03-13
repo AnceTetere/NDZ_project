@@ -1,73 +1,77 @@
-#Caur funkciju processingOnes() laiž tikai tos NDZ ierakstus, 
-#kur unikālajam indivīdam - kas šajā projektā definēts kā period == ps_code == dn_code == nm_code -
-#ir dotajā mēnesī norādīts datums ailē [sak_darbu] vai ailē [beidz_darbu], bet ne abos.
-
-processingOnes <- function(x, o){
-  
-  if (as.numeric(o) > 1) {  
-    # Ieejošo vieninieku tabulu sadala apakštabulās x2 un x3.
-    # Tabulā x1 katrās divās rindās atkārtojas vai nu sākuma kods ailē [start] vai beigu kods ailē [end].
-    # Tabulā x2 nošķiram tos dubultniekus, kuriem ziņijuma kodi ailē [zinkod] neatšķiras. 
-    # Piemēram, vienā rindā ir sākuma kods ailē [start] un otrā rindā ir sākuma kods ailē [start],
-    #           un abās rindās ailē [zinkod] ir kods '11'. 
-    # Tabulā x3 nošķiram tos, kuriem ziņojuma oriģinālie kodi [zinkod] atšķiras.
-    # Piemēram, vienā rindā ir beigu kods ailē [end] un otrā rindā arī ir beigu kods ailē [end],
-    #           - tā, kā tam jābūt, jo tabulā x1 gāja tikai kodi, kuri divās rindās neatšķīrās -
-    #           taču starp šīm rindām atšķiras īsties ziņojumu kodi ailē [zinkod], piemēram,
-    #           '24' un '62', kas abi ir beigu kodi. 
-    # Ja testDouble() funkcija uzrāda FALSE, tas nozīmē, ka starp rindām vai nu ps_code
-    # vai uzņēmuma numuri atšķiras. Tādā ziņā, šie divi tiek uzsatīti par unikāliem gadījumiem katrs,
-    # un netiek tālāk apstrādāts.
+processingOnes <- function(x, o) {
+    if (as.numeric(o) > 1) { #šo neņem ārā, šis ir svarīgi, jo tad, kad tas nāk no tabulas NDZ_1, tur visi ir unikālie, un tā tabula ir milzīga, un uzkarina visu programmu dalot to, kad tur nav nekā ko dalīt.
     
     x1 <- x
-    x1 <- x1[order(x1$period, x1$ps_code, x1$dn_code, x1$nm_code), ] #saglabāt šo kārtību ir vissvārīgākais šajā projektā
+    x1 <- x1[order(x1$period, x1$PS_code, x1$DN_code, x1$nm_code, x$NDZ_sanemsanas_datums),] #saglabāt šo kārtību ir vissvārīgākais šajā projektā
     
-    if(nrow(x1) > 0) {
+    if (nrow(x1) > 0) {
       x_uzVieniniekiem <- data.frame()
       
-      x2 <- data.frame()
-      x3 <- data.frame()
-      
-      if (length(unique(x1$ps_code)) == nrow(x1)) {
-        x_uzVieniniekiem <- x1
-      } else {
-        for (r in seq(1, nrow(x1) - 1, by = 2)) {
-          if (doublesTest(r, x1)) {
-            if (x1$zinkod[r] == x1$zinkod[r + 1]) {
-              x2 <- rbind(x2, x1[c(r, r + 1),])
-            } else {
-              x3 <- rbind(x3, x1[c(r, r + 1),])
-            }
-          } else {
-            x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x1[c(r, r + 1),])
-          }
-        }
-        if(nrow(x1) == nrow(x2) + nrow(x3) + nrow(x_uzVieniniekiem)){
-          rm(r, x1)
+      #for (p in 1:floor((as.numeric(o) / 2))) {
+        x2 <- data.frame()
+        x3 <- data.frame()
+        
+        
+        if (length(unique(x1$PS_code)) == nrow(x1)) {
+          x_uzVieniniekiem <- x1
         } else {
-          stop(cat("ERROR: Atvasināto tabulu x2 un x3 nesakrīt ar mātes tabulu x1."))
+          r <- 1  # ! šo nedzēs, šis nav no testēšanas palicis r, bet ir nepieciešams while loopam.
+          while(r <= nrow(x1)) {
+            if (ifelse(is.na(doublesTest(r, x1)), FALSE, doublesTest(r, x1))) {
+              if (x1$zinkod[r] == x1$zinkod[r + 1]) {
+                x2 <- rbind(x2, x1[c(r, r + 1), ])
+                r <- r + 2
+              } else if (ifelse(is.na(x1$beidz_darbu[r] < x1$sak_darbu[r + 1]), FALSE, (x1$beidz_darbu[r] < x1$sak_darbu[r + 1])))  {
+                x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x1[c(r, r + 1), ])
+                r <- r + 2
+              } else {
+                x3 <- rbind(x3, x1[c(r, r + 1), ])
+                r <- r + 2
+              }
+            } else {
+              x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x1[r, ])
+              r <- r+1
+            }
+          }
+          
+          
+          if (nrow(x1) == nrow(x2) + nrow(x3) + nrow(x_uzVieniniekiem)) {
+            rm(r, x1)
+          } else {
+            stop(cat(
+              "ERROR: Atvasināto tabulu x2 un x3 nesakrīt ar mātes tabulu x1."
+            ))
+          }
+          
+          if (nrow(x2) > 0) {
+            x_uzVieniniekiem <-
+              rbind(x_uzVieniniekiem,
+                    F_doubleStartEnd_codesMatch(x2))
+          }
+          
+          if (nrow(x3) > 0) {
+            x_uzVieniniekiem <-
+              rbind(x_uzVieniniekiem,
+                    F_doubleStartEnd_codesDiffer(x3))}
+          rm(x2, x3)
         }
-        
-        
-        if(nrow(x2) > 0) {x_uzVieniniekiem <- rbind(x_uzVieniniekiem, F_doubleStartEnd_codesMatch(x2))}
-        if(nrow(x3) > 0) {x_uzVieniniekiem <- rbind(x_uzVieniniekiem, F_doubleStartEnd_codesMatch(x3))}
-        
       }
-    }
-    rm(x1, x2, x3)
-    x <- x_uzVieniniekiem
-    rm(x_uzVieniniekiem)
-    }
+      
+      x <- x_uzVieniniekiem
+      rm(x_uzVieniniekiem)
+  }
 
   #1 Sakārto tabulu
-  x <- x[order(x$ps_code, x$nm_code), ]
+  x <- x[order(x$PS_code, x$DN_code, x$nm_code, x$NDZ_sanemsanas_datums, x$start),]
   rownames(x) <- NULL
   
   #2 Aprēķini dienas no sak_darbu līdz mēneša pēdējai dienai, un ievieto tās ailē [dienas]
   # tiek pieskaitīts 1, jo atšķirībā no SQL aprēķiniem, mūsu kultūrtelpā no-līdz datumi tiek rēķināti
   # sākuma un beigu dienas ieskaitot. Tā arī tiek maksātas algas.
-  x$dienas1 <- as.numeric(difftime(as.Date(x$last_date), as.Date(x$sak_darbu), units = "days")) + 1  
-  x$dienas[(!is.na(x$sak_darbu))] <- x$dienas1[(!is.na(x$sak_darbu))]
+  x$dienas1 <-
+    as.numeric(difftime(as.Date(x$last_date), as.Date(x$sak_darbu), units = "days")) + 1
+  x$dienas[(!is.na(x$sak_darbu))] <-
+    x$dienas1[(!is.na(x$sak_darbu))]
   
   #3 Aprēķini dienas no iepriekšējā mēneša pēdējās dienas līdz beidz_darbu, un ievieto tās ailē [dienas]
   #3.1 Izrēķini iepriekšējā mēneša pēdējo dienu
@@ -76,10 +80,18 @@ processingOnes <- function(x, o){
   #3.2 sarēķini nostrādātās dienas pret iepriekšējā mēneša pēdējo dienu
   #dienas rēķina no iepriekšējā mēneša beigu datuma līdz datumam [beidz_darbu]
   # aizvieto NA vērtības ailē dienas (koda rinda 24).
-  x$dienas1 <- as.numeric(difftime(as.Date(x$beidz_darbu), prev, units = "days")) 
-  x$dienas[(!is.na(x$beidz_darbu))] <- x$dienas1[(!is.na(x$beidz_darbu))]         
+  x$dienas1 <-
+    as.numeric(difftime(as.Date(x$beidz_darbu), prev, units = "days"))
+  
+  #SKAT. Lēmums
+  if("40" %in% x$zinkod || "50" %in% x$zinkod || "53" %in% x$zinkod || "91" %in% x$zinkod) {
+    x$dienas1 <- x$dienas1 - 1
+  } 
+  
+  x$dienas[(!is.na(x$beidz_darbu))] <-
+    x$dienas1[(!is.na(x$beidz_darbu))]
   x$dienas1 <- NULL
   rm(prev)
 
-  return(x)  
+  return(x)
 }
