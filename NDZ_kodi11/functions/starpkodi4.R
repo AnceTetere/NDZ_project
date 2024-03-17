@@ -33,7 +33,7 @@ starpkodi4 <- function(y2, t, prev) {
     yt$dienas <- days
   } else if (t$zinkod[1] == "51" && t$zinkod[2] == "50" && 
              t$zinkod[3] == "25" && t$zinkod[4] == "51" && 
-             t$NDZ_sanemsanas_datums[1] != t$NDZ_sanemsanas_datums[1] &&
+             t$NDZ_sanemsanas_datums[1] != t$NDZ_sanemsanas_datums[2] &&
              t$NDZ_sanemsanas_datums[3] == t$NDZ_sanemsanas_datums[4]) {
     days <- as.numeric(difftime(as.Date(t$beidz_darbu[2]), as.Date(t$sak_darbu[1]), units = "days")) 
 
