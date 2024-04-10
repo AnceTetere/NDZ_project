@@ -1,22 +1,25 @@
 starpkodi9 <- function(y2, t, prev) {
   
-  if (t$zinkod[1] == "11" && 
-      t$zinkod[2] == "81" && 
-      t$zinkod[3] == "25" && 
-      t$zinkod[4] == "82" && 
-      t$zinkod[5] == "11" && 
-      t$zinkod[6] == "81" && 
-      t$zinkod[7] == "25" && 
-      t$zinkod[8] == "82" && 
-      t$zinkod[9] == "11" && 
-      t$NDZ_sanemsanas_datums[1] == t$NDZ_sanemsanas_datums[2] && 
-      t$NDZ_sanemsanas_datums[3] == t$NDZ_sanemsanas_datums[4] && 
-      t$NDZ_sanemsanas_datums[5] == t$NDZ_sanemsanas_datums[6] && 
-      t$NDZ_sanemsanas_datums[7] == t$NDZ_sanemsanas_datums[8] &&
-      t$NDZ_sanemsanas_datums[8] != t$NDZ_sanemsanas_datums[9]) {
+  #if (t$zinkod[1] == "11" && 
+  #    t$zinkod[2] == "81" && 
+  #    t$zinkod[3] == "25" && 
+  #    t$zinkod[4] == "82" && 
+  #    t$zinkod[5] == "11" && 
+  #    t$zinkod[6] == "81" && 
+  #    t$zinkod[7] == "25" && 
+  #    t$zinkod[8] == "82" && 
+  #    t$zinkod[9] == "11" && 
+  #    t$NDZ_sanemsanas_datums[1] == t$NDZ_sanemsanas_datums[2] && 
+  #    t$NDZ_sanemsanas_datums[3] == t$NDZ_sanemsanas_datums[4] && 
+  #    t$NDZ_sanemsanas_datums[5] == t$NDZ_sanemsanas_datums[6] && 
+  #    t$NDZ_sanemsanas_datums[7] == t$NDZ_sanemsanas_datums[8] &&
+  #    t$NDZ_sanemsanas_datums[8] != t$NDZ_sanemsanas_datums[9]) {
 
-    yt <- y2[v:(v+1), ][yt$zinkod == "11", ]
-  } else if (t$zinkod[1] == "50" && 
+  #  yt <- y2[v:(v+1), ]
+  #  yt <- yt[yt$zinkod == "11", ]
+  #} else 
+    
+  if (t$zinkod[1] == "50" && 
              t$zinkod[2] == "51" && 
              t$zinkod[3] == "50" && 
              t$zinkod[4] == "51" && 
@@ -42,7 +45,7 @@ starpkodi9 <- function(y2, t, prev) {
     stop("Starpkodi9 iztrūkst apstrādes koda.")
   }
   
+  if(is.na(yt$PS_code[1])) {stop("Dienas NA.")}
   yt$zinkod <- "combined"  #jo starpkodu dienu sarēķins
   return(yt)
-  rm(days, yt)
 }
