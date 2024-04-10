@@ -267,6 +267,17 @@ starpkodi4 <- function(y2, t, prev) {
 
     yt <- y2[v, ]
     yt$dienas <- 0
+  } else if (t$zinkod[1] == "51" && t$zinkod[2] == "50" && 
+             t$zinkod[3] == "51" && t$zinkod[4] == "25" && 
+             all(diff(t$NDZ_sanemsanas_datums) != 0)) {
+
+    days1 <- as.numeric(difftime(as.Date(t$beidz[2]), as.Date(t$sak[1]), units = "days")) 
+    days2 <- as.numeric(difftime(as.Date(t$beidz[4]), as.Date(t$sak[3]), units = "days")) + 1 #jo darbs 
+    days <- (days1 + days2)
+    rm(days1, days2)
+    
+    yt <- y2[v, ]
+    yt$dienas <- days
   } else {
     stop("Starpkodi4 iztrūkst apstrādes koda.")
   }
