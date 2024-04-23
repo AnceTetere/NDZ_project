@@ -2,6 +2,7 @@ starpkodi4_50 <- function(y2, t, prev, v) {
   if (t$zinkod[2] == "51" && t$zinkod[3] == "25" && t$zinkod[4] == "51" && 
            t$NDZ_sanemsanas_datums[1] == t$NDZ_sanemsanas_datums[2] &&
            t$NDZ_sanemsanas_datums[3] == t$NDZ_sanemsanas_datums[4]) {
+
     yt <- y2[v, ]
     yt$dienas <- 0
   } else if (t$zinkod[2] == "51" && t$zinkod[3] == "25" && t$zinkod[4] == "50" && 
@@ -20,7 +21,7 @@ starpkodi4_50 <- function(y2, t, prev, v) {
              t$NDZ_sanemsanas_datums[3] != t$NDZ_sanemsanas_datums[4]) {
     days1 <- as.numeric(difftime(as.Date(t$beidz[1]), prev, units = "days")) - 1 
     days2 <- 1 #Diena, kad ierodas darbā pēc bezalgas atvaļinājuma un iesniedz atlūgumu
-    days3 <- as.numeric(difftime(as.Date(t$last_date[4]), as.Date(t$sak[4]), units = "days")) + 1
+    days3 <- as.numeric(difftime(as.Date(t$last_date[4]), as.Date(t$sak[4]), units = "days")) + 1 
     days <- days1 + days2 + days3
     rm(days1, days2, days3)
     
@@ -34,7 +35,7 @@ starpkodi4_50 <- function(y2, t, prev, v) {
     yt$dienas <- 0
   } else if (t$zinkod[2] == "51" && t$zinkod[3] == "25" && t$zinkod[4] == "11" && 
              all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-    days1 <- as.numeric(difftime(as.Date(t$beidz[1]), prev, units = "days")) - 1
+    days1 <- as.numeric(difftime(as.Date(t$beidz[1]), prev, units = "days")) - 1  
     days2 <- as.numeric(difftime(as.Date(t$beidz[3]), as.Date(t$sak[2]), units = "days")) + 1 
     days3 <- as.numeric(difftime(as.Date(t$last_date[4]), as.Date(t$sak[4]), units = "days")) + 1 
     
@@ -42,24 +43,22 @@ starpkodi4_50 <- function(y2, t, prev, v) {
     yt$dienas <- sum(days1, days2, days3)
     rm(days1, days2, days3)
   } else if (t$zinkod[2] == "51" &&  t$zinkod[3] == "53" && t$zinkod[4] == "54" && all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 #jo atvaļinājums 
+    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1  
     days2 <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days"))
-    days3 <- as.numeric(difftime(t$last_date[4], t$sak[4], units = "days")) + 1 #jo darbs
+    days3 <- as.numeric(difftime(t$last_date[4], t$sak[4], units = "days")) + 1 
     
     yt <- y2[v, ]
     yt$dienas <- sum(days1, days2, days3)
     rm(days1, days2, days3)
   } else if (t$zinkod[2] == "51" &&  t$zinkod[3] == "50" && t$zinkod[4] == "25" && all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-    #Indivīds aiziet bezalgas atvaļinājumā un atgriežas no tā.
-    #Tad aiziet atkal, un, esot projām, tiek atlaists no darba.
-    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 
+    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1  
     days2 <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days"))
     
     yt <- y2[v, ]
     yt$dienas <- sum(days1, days2)
     rm(days1, days2)
   } else if (t$zinkod[2] == "51" &&  t$zinkod[3] == "91" && t$zinkod[4] == "92" && all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 
+    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1  
     days2 <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days"))
     days3 <- as.numeric(difftime(t$last_date[4], t$sak[4], units = "days")) + 1 
     
@@ -69,8 +68,25 @@ starpkodi4_50 <- function(y2, t, prev, v) {
   } else if (t$zinkod[2] == "51" &&  t$zinkod[3] == "50" && t$zinkod[4] == "21" && 
              all(diff(t$NDZ_sanemsanas_datums[2:3]) == 0) && all(diff(t$NDZ_sanemsanas_datums[1:2]) != 0)&& all(diff(t$NDZ_sanemsanas_datums[3:4]) != 0)) {
     yt <- y2[v, ]
-    yt$dienas <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 
-  }else {
+    yt$dienas <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1
+  } else if (t$zinkod[2] == "51" &&  t$zinkod[3] == "51" && t$zinkod[4] == "91" && 
+             all(diff(t$NDZ_sanemsanas_datums[1:2]) == 0) && 
+             all(diff(t$NDZ_sanemsanas_datums[2:4]) != 0)) {
+    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 
+    days2 <- as.numeric(difftime(t$beidz[4], t$sak[3], units = "days"))
+
+    yt <- y2[v, ]
+    yt$dienas <- sum(days1, days2)
+    rm(days1, days2)
+  } else if (t$zinkod[2] == "51" &&  t$zinkod[3] == "50" && t$zinkod[4] == "21" &&
+             all(diff(t$NDZ_sanemsanas_datums) != 0)) {
+    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1
+    days2 <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days"))
+    
+    yt <- y2[v, ]
+    yt$dienas <- sum(days1, days2)
+    rm(days1, days2)
+  } else {
     stop("starpkodi4_50: Trūkst izstrādes koda.")
   }
   
