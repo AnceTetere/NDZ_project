@@ -17,7 +17,6 @@ processingThirteen <- function(x, o) {
       if ((x13$end[1] == "2") &&(((x13$end[2] == "2" && x13$start[3] == "1") && (x13$NDZ_sanemsanas_datums[2] == x13$NDZ_sanemsanas_datums[3])) || (x13$start[2] == "1" && x13$end[3] == "2"))) {
         x13_uzTrijniekiem <- rbind(x13_uzTrijniekiem, x13[1: 3, ])
         x13_uzDesmitniekiem <- rbind(x13_uzDesmitniekiem, x13[4:13, ])
-        check_rows <- check_rows + 13
       } else {
         stop("13-nieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 12, "\n")
       }
@@ -26,11 +25,9 @@ processingThirteen <- function(x, o) {
         if ((x13$start[11] == "1" && x13$end[12] == "2" && x13$start[13] == "1") && (x13$NDZ_sanemsanas_datums[12] != x13$NDZ_sanemsanas_datums[13])) {
           x13_uzTrijniekiem <- rbind(x13_uzTrijniekiem, x13[11:13, ])
           x13_uzDesmitniekiem <- rbind(x13_uzDesmitniekiem, x13[1:10, ])
-          check_rows <- check_rows + 13
         } else if ((x13$start[9] == x13$start[10] && x13$end[11] == x13$end[13]) && (x13$NDZ_sanemsanas_datums[10] != x13$NDZ_sanemsanas_datums[11])) {
           x13_uzCetriniekiem <- rbind(x13_uzCetriniekiem, x13[10:13, ])
           x13_uzAstoniekiem <- rbind(x13_uzAstoniekiem, x13[1:8, ])
-          check_rows <- check_rows + 13
         } else if (all(x13$start[c(1, 3, 5, 7, 9, 11, 13)] == "1") && 
                    all(x13$end[c(2, 4, 6, 8, 10, 12)] == "2") && 
                    all(diff(x13$NDZ_sanemsanas_datums[1:12]) != 0) &&
@@ -38,15 +35,18 @@ processingThirteen <- function(x, o) {
           x13_uzVieniniekiem <- rbind(x13_uzVieniniekiem, x13[13, ])
           x13_uzCetriniekiem <- rbind(x13_uzCetriniekiem, x13[1:4, ])
           x13_uzAstoniekiem <- rbind(x13_uzAstoniekiem, x13[5:12, ])
-          check_rows <- check_rows + 13
         } else {
           stop("13-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:", r, " līdz ", r + 12, "\n")
         }
+      } else if (all(x13$start[c(1, 4, 6, 7, 9, 10, 12)] == "1") && 
+                 all(sapply(c(1, 2, 4, 6:12), function(i) all(diff(x13$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) &&
+                 all(sapply(seq(3, 6, by = 2), function(i) all(diff(x13$NDZ_sanemsanas_datums[i:(i+1)]) == 0)))) {
+        x13_uzCetriniekiem <- rbind(x13_uzCetriniekiem, x13[10:13, ])
+        x13_uzAstoniekiem <- rbind(x13_uzAstoniekiem, x13[1:8, ])
       } else if (x13$start[11] == "1" && x13$end[12] == "2" && x13$start[13] == "1" &&
                         all(diff(x13$NDZ_sanemsanas_datums[11:13]) != 0)) { 
           x13_uzTrijniekiem <- rbind(x13_uzTrijniekiem, x13[11:13, ])
           x13_uzDesmitniekiem <- rbind(x13_uzDesmitniekiem, x13[1:10, ])
-          check_rows <- check_rows + 13
       } else if (all(x13$start[c(2, 4, 6, 8, 9, 12, 13)] == "1") && 
                  all(x13$end[c(1, 3, 5, 7, 10, 11)] == "2") && 
                  all(sapply(seq(1, 8, by = 2), function(i) all(diff(x13$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
@@ -55,13 +55,13 @@ processingThirteen <- function(x, o) {
         x13_uzVieniniekiem <- rbind(x13_uzVieniniekiem, x13[13, ])
         x13_uzCetriniekiem <- rbind(x13_uzCetriniekiem, x13[1:4, ])
         x13_uzAstoniekiem <- rbind(x13_uzAstoniekiem, x13[5:12, ])
-        check_rows <- check_rows + 13
+        
       } else {
-        stop(cat("13-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, "līdz", r + 12, "\n"))
-    }} else {
-      stop(cat("13-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, "līdz", r + 12, "\n"))
+        stop("13-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, "līdz", r + 12, "\n")
     }
-  }
+    } else {stop("13-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, "līdz", r + 12, "\n")}
+    check_rows <- check_rows + 13
+}
   
   #2 PĀRBAUDE: Vai rindu skaits no 13-niekiem atvasinātajās tabulās sakrīt ar rindām izejas tabulā x.
   if (check_rows == nrow(x)) {
