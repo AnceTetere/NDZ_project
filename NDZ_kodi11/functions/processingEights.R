@@ -1,0 +1,82 @@
+processingEights <- function(x, o) {
+  x <- x[order(x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums, x$start), ]
+  
+  x8_uzVieniniekiem <- data.frame()
+  x8_uzCetriniekiem <- data.frame()
+  x8_uzSeptini <- data.frame()
+  check_rows <- 0
+  
+  for (r in seq(1, nrow(x), by = 8)) {
+    x8 <- x[r:(r+7), ]
+    x8 <- x8[order(x8$PS_code, x8$DN_code, x8$NM_code, x8$NDZ_sanemsanas_datums), ]
+
+    if (sum(x8$start == "1") == 4 && sum(x8$end == "2") == 4) {
+      if ((x8$start[1] == "1" && x8$end[2] == "2") || (x8$end[1] == "2" && x8$start[2] == "1" && x8$NDZ_sanemsanas_datums[1] == x8$NDZ_sanemsanas_datums[2])) {
+        x8_uzCetriniekiem  <- rbind(x8_uzCetriniekiem , x8)
+      } else if (x8$end[1] == "2" && x8$start[2] == "1" && x8$end[3] == "2" && x8$NDZ_sanemsanas_datums[1] != x8$NDZ_sanemsanas_datums[2]) {
+        x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1, ])
+        x8_uzSeptini <- rbind(x8_uzSeptini, x8[-1, ])
+      } else if (x8$end[1] == "2" && x8$end[2] == "2" && x8$start[3] == "1" && x8$NDZ_sanemsanas_datums[2] == x8$NDZ_sanemsanas_datums[3]) {
+        x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1, ])
+        x8_uzSeptini <- rbind(x8_uzSeptini, x8[-1, ])
+      } else {
+        stop(cat("Astoņnieku apstrādē nosacījums neizpildās attiecībā uz rindām", r, "līdz", r + 8,".
+             Iespējams, ka pietrūkst izstrādes koda."))
+      }
+    } else if (x8$end[1] == "2" && x8$start[2] == "1" && x8$NDZ_sanemsanas_datums[1] != x8$NDZ_sanemsanas_datums[2]) {
+      x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1, ])
+      x8_uzSeptini <- rbind(x8_uzSeptini, x8[-1, ])
+    } else if (x8$start[1] == x8$start[2] && all(diff(x8$NDZ_sanemsanas_datums[1:3]) != 0)) {
+      x8_uzSeptini <- rbind(x8_uzSeptini, x8[2:8, ])
+    } else if (x8$start[1] == "1" && x8$end[2] == "2" && x8$end[3] == "2" && x8$start[4] == "1" && 
+               all(diff(x8$NDZ_sanemsanas_datums[1:3]) != 0) && all(diff(x8$NDZ_sanemsanas_datums[4:6]) != 0) &&
+               all(diff(x8$NDZ_sanemsanas_datums[3:4]) == 0) && all(diff(x8$NDZ_sanemsanas_datums[6:7]) == 0)) {
+      x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8)
+    } else {
+      stop(cat("Astoņnieku apstrādē nosacījums neizpildās attiecībā uz rindām", r, "līdz", r + 8,".
+             Iespējams, ka pietrūkst izstrādes koda."))
+    }
+    check_rows <- check_rows + 8
+  }
+  
+  #2 PĀRBAUDE: Vai rindu skaits no astoņniekiem atvasinātajās tabulās sakrīt ar rindām izejas tabulā x.
+  if (check_rows == nrow(x)) {
+    cat("PĀRBAUDE IZIETA: Apakštabulu rindu summa sakrīt ar izejošo tabulu.\n")
+    rm(x, x8, check_rows)
+  } else {
+    stop(cat("ERROR: Pārbaude nav izieta. Apakštabulu rindu summa NESAKRĪT ar izejošo tabulu.\n"))
+  }
+  
+  #4) Apakštabulu x8_uzVieniniekiem sūta caur processingOnes().
+  if(nrow(x8_uzVieniniekiem) > 0) {
+    x8_uzVieniniekiem <- x8_uzVieniniekiem [order(x8_uzVieniniekiem$PS_code, x8_uzVieniniekiem$NM_code, x8_uzVieniniekiem$NDZ_sanemsanas_datums, x8_uzVieniniekiem$start), ]
+    sendTo_tempNDZ(processingOnes(x8_uzVieniniekiem, o))
+    cat("No astoņniekiem atvasinātā tabula x8_uzVieniniekiem pārsūtīta apstrādei caur processingOnes().\n")
+  } else {
+    cat("Tabula x8_uzVieniniekiem ir tukša.\n")
+  }
+  
+  rm(x8_uzVieniniekiem)
+  
+  #5) Apakštabulu x8_uzCetriniekiem sūta caur processingFours.
+  if(nrow(x8_uzCetriniekiem) > 0) {
+    x8_uzCetriniekiem <- x8_uzCetriniekiem[order(x8_uzCetriniekiem$PS_code, x8_uzCetriniekiem$NM_code, x8_uzCetriniekiem$NDZ_sanemsanas_datums, x8_uzCetriniekiem$start), ]
+    processingFours(x8_uzCetriniekiem, o)
+    cat("No astoņniekiem atvasinātā tabula x8_uzCetriniekiem pārsūtīta apstrādei caur processingFours.\n")
+  } else {
+    cat("Tabula x8_uzCetriniekiem ir tukša.\n")
+  }
+  
+  rm(x8_uzCetriniekiem)
+  
+  #6) Apakštabulu x8_uzSeptini sūta caur processingSeven().
+  if(nrow(x8_uzSeptini) > 0) {
+    x8_uzSeptini <- x8_uzSeptini[order(x8_uzSeptini$PS_code, x8_uzSeptini$NM_code, x8_uzSeptini$NDZ_sanemsanas_datums, x8_uzSeptini$start), ]
+    processingSeven(x8_uzSeptini, o)
+    cat("No astoņniekiem atvasinātā tabula x8_uzSeptini pārsūtīta apstrādei caur processingSeven.\n")
+  } else {
+    cat("Tabula x8_uzSeptini ir tukša.\n")
+  }
+  
+  rm(x8_uzSeptini)
+}
