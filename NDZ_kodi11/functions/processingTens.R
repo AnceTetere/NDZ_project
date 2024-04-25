@@ -1,7 +1,6 @@
 processingTens <- function(x, o) {
-
   x <- x[order(x$period, x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums), ]
-  
+
   x10_uzVieniniekiem <- data.frame()
   x10_uzDivniekiem <- data.frame()
   x10_uzSeptini <- data.frame()
@@ -52,7 +51,20 @@ processingTens <- function(x, o) {
         if (all(x10$end[c(1, 2)] == "2") && all(x10$zinkod[c(1, 2)] == "26") &&
                all(sapply(seq(3, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
                all(sapply(seq(1, 3, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0)))) {
+        # Šis ir unikāla gadījuma, jo strādā ar tiem dubultajiem kodiem īslaicīgi kā fiziska persona, taču
+        # 2023. gadā un 2022. gadā neviens sākšanas kods pirms tiem pirmiem trim 26, 26 un 25 kodiem nav atrodams.
+        # Nu vispār pēc trīs gadiem neatlaiž par darba nesākšanu, bet ja atlaists ar 25 tad tur būs kļūda.
+        # Labo, ja vajag savādāk, bet no pašreizējās informācijas, es šo griežu nost.
         x10_uzAstoniekiem <- rbind(x10_uzAstoniekiem, x10[3:10, ])
+      } else if (all(x10$start[c(3:4, 7, 9)] == "1") && 
+                 all(sapply(seq(1, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
+                 all(sapply(seq(2, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0)))&&
+                 x10$PS_code[1] == '----------' & x10$NM_code[1] == '-----------') {
+        p <- x10[1:6, ]
+        p <- p[p$zinkod %in% c("40", "41"), ]
+        x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, p[1, ])
+        x10_uzDivniekiem <- rbind(x10_uzDivniekiem, p[2:3, ])
+        rm(p)
       } else {
         stop("processingTens: Desmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r+9, "\n")
       }
@@ -62,6 +74,9 @@ processingTens <- function(x, o) {
         x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, x10[10, ])
         x10_uzDivniekiem <- rbind(x10_uzDivniekiem, x10[1:2, ])
         x10_uzSeptini <- rbind(x10_uzSeptini, x10[3:9, ])
+      } else if (all(x10$start[c(1,2,4,6,8,10)] == "1") && all(diff(x10$NDZ_sanemsanas_datums) != 0)) {
+        x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, x10[10, ])
+        x10_uzAstoniekiem <- rbind(x10_uzAstoniekiem, x10[2:9, ])
       } else {
         stop("processingTens: Desmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r+9, "\n")
       }
@@ -119,6 +134,3 @@ processingTens <- function(x, o) {
   }
   rm(x10_uzAstoniekiem) 
 }
-
-
-
