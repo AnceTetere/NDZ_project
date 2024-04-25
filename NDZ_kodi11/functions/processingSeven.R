@@ -1,5 +1,5 @@
 processingSeven <- function(x, o) {
-  x <- x[order(x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums, x$start, x$end), ]
+  x <- x[order(x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums), ]
 
   x7_uzVieniniekiem <- data.frame()
   x7_uzDivniekiem <- data.frame()
@@ -30,6 +30,12 @@ processingSeven <- function(x, o) {
                  all(sapply(c(1,3:6), function(i) all(diff(x7$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))) {
         x7_uzTrijniekiem <- rbind(x7_uzTrijniekiem, x7[1:3, ])
         x7_uzCetriniekiem <- rbind(x7_uzCetriniekiem, x7[4:7, ])
+      } else if (all(x7$start[c(1, 3, 6, 7)] == "1") && all(diff(x7$NDZ_sanemsanas_datums) != 0)) {
+        x7_uzCetriniekiem <- rbind(x7_uzCetriniekiem, x7[c(1:3,5), ])
+        x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[7, ])
+      } else if (all(x7$start[c(2, 3, 5, 7)] == "1") && all(diff(x7$NDZ_sanemsanas_datums) != 0)) {
+        x7_uzCetriniekiem <- rbind(x7_uzCetriniekiem, x7[3:6, ])
+        x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[c(1,7), ])
       } else {
         stop("processingSeven: Septiņnieku apstrādē, gadījumam rindās ", r, " līdz ", r + 6, " trūkst izstrādes koda.\n")
       }
@@ -71,22 +77,9 @@ processingSeven <- function(x, o) {
   
   #3 Apakštabulu x7_uzVieniniekiem apstrādā caur processingOnes function.
   if (nrow(x7_uzVieniniekiem) > 0) {
-    if (sum(duplicated(x7_uzVieniniekiem[, c("PS_code", "NM_code")])) == 0) {
-      x7_uzVieniniekiem <-
-        x7_uzVieniniekiem[order(
-          x7_uzVieniniekiem$PS_code,
-          x7_uzVieniniekiem$NM_code,
-          x7_uzVieniniekiem$NDZ_sanemsanas_datums
-        ),]
+      x7_uzVieniniekiem <- x7_uzVieniniekiem[order(x7_uzVieniniekiem$PS_code, x7_uzVieniniekiem$NM_code, x7_uzVieniniekiem$NDZ_sanemsanas_datums),]
       sendTo_tempNDZ(processingOnes(x7_uzVieniniekiem, o))
-    } else {
-      stop(cat(
-        "No septiņniekiem atvasinātajā tabulā x7_uzVieniniekiem ir dubultnieki.\n"
-      ))
-    }
-  } else {
-    cat("Tabula x7_uzVieniniekiem ir tukša.\n")
-  }
+  } else {cat("Tabula x7_uzVieniniekiem ir tukša.\n")}
   rm(x7_uzVieniniekiem, r)
   
   #4) Apakštabulu x7_uzDivniekiem sūta caur processingTwoes.
@@ -149,3 +142,4 @@ processingSeven <- function(x, o) {
   
   rm(x7_uzSesiniekiem)
 }
+
