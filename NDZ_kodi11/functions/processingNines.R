@@ -5,10 +5,9 @@ processingNines <- function(x, o) {
   x9_uzAstoniekiem <- data.frame()
   
   for (r in seq(1, nrow(x), by = 9)) {
-    #TESTĒŠANAI r <- sample(1: nrow(x), size = 1, replace = FALSE)
+
     x9 <- x[r : (r + 8), ]
     x9 <- x9[order(x9$period, x9$PS_code, x9$DN_code, x9$NM_code, x9$NDZ_sanemsanas_datums), ]
-    # TESTĒŠANAI: x[x$PS_code == x$PS_code[r], ]
     
     if (((x9$start[1] == "1" && x9$start[3] == "1") && ((x9$start[5] == "1" && x9$start[7] == "1") && (x9$start[9] == "1" && x9$end[2] == "2")))&&((x9$end[4] == "2" && x9$end[6] == "2") && x9$end[8] == "2")) {
       x9_uzVieniniekiem <- rbind(x9_uzVieniniekiem, x9[9, ])
@@ -64,7 +63,7 @@ processingNines <- function(x, o) {
     cat("PĀRBAUDE IZIETA: Apakštabulu rindu summa sakrīt ar izejošo devītnieku tabulu.\n")
     rm(x, x9)
   } else {
-    stop(cat("PĀRBAUDE NAV IZIETA: Apakštabulu rindu summa NESAKRĪT ar izejošo devītnieku tabulu.\n"))
+    stop("PĀRBAUDE NAV IZIETA: Apakštabulu rindu summa NESAKRĪT ar izejošo devītnieku tabulu.\n")
   }
   
   #3 Apakštabulu x9_uzVieniniekiem sūta caur processingOnes().
