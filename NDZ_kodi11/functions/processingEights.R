@@ -1,6 +1,6 @@
 processingEights <- function(x, o) {
   x <- x[order(x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums), ]
-  
+
   x8_uzVieniniekiem <- data.frame()
   x8_uzCetriniekiem <- data.frame()
   x8_uzSesi <- data.frame()
@@ -11,8 +11,8 @@ processingEights <- function(x, o) {
     x8 <- x[r:(r+7), ]
     x8 <- x8[order(x8$PS_code, x8$DN_code, x8$NM_code, x8$NDZ_sanemsanas_datums), ]
 
-    if (sum(x8$start == "1") == 4 && sum(x8$end == "2") == 4) {
-      if ((x8$start[1] == "1" && x8$end[2] == "2") || (x8$end[1] == "2" && x8$start[2] == "1" && x8$NDZ_sanemsanas_datums[1] == x8$NDZ_sanemsanas_datums[2])) {
+    if (sum(x8$start == "1") == 4) {
+      if (all(x8$start[c(1, 3, 5, 7)] == "1") && x8$NDZ_sanemsanas_datums[1] <= x8$NDZ_sanemsanas_datums[2]) {
         x8_uzCetriniekiem  <- rbind(x8_uzCetriniekiem , x8)
       } else if (x8$end[1] == "2" && x8$start[2] == "1" && x8$end[3] == "2" && x8$NDZ_sanemsanas_datums[1] != x8$NDZ_sanemsanas_datums[2]) {
         x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1, ])
@@ -20,10 +20,66 @@ processingEights <- function(x, o) {
       } else if (x8$end[1] == "2" && x8$end[2] == "2" && x8$start[3] == "1" && x8$NDZ_sanemsanas_datums[2] == x8$NDZ_sanemsanas_datums[3]) {
         x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1, ])
         x8_uzSeptini <- rbind(x8_uzSeptini, x8[-1, ])
-      } else {
-        stop(cat("Astoņnieku apstrādē nosacījums neizpildās attiecībā uz rindām", r, "līdz", r + 8,".
-             Iespējams, ka pietrūkst izstrādes koda."))
-      }
+      } else if (all(x8$start[c(1, 4, 6, 8)] == "1") && all(diff(x8$NDZ_sanemsanas_datums) != 0)) {
+        x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[8, ])
+        x8_uzSesi <- rbind(x8_uzSesi, x8[c(1, 3:7), ])
+      } else if (all(x8$start[c(2, 4, 6, 7)] == "1") && 
+                 all(sapply(seq(1, 6, by = 2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(c(2,4,6,7), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8)
+      } else if (all(x8$start[c(2, 4, 6, 8)] == "1") && 
+                 all(sapply(seq(1, 8, by = 2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(seq(2,7, by = 2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(2, 3, 5, 7)] == "1") && 
+                 all(sapply(c(1,7), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(2:6, function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(1, 4, 5, 7)] == "1") && 
+                 all(sapply(seq(3,8, by=2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(c(1,2,4,6), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(1, 3, 6, 8)] == "1") && 
+                 all(sapply(seq(5,8, by=2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(1:4, function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(2, 3, 5, 8)] == "1") && 
+                 all(sapply(c(1,3,7), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(c(2,4,5,6), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(2, 3, 6, 8)] == "1") && 
+                 all(sapply(seq(1,8, by=2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(seq(2,7, by=2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(2, 3, 5, 7)] == "1") && 
+                 all(sapply(seq(1,8, by=2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(seq(2,7, by=2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(1, 3, 6, 7)] == "1") && 
+                 all(sapply(seq(3,8, by=2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(c(1,2,4,6), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(1, 3, 6, 7)] == "1") && 
+                 diff(x8$NDZ_sanemsanas_datums[5:6]) == 0 &&
+                 all(sapply(c(1,2,3,4,6), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(1, 3, 5, 8)] == "1") && 
+                 diff(x8$NDZ_sanemsanas_datums[7:8]) == 0 &&
+                 all(sapply(1:6, function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(2, 3, 5, 8)] == "1") && 
+                all(sapply(seq(1,8, by=2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                all(sapply(seq(2,7, by=2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(1, 4, 5, 8)] == "1") && 
+                 all(sapply(seq(3,8, by=2), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(c(1,2,4,6), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else if (all(x8$start[c(2, 3, 6, 7)] == "1") && 
+                 all(sapply(c(1,5), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                 all(sapply(c(2,3,4,6,7), function(i) diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+        x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8) 
+      } else {stop("processingEights: Trūkst izstrādes koda rindās ", r, " līdz ", r + 7,".")}
     } else if (x8$end[1] == "2" && x8$start[2] == "1" && x8$NDZ_sanemsanas_datums[1] != x8$NDZ_sanemsanas_datums[2]) {
       x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1, ])
       x8_uzSeptini <- rbind(x8_uzSeptini, x8[-1, ])
@@ -35,14 +91,21 @@ processingEights <- function(x, o) {
       x8_uzCetriniekiem <- rbind(x8_uzCetriniekiem, x8)
     } else if (all(x8$start[c(1, 3:4, 6:8)] == "1") && 
                all(diff(x8$NDZ_sanemsanas_datums[1:7]) != 0) && all(diff(x8$NDZ_sanemsanas_datums[7:8]) == 0) &&
-               x8$PS_code[1] == '----------' && x8$NM_code[1] == '----------') {
+               x8$PS_code[1] == '________' && x8$NM_code[1] == '___________') {
 
       x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1,])
     } else if (all(x8$start[c(1, 3, 5, 7, 8)] == "1") && all(diff(x8$NDZ_sanemsanas_datums) != 0)){
       x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[8,])
       x8_uzSesi <- rbind(x8_uzSesi, x8[1:6,])
+    } else if (sum(x8$start == "1") == 5) { 
+      if(all(x8$start[c(1, 3, 5, 7, 8)] == "1") && 
+         all(sapply(c(3, 6), function(i) all(diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
+         all(sapply(c(1,2,4,5,7), function(i) all(diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))) {
+        x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[8,])
+        x8_uzSesi <- rbind(x8_uzSesi, x8[1:6,])
+      } else {stop("processingEights: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
     } else {
-      stop("processingEights: Astoņnieku apstrādē iztrūkst kods rindām", r, "līdz", r + 8,".\n")
+      stop("processingEights: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")
     }
     check_rows <- check_rows + 8
   }
