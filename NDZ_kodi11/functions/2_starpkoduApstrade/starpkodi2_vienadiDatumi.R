@@ -1,5 +1,4 @@
 starpkodi2_vienadiDatumi <- function(y2, t, prev, v) {
-
 if ((t$zinkod[1] == "11" && t$zinkod[2]  %in% c("40", "50")) ||
     (t$zinkod[1] == "21" && t$zinkod[2] %in% c("51", "41", "92")) ||
     (t$zinkod[1] == "22" && t$zinkod[2] == "51") ||
@@ -10,21 +9,22 @@ if ((t$zinkod[1] == "11" && t$zinkod[2]  %in% c("40", "50")) ||
     (t$zinkod[1] == "41" && t$zinkod[2] == "50") ||
     (t$zinkod[1] == "51" && t$zinkod[2] == "53") ||
     (t$zinkod[1] == "92" && t$zinkod[2] == "50")) {
-
   yt <- y2[v,] 
   yt$dienas <- 0
 } else if (t$zinkod[1] == "21" && t$zinkod[2] == "53"){
-
   yt <- y2[v:(v + 1),]
   yt <- yt[yt$zinkod == "11",]
 } else if (t$zinkod[1] == "21" && t$zinkod[2] == "50") {
-
   yt <- y2[v:(v+1),] 
-  yt <- yt[yt$zinkod == "50", ]
+  yt <- yt[yt$zinkod == "50", ] #jo ambiguity
 } else if (t$zinkod[1] == "25" && t$zinkod[2] == "53") {
-
   yt <- y2[v:(v+1),] 
   yt <- yt[yt$zinkod == "53", ]
+} else if (t$zinkod[1] == "25" && t$zinkod[2] == "91" && t$PS_code[1] == '___________' && t$NM_code[1] == '_________') {
+  yt <- y2[v:(v+1),] 
+  yt <- yt[yt$zinkod == "11", ]
+} else if (t$zinkod[1] == "40" && t$zinkod[2] == "50") {
+  yt <- y2[v, ] 
 } else {
   stop("starpkodi2_vienadiDatumi: Trūkst izstrādes koda.")
 }
