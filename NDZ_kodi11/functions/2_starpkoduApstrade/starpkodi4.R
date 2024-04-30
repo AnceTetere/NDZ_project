@@ -20,7 +20,7 @@ starpkodi4 <- function(y2, t, prev, v) {
              all(diff(t$NDZ_sanemsanas_datums) != 0)) {
     days1 <- as.numeric(difftime(as.Date(t$beidz[1]), prev, units = "days")) - 1  
     days2 <- as.numeric(difftime(as.Date(t$beidz[3]), as.Date(t$sak[2]), units = "days"))
-    days3 <- as.numeric(difftime(as.Date(t$last_date[4]), as.Date(t$sak[4]), units = "days")) + 1 
+    days3 <- as.numeric(difftime(as.Date(t$last_date[4]), as.Date(t$sak[4]), units = "days")) + 1
     
     yt <- y2[v, ]
     yt$dienas <- sum(days1, days2, days3)
@@ -34,7 +34,7 @@ starpkodi4 <- function(y2, t, prev, v) {
     yt$dienas <- days
   } else if (t$zinkod[1] == "91" && t$zinkod[2] == "92" &&  t$zinkod[3] == "91" && t$zinkod[4] == "25" && 
              all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 
+    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1  
     days2 <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days"))
     
     yt <- y2[v, ]
@@ -64,6 +64,18 @@ starpkodi4 <- function(y2, t, prev, v) {
              all(diff(t$NDZ_sanemsanas_datums[3:4]) == 0) && all(diff(t$NDZ_sanemsanas_datums[1:3]) != 0)) {
     yt <- y2[v, ]
     yt$dienas <- as.numeric(difftime(t$beidz[2], t$sak[1], units = "days"))
+  } else if (t$zinkod[1] == "92" && t$zinkod[2] == "91" &&  t$zinkod[3] == "25" && t$zinkod[4] == "92" && 
+             all(diff(t$NDZ_sanemsanas_datums[3:4]) == 0) && all(diff(t$NDZ_sanemsanas_datums[1:3]) != 0)) {
+    yt <- y2[v, ]
+    yt$dienas <- as.numeric(difftime(t$beidz[2], t$sak[1], units = "days"))
+  } else if (t$zinkod[1] == "25" && t$zinkod[2] == "11" &&  t$zinkod[3] == "50" && t$zinkod[4] == "51" && all(diff(t$NDZ_sanemsanas_datums) != 0)) {
+    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days"))
+    days2 <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days"))
+    days3 <- as.numeric(difftime(t$last_date[4], t$sak[4], units = "days")) + 1
+    
+    yt <- y2[v, ]
+    yt$dienas <- sum(days1, days2, days3)
+    rm(days1, days2, days3)
   } else {
     stop("Starpkodi4 iztrūkst apstrādes koda.")
   }
@@ -72,4 +84,3 @@ starpkodi4 <- function(y2, t, prev, v) {
   yt$zinkod <- "combined"  #jo starpkodu dienu sarēķins
   return(yt)
 }
-
