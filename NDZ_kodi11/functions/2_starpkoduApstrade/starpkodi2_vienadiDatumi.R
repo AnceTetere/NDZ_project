@@ -20,10 +20,12 @@ if ((t$zinkod[1] == "11" && t$zinkod[2]  %in% c("40", "50")) ||
 } else if (t$zinkod[1] == "25" && t$zinkod[2] == "53") {
   yt <- y2[v:(v+1),] 
   yt <- yt[yt$zinkod == "53", ]
-} else if (t$zinkod[1] == "25" && t$zinkod[2] == "91" && t$PS_code[1] == '___________' && t$NM_code[1] == '_________') {
+} else if (t$zinkod[1] == "25" && t$zinkod[2] == "91" && t$PS_code[1] == '___________' && t$NM_code[1] == '____________') {
   yt <- y2[v:(v+1),] 
   yt <- yt[yt$zinkod == "11", ]
 } else if (t$zinkod[1] == "40" && t$zinkod[2] == "50") {
+  yt <- y2[v, ] 
+} else if (t$zinkod[1] == "41" && t$zinkod[2] == "51") {
   yt <- y2[v, ] 
 } else {
   stop("starpkodi2_vienadiDatumi: Trūkst izstrādes koda.")
