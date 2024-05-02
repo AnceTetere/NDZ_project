@@ -12,6 +12,9 @@ starpkodi2_25 <- function(y2, t, prev, v) {
   } else if (t$zinkod[2] == "51" && t$NDZ_sanemsanas_datums[1] != t$NDZ_sanemsanas_datums[2]) {
     yt <- y2[v:(v+1),] 
     yt <- yt[yt$zinkod == "11", ]
+  } else if (t$zinkod[2] == "50" && diff(t$NDZ_sanemsanas_datums[1:2]) != 0) {
+    yt <- y2[v:(v+1),] 
+    yt <- yt[yt$zinkod == "11", ]
   } else {
     stop("Starpkodi2: Trūkst izstrādes koda.")
   }
