@@ -9,6 +9,18 @@ tripletkodi3 <- function(y3, t, prev, v) {
              all(diff(t$NDZ_sanemsanas_datums) == 0)) {
     yt <- y3[v, ]
     yt$dienas <- 0
+  } else if (t$zinkod[1] == "25" && t$zinkod[2] == "41" && t$zinkod[3] == "50" && 
+             all(diff(t$NDZ_sanemsanas_datums) == 0)) {
+    yt <- y3[v, ]
+    yt$dienas <- 0
+  } else if (t$zinkod[1] == "41" && t$zinkod[2] == "50" && t$zinkod[3] == "21" && 
+             all(diff(t$NDZ_sanemsanas_datums) != 0)) {
+    yt <- y3[v, ]
+    yt$dienas <- as.numeric(difftime(t$beidz[2], t$sak_darbu[1], units = "days"))
+  } else if (t$zinkod[1] == "40" && t$zinkod[2] == "50" && t$zinkod[3] == "21" && 
+             diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
+    yt <- y3[v, ]
+    yt$dienas <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 #jo atvaļinājums
   } else {
     stop("Tripletkodi3 iztrūkst apstrādes koda.")
   }
