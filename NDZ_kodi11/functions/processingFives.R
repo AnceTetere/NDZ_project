@@ -21,6 +21,9 @@ processingFives <- function(x, o) {
       } else if (x5$start[1] == "1" && x5$start[2] == "1" && x5$end[3] == "2" && x5$start[4] == "1" && x5$start[5] == "1" && x5$NDZ_sanemsanas_datums[1] != x5$NDZ_sanemsanas_datums[2]) {
         x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[2:3, ])
         x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[5, ])
+      } else if (all(x5$start[c(1, 3:5)] == "1") && all(diff(x5$NDZ_sanemsanas_datums[c(1, 3:5)]) != 0) && all(diff(x5$NDZ_sanemsanas_datums[2:3]) == 0)) {
+        x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[1:2, ])
+        x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[5, ])
       } else {
         stop("ERROR: Šis gadījums funkcijā processingFives nav izstrādāts. Rinda: ", r, ".\n")
       }
@@ -42,45 +45,16 @@ processingFives <- function(x, o) {
     } else if ((x5$end[1] == "2" && x5$start[2] == "1" && x5$end[3] == "2" && x5$end[4] == "2" && x5$start[5] == "1" && any(diff(x5$NDZ_sanemsanas_datums[1:4]) != 0) && x5$NDZ_sanemsanas_datums[4] == x5$NDZ_sanemsanas_datums[5]) || (x5$end[1] == "2" && x5$start[2] == "1" && x5$end[3] == "2" && x5$NDZ_sanemsanas_datums[1] != x5$NDZ_sanemsanas_datums[2] && x5$NDZ_sanemsanas_datums[2] != x5$NDZ_sanemsanas_datums[3]) && (x5$start[4] == "1" && x5$end[5] == "2" && x5$NDZ_sanemsanas_datums[3] != x5$NDZ_sanemsanas_datums[4] && x5$NDZ_sanemsanas_datums[4] != x5$NDZ_sanemsanas_datums[5]) || (x5$end[1] == "2" && x5$end[2] == "2" && x5$NDZ_sanemsanas_datums[1] != x5$NDZ_sanemsanas_datums[2] && x5$start[3] == x5$start[4] && x5$NDZ_sanemsanas_datums[2] == x5$NDZ_sanemsanas_datums[3] && x5$end[5] == "2" && x5$NDZ_sanemsanas_datums[4] != x5$NDZ_sanemsanas_datums[5]) || (x5$end[1] == "2" && x5$end[2] == "2" && x5$start[3] == "1" && x5$end[4] == "2" && x5$start[5] == "1" && x5$NDZ_sanemsanas_datums[1] != x5$NDZ_sanemsanas_datums[2] && x5$NDZ_sanemsanas_datums[2] == x5$NDZ_sanemsanas_datums[3] && x5$NDZ_sanemsanas_datums[4] == x5$NDZ_sanemsanas_datums[5])) {
       x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1, ]) 
       x5_uzCetriniekiem <- rbind(x5_uzCetriniekiem, x5[-1, ])
-    } else if (sum(x5$start == "1") == 3) {
-      if((x5$end[1] == "2" && x5$start[2] == "1" && x5$end[3] == "2" && x5$start[4] == "1" && x5$start[5] == "1") && (x5$NDZ_sanemsanas_datums[1] != x5$NDZ_sanemsanas_datums[2] && x5$NDZ_sanemsanas_datums[2] != x5$NDZ_sanemsanas_datums[3] && x5$NDZ_sanemsanas_datums[3] != x5$NDZ_sanemsanas_datums[4] && x5$NDZ_sanemsanas_datums[4] != x5$NDZ_sanemsanas_datums[5])) {
-        x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[c(1, 5), ])
-        x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[2:3, ])
-      } else if ((x5$end[1] == "2" && x5$start[2] == "1" && x5$start[3] == "1" && x5$end[4] == "2" && x5$start[5] == "1") && (x5$NDZ_sanemsanas_datums[1] != x5$NDZ_sanemsanas_datums[2] && x5$NDZ_sanemsanas_datums[2] != x5$NDZ_sanemsanas_datums[3] && x5$NDZ_sanemsanas_datums[3] != x5$NDZ_sanemsanas_datums[4] && x5$NDZ_sanemsanas_datums[4] != x5$NDZ_sanemsanas_datums[5])) {
-        x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[c(1, 5), ])
-        x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[3:4, ])
-      } else if (x5$end[1] == "2" && x5$start[2] == "1" && x5$start[3] == "1" && x5$start[4] == "1" && x5$end[5] == "2" && any(diff(x5$NDZ_sanemsanas_datums) != 0)) {
-        x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1, ])
-        x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[4:5, ])
-      } else if (x5$start[1] == "1" && x5$end[2] == "2" && x5$start[3] == "1" && x5$end[4] == "2" && x5$start[5] == "1" && any(diff(x5$NDZ_sanemsanas_datums[1:3]) != 0) && x5$NDZ_sanemsanas_datums[4] == x5$NDZ_sanemsanas_datums[5]) {
-        x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[5, ])
-        x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[1:4, ])
-      } else if (x5$end[1] == "2" && x5$start[2] == "1" && x5$start[3] == "1" && x5$end[4] == "2" && x5$start[5] == "1" && x5$NDZ_sanemsanas_datums[1] == x5$NDZ_sanemsanas_datums[2]) {
-        x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[5, ])
-        x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[1:4, ])
-      } else if (all(x5$start[c(1,3,5)] == "1") && 
-                 all(diff(x5$NDZ_sanemsanas_datums[2:3]) == 0) && 
-                 all(diff(x5$NDZ_sanemsanas_datums[3:5]) != 0) && 
-                 all(diff(x5$NDZ_sanemsanas_datums[1:2]) != 0) && 
-                 x5$PS_code[1] == "_________" && x5$NM_code[1] == "__________") {
-
-        x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[5, ])
-        x5_uzCetriniekiem <- rbind(x5_uzCetriniekiem, x5[-5, ])
-      } else if (all(x5$start[1:3] == "1") && 
-                 all(diff(x5$NDZ_sanemsanas_datums[2:3]) == 0) && 
-                 all(diff(x5$NDZ_sanemsanas_datums[1:2]) != 0) && 
-                 all(diff(x5$NDZ_sanemsanas_datums[3:5]) != 0)) {
-        x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(3,5), ])
-      } else if (all(x5$start[3:5] == "1") && 
-           all(diff(x5$NDZ_sanemsanas_datums[1:3]) == 0) && 
-           diff(x5$NDZ_sanemsanas_datums[4:5]) == 0 && diff(x5$NDZ_sanemsanas_datums[3:4]) != 0) {
-        x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[c(3,5), ])
-      } else if (all(x5$start[3:5] == "1") && 
-                 all(diff(x5$NDZ_sanemsanas_datums[1:3]) == 0) && 
-                 all(diff(x5$NDZ_sanemsanas_datums[3:5]) != 0)) {
-        x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[c(1,5), ])
-      } else {stop("ERROR: Piecinieku gadījumam iztrūkst apstrādes kods: ", paste0("rinda: ", r, "."), "\n")}
-    } else if (sum(x5$start == "1") == 2) {
+  
+  } else if (sum(x5$start == "1") == 3) {
+     result <- processingFives_s3(x5)
+     
+     x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, result$x5s3_uzVieniniekiem)
+     x5_uzDivniekiem <- rbind(x5_uzDivniekiem, result$x5s3_uzDivniekiem)
+     x5_uzCetriniekiem <- rbind(x5_uzCetriniekiem, result$x5s3_uzCetriniekiem)
+     
+     rm(result)
+  } else if (sum(x5$start == "1") == 2) {
       
       if(x5$end[1] == x5$end[2] && x5$end[2] == "2" && x5$start[3] == x5$start[4] && x5$start[3] == "1" && x5$end[5] == "2" && any(diff(x5$NDZ_sanemsanas_datums) != 0)) {
         x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[2, ])
@@ -98,7 +72,7 @@ processingFives <- function(x, o) {
         x5_uzCetriniekiem <- rbind(x5_uzCetriniekiem, x5[-1, ])
       } else if (all(x5$start[c(3,5)] == "1") &&  
                  diff(x5$NDZ_sanemsanas_datums[1:2]) == diff(x5$NDZ_sanemsanas_datums[4:5]) &&
-                 all(diff(x5$NDZ_sanemsanas_datums[2:4]) != 0) && x5$PS_code[1] == '______' && x5$NM_code[1] == '________') {
+                 all(diff(x5$NDZ_sanemsanas_datums[2:4]) != 0) && x5$PS_code[1] == '_________' && x5$NM_code[1] == '______________') {
         x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[c(1,3), ])
       } else if (all(x5$start[c(1,3)] == "1") &&  
                  all(diff(x5$NDZ_sanemsanas_datums) != 0)) {
@@ -108,6 +82,13 @@ processingFives <- function(x, o) {
                  all(diff(x5$NDZ_sanemsanas_datums[1:2]) == 0)) {
         x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1, ])
         x5_uzCetriniekiem <- rbind(x5_uzCetriniekiem, x5[2:5, ])
+      } else if (all(x5$start[c(2,5)] == "1") &&  
+                 all(diff(x5$NDZ_sanemsanas_datums) != 0)) {
+        x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[c(1,5), ])
+        x5_uzDivniekiem<- rbind(x5_uzDivniekiem, x5[c(2,4), ])
+      } else if (all(x5$start[c(1,4)] == "1") &&  
+                 all(diff(x5$NDZ_sanemsanas_datums) != 0)) {
+        x5_uzCetriniekiem<- rbind(x5_uzCetriniekiem, x5[c(1,3:5), ])
       } else {
         stop(cat("ERROR: Šis gadījums funkcijā processingFives nav izstrādāts. Rinda: ", r, ".\n"))
       }
@@ -115,7 +96,12 @@ processingFives <- function(x, o) {
       stop(cat("ERROR: Piecinieku tabula nepārdalījās. Izejas tabulas x rinda: ", r, ".\n"))
     }
   }
-
+  cat("SKAIDROJUMS: Piecinieku tabula sadalīta tabulās x5_uzVieniniekiem:", nrow(x5_uzVieniniekiem),
+      "rindas; x5_uzDivniekiem:", nrow(x5_uzDivniekiem),
+      "rindas; un x5_uzCetriniekiem: ", nrow(x5_uzCetriniekiem), "rindas.\n
+    Tabulu x5_uzVieniniekiem tālāk pārstrādāt caur processingOnes.\n
+    Tabulu x5_uzDivniekiem tālāk pārstrādāt caur processingTwoes.\n
+    Tabulu x5_uzCetriniekiem tālāk pārstrādāt caur processingFours.\n ")
   
   rm(x, r, x5)
   
