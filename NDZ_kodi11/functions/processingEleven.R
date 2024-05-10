@@ -1,134 +1,115 @@
-processingThirteen <- function(x, o) {
-  x <- x[order(x$period, x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums, x$start), ]
+processingEleven <- function(x, o) {
 
-  x13_uzVieniniekiem <- data.frame()
-  x13_uzTrijniekiem <- data.frame()
-  x13_uzCetriniekiem <- data.frame()
-  x13_uzAstoniekiem <- data.frame()
-  x13_uzDesmitniekiem <- data.frame()
-  check_rows <- 0
+  x <- x[order(x$PS_code, x$dnperk, x$NM_code, x$NDZ_sanemsanas_datums), ]
   
-  for (r in seq(1, nrow(x), by = 13)) {
-
-    x13 <- x[r:(r+12),]
-    x13 <- x13[order(x13$period, x13$PS_code, x13$DN_code, x13$NM_code, x13$NDZ_sanemsanas_datums), ]
-    
-    if (sum(x13$end == "2") == 7) {
-      if ((x13$end[1] == "2") &&(((x13$end[2] == "2" && x13$start[3] == "1") && (x13$NDZ_sanemsanas_datums[2] == x13$NDZ_sanemsanas_datums[3])) || (x13$start[2] == "1" && x13$end[3] == "2"))) {
-        x13_uzTrijniekiem <- rbind(x13_uzTrijniekiem, x13[1: 3, ])
-        x13_uzDesmitniekiem <- rbind(x13_uzDesmitniekiem, x13[4:13, ])
-      } else {
-        stop("13-nieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 12, "\n")
-      }
-    } else if (sum(x13$start == "1") == 7) {
-      if ((x13$start[1] == "1" && x13$end[2] == "2" && x13$start[3] == "1") && (x13$NDZ_sanemsanas_datums[1] <= x13$NDZ_sanemsanas_datums[2] && x13$NDZ_sanemsanas_datums[2] != x13$NDZ_sanemsanas_datums[3])) {
-        if ((x13$start[11] == "1" && x13$end[12] == "2" && x13$start[13] == "1") && (x13$NDZ_sanemsanas_datums[12] != x13$NDZ_sanemsanas_datums[13])) {
-          x13_uzTrijniekiem <- rbind(x13_uzTrijniekiem, x13[11:13, ])
-          x13_uzDesmitniekiem <- rbind(x13_uzDesmitniekiem, x13[1:10, ])
-        } else if ((x13$start[9] == x13$start[10] && x13$end[11] == x13$end[13]) && (x13$NDZ_sanemsanas_datums[10] != x13$NDZ_sanemsanas_datums[11])) {
-          x13_uzCetriniekiem <- rbind(x13_uzCetriniekiem, x13[10:13, ])
-          x13_uzAstoniekiem <- rbind(x13_uzAstoniekiem, x13[1:8, ])
-        } else if (all(x13$start[c(1, 3, 5, 7, 9, 11, 13)] == "1") && 
-                   all(x13$end[c(2, 4, 6, 8, 10, 12)] == "2") && 
-                   all(diff(x13$NDZ_sanemsanas_datums[1:12]) != 0) &&
-                   x13$NDZ_sanemsanas_datums[12] == x13$NDZ_sanemsanas_datums[13]) {
-          x13_uzVieniniekiem <- rbind(x13_uzVieniniekiem, x13[13, ])
-          x13_uzCetriniekiem <- rbind(x13_uzCetriniekiem, x13[1:4, ])
-          x13_uzAstoniekiem <- rbind(x13_uzAstoniekiem, x13[5:12, ])
+    x11_uzVieniniekiem <- data.frame()
+    x11_uzDevini <- data.frame()
+    x11_uzDesmitniekiem <- data.frame()
+    check_rows <- 0
+  
+    for (r in seq(1, nrow(x), by = 11)) {
+      x11 <- x[r:(r+10),]
+      x11 <- x11[order(x11$PS_code, x11$dnperk, x11$NM_code, x11$NDZ_sanemsanas_datums), ]
+      
+      if (sum(x11$start == "1") == 6) {
+        if (all(x11$start[c(1, 3, 5:6, 8, 10)] == "1") && 
+            all(diff(x11$NDZ_sanemsanas_datums[c(1:3, 5:11)]) != 0) &&
+            all(diff(x11$NDZ_sanemsanas_datums[4:5]) == 0)) {
+          x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-5,])
+        } else if (all(x11$start[c(1, 3, 5, 8:9, 11)] == "1") && 
+              all(diff(x11$NDZ_sanemsanas_datums[c(1:2, 4:7, 9:11)]) != 0) &&
+              all(sapply(c(3, 7), function(i) all(diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0)))) {
+          x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+          x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+        } else if (all(x11$start[c(1, 4, 6, 8, 10:11)] == "1") && 
+                   all(sapply(c(1, 2, 4, 6, 8, 10), function(i) all(diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) && 
+                   all(sapply(seq(3, 9, by = 2), function(i) all(diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0)))) {
+          x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+          x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+        } else if (all(x11$start[c(1, 4, 5, 7, 9, 11)] == "1") && 
+                   all(sapply(c(2, 4:6, 8:10), function(i) all(diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) && 
+                   all(sapply(c(seq(1, 4, by = 2), 7), function(i) all(diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0)))) {
+          x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+          x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+        } else if (all(x11$start[c(2, 4, 6, 8, 10, 11)] == "1") && all(diff(x11$NDZ_sanemsanas_datums) != 0)) {
+          x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+          x11_uzDevini <- rbind(x11_uzDevini, x11[1:9,])
+        } else if (all(x11$start[seq(1,11,by=2)] == "1") && all(diff(x11$NDZ_sanemsanas_datums) != 0)) {
+          x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+          x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+        } else if (all(x11$start[seq(1,11,by=2)] == "1") && 
+                   all(sapply(c(1:6,8:10), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
+                   diff(x11$NDZ_sanemsanas_datums[7:8]) == 0) {
+          x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+          x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
         } else {
-          stop("13-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:", r, " līdz ", r + 12, "\n")
+          stop("processingEleven: Vienpadsmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 10, "\n")
         }
-      } else if (all(x13$start[c(1, 4, 6, 7, 9, 10, 12)] == "1") && 
-                 all(sapply(c(1, 2, 4, 6:12), function(i) all(diff(x13$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) &&
-                 all(sapply(seq(3, 6, by = 2), function(i) all(diff(x13$NDZ_sanemsanas_datums[i:(i+1)]) == 0)))) {
-        x13_uzCetriniekiem <- rbind(x13_uzCetriniekiem, x13[10:13, ])
-        x13_uzAstoniekiem <- rbind(x13_uzAstoniekiem, x13[1:8, ])
-      } else if (x13$start[11] == "1" && x13$end[12] == "2" && x13$start[13] == "1" &&
-                        all(diff(x13$NDZ_sanemsanas_datums[11:13]) != 0)) { 
-          x13_uzTrijniekiem <- rbind(x13_uzTrijniekiem, x13[11:13, ])
-          x13_uzDesmitniekiem <- rbind(x13_uzDesmitniekiem, x13[1:10, ])
-      } else if (all(x13$start[c(2, 4, 6, 8, 9, 12, 13)] == "1") && 
-                 all(x13$end[c(1, 3, 5, 7, 10, 11)] == "2") && 
-                 all(sapply(seq(1, 8, by = 2), function(i) all(diff(x13$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
-                 all(diff(x13$NDZ_sanemsanas_datums[11:12]) == 0) &&
-                 x13$NDZ_sanemsanas_datums[12] != x13$NDZ_sanemsanas_datums[13]) {
-        x13_uzVieniniekiem <- rbind(x13_uzVieniniekiem, x13[13, ])
-        x13_uzCetriniekiem <- rbind(x13_uzCetriniekiem, x13[1:4, ])
-        x13_uzAstoniekiem <- rbind(x13_uzAstoniekiem, x13[5:12, ])
-        
+      } else if (sum(x11$end == "2") == 6) {
+        if (x11$end[1] == "2" && x11$start[2] == "1" && all(diff(x11$NDZ_sanemsanas_datums[1:2]) != 0)) {
+          x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[1,])
+          x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[2:11,])
+        } else {
+          stop("processingEleven: Vienpadsmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 10, "\n")
+        }
       } else {
-        stop("13-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, "līdz", r + 12, "\n")
+        stop("processingEleven: Vienpadsmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 10, "\n")
+      }
+      check_rows <- check_rows + 11
     }
-    } else {stop("13-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, "līdz", r + 12, "\n")}
-    check_rows <- check_rows + 13
-}
-  
-  #2 PĀRBAUDE: Vai rindu skaits no 13-niekiem atvasinātajās tabulās sakrīt ar rindām izejas tabulā x.
-  if (check_rows == nrow(x)) {
-    cat("PĀRBAUDE IZIETA: Apakštabulu rindu summa sakrīt ar izejošo 13-nieku tabulu.\n")
-    rm(x, x13, r, check_rows)
-  } else {
-    stop("ERROR: Apakštabulu rindu summa NESAKRĪT ar izejošo 13-nieku tabulu.\n")
-  }
-  
-  #3 Apakštabulu x13_uzVieniniekiem sūta caur processingOnes().
-  if (nrow(x13_uzVieniniekiem) > 0) {
-    x13_uzVieniniekiem <- x13_uzVieniniekiem[order(x13_uzVieniniekiem$PS_code, x13_uzVieniniekiem$NM_code, x13_uzVieniniekiem$NDZ_sanemsanas_datums, x13_uzVieniniekiem$start),]
-    cat("No 17-niekiem atvasinātā tabula x13_uzVieniniekiem pārsūtīta uz processingOnes() un tad uz tempNDZ, ko būvējam.\n")
-    sendTo_tempNDZ(processingOnes(x13_uzVieniniekiem, o))
-  } else {
-    cat("Tabula x13_uzVieniniekiem ir tukša.\n")
-  }
-  
-  rm(x13_uzVieniniekiem)
-  
-  #4 Apakštabulu x13_uzTrijniekiem sūta caur processingThrees().
-  if (nrow(x13_uzTrijniekiem) > 0) {
-    x13_uzTrijniekiem <- x13_uzTrijniekiem[order(x13_uzTrijniekiem$PS_code, x13_uzTrijniekiem$NM_code, x13_uzTrijniekiem$NDZ_sanemsanas_datums),]
-    cat("No 13-niekiem atvasinātā tabula x13_uzTrijniekiem pārsūtīta uz processingThrees() un tad caur to uz tempNDZ, ko būvējam.\n")
-    processingThrees(x13_uzTrijniekiem, o)
-  } else {
-    cat("Tabula x13_uzTrijniekiem ir tukša.\n")
-  }
-  
-  rm(x13_uzTrijniekiem)
-  
-  #5 Apakštabulu x13_uzCetriniekiem sūta caur processingFours().
-  if (nrow(x13_uzCetriniekiem) > 0) {
-    x13_uzCetriniekiem <- x13_uzCetriniekiem[order(x13_uzCetriniekiem$PS_code, x13_uzCetriniekiem$NM_code, x13_uzCetriniekiem$NDZ_sanemsanas_datums, x13_uzCetriniekiem$start),]
-    cat("No 13-niekiem atvasinātā tabula x13_uzCetriniekiem pārsūtīta uz processingFours() un tad caur to uz tempNDZ, ko būvējam.\n")
-    processingFours(x13_uzCetriniekiem, o)
-  } else {
-    cat("Tabula x13_uzCetriniekiem ir tukša.\n")
-  }
-  
-  rm(x13_uzCetriniekiem)
-  
-  #6 Apakštabulu x13_uzAstoniekiem sūta caur processingFours().
-  if (nrow(x13_uzAstoniekiem) > 0) {
-    x13_uzAstoniekiem <- x13_uzAstoniekiem[order(x13_uzAstoniekiem$PS_code, x13_uzAstoniekiem$NM_code, x13_uzAstoniekiem$NDZ_sanemsanas_datums, x13_uzAstoniekiem$start),]
-    cat("No 13-niekiem atvasinātā tabula x13_uzAstoniekiem pārsūtīta uz processingEights() un tad caur to uz tempNDZ, ko būvējam.\n")
-    processingEights(x13_uzAstoniekiem, o)
-  } else {
-    cat("Tabula x13_uzAstoniekiem ir tukša.\n")
-  }
-  
-  rm(x13_uzAstoniekiem)
-  
-  #7 Apakštabulu x13_uzDesmitniekiem sūta caur processingTens().
-  if (nrow(x13_uzDesmitniekiem) > 0) {
-    x13_uzDesmitniekiem <-
-      x13_uzDesmitniekiem[order(
-        x13_uzDesmitniekiem$PS_code,
-        x13_uzDesmitniekiem$NM_code,
-        x13_uzDesmitniekiem$NDZ_sanemsanas_datums
-      ),]
-    cat(
-      "No 13-niekiem atvasinātā tabula x13_uzDesmitniekiem pārsūtīta uz processingTens un tad uz tempNDZ, ko būvējam.\n"
-    )
-    processingTens(x13_uzDesmitniekiem, o)
-  } else {
-    cat("Tabula x13_uzDesmitniekiem ir tukša.\n")
-  }
-  rm(x13_uzDesmitniekiem)
+    
+    #2 PĀRBAUDE: Vai rindu skaits no vienpadsmitniekiem atvasinātajās tabulās sakrīt ar rindām izejas tabulā x.
+    if (check_rows == nrow(x)) {
+      cat("PĀRBAUDE IZIETA: Apakštabulu rindu summa sakrīt ar izejošo vienpadsmitnieku tabulu.\n")
+      rm(x, x11, r, check_rows)
+    } else {
+      stop("processingEleven: PĀRBAUDE NAV IZIETA. Apakštabulu rindu summa NESAKRĪT ar izejošo vienpadsmitnieku tabulu.")
+    }
+    
+    #3 Apakštabulu x11_uzVieniniekiem sūta caur processingOnes().
+    if (nrow(x11_uzVieniniekiem) > 0) {
+      x11_uzVieniniekiem <-
+        x11_uzVieniniekiem[order(
+          x11_uzVieniniekiem$PS_code,
+          x11_uzVieniniekiem$NM_code,
+          x11_uzVieniniekiem$NDZ_sanemsanas_datums
+        ),]
+      cat(
+        "No vienpadsmitniekiem atvasinātā tabula x11_uzVieniniekiem pārsūtīta uz processingOnes un tad uz tempNDZ, ko būvējam."
+      )
+      sendTo_tempNDZ(processingOnes(x11_uzVieniniekiem, o))
+    } else {
+      cat("Tabula x11_uzVieniniekiem ir tukša.")
+    }
+    rm(x11_uzVieniniekiem)
+    
+    #4 Apakštabulu x11_uzDeviņi sūta caur processingNines().
+    if (nrow(x11_uzDevini) > 0) {
+      x11_uzDevini <-x11_uzDevini[order(x11_uzDevini$PS_code, x11_uzDevini$NM_code, x11_uzDevini$NDZ_sanemsanas_datums),]
+      cat(
+        "No vienpadsmitniekiem atvasinātā tabula x11_uzDevini pārsūtīta uz processingNines() un tad uz tempNDZ, ko būvējam."
+      )
+      processingNines(x11_uzDevini, o)
+    } else {
+      cat("Tabula x11_uzDevini ir tukša.")
+    }
+    rm(x11_uzDevini)
+    
+    
+    #5 Apakštabulu x11_uzDesmitniekiem sūta caur processingTens().
+    if (nrow(x11_uzDesmitniekiem) > 0) {
+      x11_uzDesmitniekiem <-
+        x11_uzDesmitniekiem[order(
+          x11_uzDesmitniekiem$PS_code,
+          x11_uzDesmitniekiem$NM_code,
+          x11_uzDesmitniekiem$NDZ_sanemsanas_datums
+        ),]
+      cat(
+        "No vienpadsmitniekiem atvasinātā tabula x11_uzDesmitniekiem pārsūtīta uz processingTens un tad uz tempNDZ, ko būvējam."
+      )
+      processingTens(x11_uzDesmitniekiem, o)
+    } else {
+      cat("Tabula x11_uzDesmitniekiem ir tukša.")
+    }
+    rm(x11_uzDesmitniekiem)
 }
