@@ -10,9 +10,20 @@ starpkodi2_50 <- function(y2, t, prev, v) {
     yt <- y2[v,] 
     yt$dienas <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 
   } else if (t$zinkod[2] == "24" && diff(t$NDZ_sanemsanas_datums) != 0) {
-    #Indivīds aiziet bezalgas atvaļinājumā un, esot tajā, tiek atlaists.
     yt <- y2[v,] 
     yt$dienas <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 
+  } else if (t$zinkod[2] == "41" && diff(t$NDZ_sanemsanas_datums) != 0 &&
+             t$PS_code[1] == '___________' && t$NM_code[1] == '_________') {
+    days1 <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1
+    days2 <- as.numeric(difftime(t$last_date[2], t$sak[2], units = "days")) + 1
+    
+    yt <- y2[v,] 
+    yt$dienas <- sum(days1, days2)
+    rm(days1, days2)
+  } else if (t$zinkod[2] == "53" && diff(t$NDZ_sanemsanas_datums) != 0 &&
+             t$PS_code[1] == '___________' && t$NM_code[1] == '___________') {
+    yt <- y2[v,] 
+    yt$dienas <- as.numeric(difftime(t$beidz[2], prev, units = "days")) - 1
   } else {
     stop("Starpkodi2_50: Trūkst izstrādes koda.")
   }
