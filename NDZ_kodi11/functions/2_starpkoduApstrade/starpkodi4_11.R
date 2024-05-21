@@ -18,7 +18,6 @@ starpkodi4_11 <- function(y2, t, prev, v) {
     rm(days1, days2)
   } else if (t$zinkod[2] == "53" && t$zinkod[3] == "25" && t$zinkod[4] == "54" && 
              all(diff(t$NDZ_sanemsanas_datums[1:3]) != 0) && t$NDZ_sanemsanas_datums[3] == t$NDZ_sanemsanas_datums[4]) {
-
     yt <- y2[v, ]
     yt$dienas <- as.numeric(difftime(t$beidz[2], t$sak[1], units = "days"))
   } else if (t$zinkod[2] == "26" && t$zinkod[3] == "11" && t$zinkod[4] == "50" && 
@@ -48,7 +47,7 @@ starpkodi4_11 <- function(y2, t, prev, v) {
     yt <- y2[v, ]
     yt$dienas <- sum(days1, days2)
     rm(days1, days2)
-   } else if (t$zinkod[2] == "25" && t$zinkod[3] == "11" && t$zinkod[4] == "50" && 
+  } else if (t$zinkod[2] == "25" && t$zinkod[3] == "11" && t$zinkod[4] == "50" && 
               all(sapply(seq(1,4,by=2), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
               diff(t$NDZ_sanemsanas_datums[2:3]) != 0) {
      days1 <- as.numeric(difftime(t$beidz[2], t$sak[1], units = "days"))
@@ -57,6 +56,11 @@ starpkodi4_11 <- function(y2, t, prev, v) {
      yt <- y2[v, ]
      yt$dienas <- sum(days1, days2)
      rm(days1, days2)
+   } else if (t$zinkod[2] == "11" && t$zinkod[3] == "40" && t$zinkod[4] == "11" && 
+              all(diff(t$NDZ_sanemsanas_datums[2:4]) != 0) && diff(t$NDZ_sanemsanas_datums[1:2]) == 0 &&
+              t$PS_code[1] == '_________' && t$NM_code[1] == '____________') {
+     yt <- y2[v, ]
+     yt$dienas <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days"))
    } else {
     stop("Starpkodi4_11: Trūkst izstrādes koda.")
   }
