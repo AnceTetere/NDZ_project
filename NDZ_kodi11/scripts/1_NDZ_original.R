@@ -28,10 +28,10 @@ if (sum(NDZ$period != paste0(year, month)) == 0) {
 #4 Pievieno aili dienas
 NDZ$dienas <- as.integer(0)
 
-#Dod nosaukumu RData tabulai
-assign(kodu_tab_nos, NDZ)
+#5 Dod nosaukumu RData tabulai
+#assign(kodu_tab_nos, NDZ)
 
-#Izdzēs no MS SQL eksportēto failu
+#6 Izdzēs no MS SQL eksportēto failu
 #Eksport notika uz ..NDZ_codes\data\originals\yyyy (yyyy - gads)
 file_name <- paste0(kodu_tab_nos, ".csv")
 if (file.exists(file_name)) {
@@ -40,4 +40,4 @@ if (file.exists(file_name)) {
 } else {
   print(paste("File", file_name, "does not exist."))
 }
-rm(file_name, NDZ)
+rm(file_name)
