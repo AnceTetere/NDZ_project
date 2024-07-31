@@ -1,37 +1,33 @@
-####kodu_tab_nos <- "NDZ202310_11" #74184
-####kodu_tab_nos <- "NDZ202201_40"
-####kodu_tab_nos <- "NDZ202201_50" #16020
-#kodu_tab_nos <- "NDZ202201_53" #448
+#NDZ <- get(kodu_tab_nos)
+#rm(list = kodu_tab_nos)  
 
-#for(kods in kodu_vektors) {
-#  kodu_tab_nos <- paste0("NDZ202201_", kods)
-
-# Sekojošo pārcel uz csv ielādi vai datubāzi, kad tās sadaļas gatavas
-  setwd(paste0(path, "data\\originals\\", year))
-  load(paste0("starting_", kodu_tab_nos, ".RData"))
-  NDZ <- get(kodu_tab_nos)
-  rm(list = kodu_tab_nos)  
-
-  tabs_ndz <- occurencesSplit(NDZ)
+  result <- occurencesSplit(NDZ)
+  tabs_zdn <- result$tabs_zdn
+  NDZ_list <- result$NDZ_list
   rm(NDZ)
   
-  setwd(paste0(path, "data\\intermediate_tables\\"))
-  tempNDZ()
+  tNDZ <- tempNDZ()
+  temp_NDZ <- tNDZ$temp_NDZ
+  temp_rows <- tNDZ$temp_rows
+  rm(tNDZ)
   
-  #tabs_ndz <- readRDS("tabs_ndz.rds")
+  #tabs_zdn <- readRDS("tabs_zdn.rds")
   #Tabulu pēdējais cipars norāda uz to, cik reizes vienā uzņēmumā strādājošs indivīds uzrādas
-  #dotajā tabulā. Mēs nolasām to un saglabājam uz burta 'o' (no vārda 'occurences')
+  #dotajā tabulā. Nolasa to un saglabā uz burta 'o' (no vārda 'occurences')
 
-for(i in 1:length(tabs_ndz)) {
-    if(nchar(tabs_ndz[i]) == 5) {
-      o <- substr(tabs_ndz[i], 5, 5)
-    } else if (nchar(tabs_ndz[i]) == 6) {
-      o <- substr(tabs_ndz[i], 5, 6)
+for(i in 1:length(tabs_zdn)) {
+  x <- NDZ_list[[i]]
+  assign(tabs_zdn[i], x)
+  rm(x)
+    if(nchar(tabs_zdn[i]) == 5) {
+      o <- substr(tabs_zdn[i], 5, 5)
+    } else if (nchar(tabs_zdn[i]) == 6) {
+      o <- substr(tabs_zdn[i], 5, 6)
     } else {
       stop("Neatbilstošs tabulas nosaukuma garums") #TODO Izformē šo
     }
 
-    o <- as.character(o)
+    o <- as.character(o) ###############!!!!!Paliku te
     
     switch(   
       o,
@@ -73,7 +69,7 @@ for(i in 1:length(tabs_ndz)) {
     rm(file_name)
   }    
   
-  rm(tabs_ndz, o, i)
+  rm(tabs_zdn, o, i)
 
   #----------------------------BŪVĒJAM PILNO MĒNESI
   
@@ -81,12 +77,12 @@ for(i in 1:length(tabs_ndz)) {
   
   load("temp_NDZ.RData")
   x <- temp_NDZ
-  x <- x[order(x$PS_code, x$DN_code, x$NM_code), ]
+  x <- x[order(x$PS_code, x$dnperk, x$nmrkod), ]
   
   cat("Kodu gala tabulā temp_NDZ pārbauda dubultos indivīdus, ja ir, tad sasummē to dienas.\n")
-  if(sum(duplicated(x[c("PS_code", "DN_code", "NM_code")])) > 0) {
+  if(sum(duplicated(x[c("PS_code", "dnperk", "nmrkod")])) > 0) {
     x <- x %>%
-      group_by(period, PS_code, DN_code, NM_code) %>%
+      group_by(period, PS_code, dnperk, nmrkod) %>%
       summarise(
         dienas = sum(dienas, na.rm = TRUE)
       ) %>%
@@ -125,4 +121,4 @@ for(i in 1:length(tabs_ndz)) {
   
   #4. Nokop aiz sevis.
   setwd(paste0(path, "data\\intermediate_tables\\"))
-  file.remove("tabs_ndz.rds", "temp_rows.RDS", "temp_NDZ.RData")  
+  file.remove("tabs_zdn.rds", "temp_rows.RDS", "temp_NDZ.RData")  
