@@ -1,4 +1,3 @@
-#Git: 20240801
 processingOnes <- function(x, o) {
     if (as.numeric(o) > 1) { #šo neņem ārā, šis ir svarīgi, jo tad, kad tas nāk no tabulas NDZ_1, tur visi ir unikālie, un tā tabula ir milzīga, un uzkarina visu programmu dalot to, kad tur nav nekā ko dalīt.
 
