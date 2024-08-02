@@ -1,11 +1,11 @@
-# Mēneša tabula pēc SQL_export
+#Te izmanto mēneša kodu tabula pēc SQL_export no data/originals
 
 #1 Definē mēneša tabulas nosaukumu
-kodu_tab_nos <- paste0("NDZ", year, month)
+kodu_tab_nos <- paste0("NDZ", year, month, "_", kods)
 
 #2 Ielādē attiecīgo tabulu
-setwd(paste0(path, "data\\originals\\", year))
-NDZ <- read.table(paste0(kodu_tab_nos, ".csv"), header = TRUE, sep = ";", 
+NDZ <- read.table(paste0(path, "data\\originals\\", year, "\\", kodu_tab_nos, ".csv"), 
+                  header = TRUE, sep = ";", 
                   colClasses = c("character", "character", "character", 
                                  "character", "character", "Date", 
                                  "character", "Date"))
@@ -15,7 +15,7 @@ NDZ <- read.table(paste0(kodu_tab_nos, ".csv"), header = TRUE, sep = ";",
 #3 Maza pārbaude (varbūt nevajag)
 if (sum(NDZ$period != paste0(year, month)) == 0) {
   NDZ$DN_code[is.na(NDZ$DN_code)] <- ""
-  NDZ$PS_code[is.na(NDZ$PS_code)] <- ""
+  NDZ$pseidokods[is.na(NDZ$pseidokods)] <- ""
   A <- c("NM_code", "sak_beidz", "NDZ_sanemsanas_datums", "zinkod", "last_date") 
   for(a in A) {
     if (sum(is.na(NDZ[ , a])) != 0) {stop("Ailē", a, "iztrūkst vērtības (skat. 1_NDZ_original.R)")}
@@ -28,10 +28,7 @@ if (sum(NDZ$period != paste0(year, month)) == 0) {
 #4 Pievieno aili dienas
 NDZ$dienas <- as.integer(0)
 
-#5 Dod nosaukumu RData tabulai
-#assign(kodu_tab_nos, NDZ)
-
-#6 Izdzēs no MS SQL eksportēto failu
+#5 Izdzēs no MS SQL eksportēto failu
 #Eksport notika uz ..NDZ_codes\data\originals\yyyy (yyyy - gads)
 file_name <- paste0(kodu_tab_nos, ".csv")
 if (file.exists(file_name)) {
