@@ -1,24 +1,22 @@
 processingOnes <- function(x, o) {
-    if (as.numeric(o) > 1) { #šo neņem ārā, šis ir svarīgi, jo tad, kad tas nāk no tabulas NDZ_1, tur visi ir unikālie, un tā tabula ir milzīga, un uzkarina visu programmu dalot to, kad tur nav nekā ko dalīt.
-
-    x1 <- x
-    x1 <- x1[order(x1$PS_code, x1$DN_code, x1$NM_code, x1$NDZ_sanemsanas_datums, x1$sak_beidz), ]
-
-    if (nrow(x1) > 0) {
-      x_uzVieniniekiem <- data.frame()
-      x2 <- data.frame()
-      x3 <- data.frame()
+    if (as.numeric(o) > 1) { 
+      x1 <- x
+      x1 <- x1[order(x1$PS_code, x1$DN_code, x1$NM_code, x1$NDZ_sanemsanas_datums, x1$sak_beidz), ]
+      
+      if (nrow(x1) > 0) {      
+        x_uzVieniniekiem <- data.frame()
+        
+        x2 <- data.frame()
+        x3 <- data.frame()
         
         if (length(unique(x1$PS_code)) == nrow(x1)) { 
           x_uzVieniniekiem <- x1
         } else {
-          r <- 1  # ! šis NAV no testēšanas
+          r <- 1 
           while(r <= nrow(x1)) {
             if (ifelse(is.na(doublesTest(r, x1)), FALSE, doublesTest(r, x1))) {
               if (x1$zinkod[r] == x1$zinkod[r + 1]) {
                 x2 <- rbind(x2, x1[c(r, r + 1), ])
-              } else if (ifelse(is.na(diff(x1$NDZ_sanemsanas_datums[r:(r+1)]) > 0), FALSE, diff(x1$NDZ_sanemsanas_datums[r:(r+1)]) > 0))  {
-                x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x1[c(r, r + 1), ])
               } else {
                 x3 <- rbind(x3, x1[c(r, r + 1), ])
               }
@@ -28,31 +26,29 @@ processingOnes <- function(x, o) {
               r <- r+1
             }
           }
-          
-          
-          if (nrow(x1) == nrow(x2) + nrow(x3) + nrow(x_uzVieniniekiem)) {
-            rm(r, x1)
-          } else {
-            stop(cat(
-              "ERROR: Atvasināto tabulu x2 un x3 nesakrīt ar mātes tabulu x1."
-            ))
-          }
-          
-          if (nrow(x2) > 0) {
-            x_uzVieniniekiem <- rbind(x_uzVieniniekiem, F_doubleStartEnd_codesMatch(x2))
-          }
-          
-          if (nrow(x3) > 0) {
-            x_uzVieniniekiem <- rbind(x_uzVieniniekiem, F_doubleStartEnd_codesDiffer(x3))
-            }
-            rm(x2, x3)
         }
-      }
+        
+        
+        if (nrow(x1) == sum(nrow(x2), nrow(x3), nrow(x_uzVieniniekiem))) {
+          rm(r, x1)
+        } else {
+          stop("ERROR: Atvasināto tabulu x2 un x3 nesakrīt ar mātes tabulu x1.")
+        }
+        
+        if (nrow(x2) > 0) {
+          x_uzVieniniekiem <- rbind(x_uzVieniniekiem, F_doubleStartEnd_codesMatch(x2))
+        }
+        
+        if (nrow(x3) > 0) {
+          x_uzVieniniekiem <- rbind(x_uzVieniniekiem, F_doubleStartEnd_codesDiffer(x3))
+        }
+        rm(x2, x3)}
       
       x <- x_uzVieniniekiem
       rm(x_uzVieniniekiem)
   }
 
+  #1 Sakārto tabulu
   x <- x[order(x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums, x$sak_beidz), ]
   rownames(x) <- NULL
   
@@ -68,4 +64,3 @@ processingOnes <- function(x, o) {
   x$dienas[x$zinkod == "26"] <- 0
   return(x)
 }
-
