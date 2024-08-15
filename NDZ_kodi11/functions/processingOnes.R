@@ -1,24 +1,31 @@
 processingOnes <- function(x, o) {
-    if (as.numeric(o) > 1) { 
+
+    if (as.numeric(o) > 1) { #šo neņem ārā
       x1 <- x
       x1 <- x1[order(x1$PS_code, x1$DN_code, x1$NM_code, x1$NDZ_sanemsanas_datums, x1$sak_beidz), ]
       
       if (nrow(x1) > 0) {      
         x_uzVieniniekiem <- data.frame()
         
+        #Te uz vieninieku tabulu atsūtītā tabula tiks pārdalīta apakštabulās x2 un x3.
+        #x2 pie sevis ņem tos, kam sak_beidz kodi 2 rindās sakrīt.
         x2 <- data.frame()
         x3 <- data.frame()
         
         if (length(unique(x1$PS_code)) == nrow(x1)) { 
           x_uzVieniniekiem <- x1
         } else {
-          r <- 1 
+          r <- 1  # ! šo nedzēs, šis nav no testēšanas 
           while(r <= nrow(x1)) {
             if (ifelse(is.na(doublesTest(r, x1)), FALSE, doublesTest(r, x1))) {
-              if (x1$zinkod[r] == x1$zinkod[r + 1]) {
-                x2 <- rbind(x2, x1[c(r, r + 1), ])
-              } else {
-                x3 <- rbind(x3, x1[c(r, r + 1), ])
+              if (x1$sak_beidz[r] == x1$sak_beidz[r + 1]) {
+                if (x1$zinkod[r] == x1$zinkod[r + 1]) {
+                  x2 <- rbind(x2, x1[c(r, r + 1), ])
+                } else {
+                  x3 <- rbind(x3, x1[c(r, r + 1), ])
+                }
+              } else if (x1$sak_beidz[r] == "2") {
+                x_uzVieniniekiem <- rbind(x_uzVieniniekiem, x1[c(r, r + 1), ])
               }
               r <- r + 2
             } else {
@@ -64,3 +71,4 @@ processingOnes <- function(x, o) {
   x$dienas[x$zinkod == "26"] <- 0
   return(x)
 }
+
