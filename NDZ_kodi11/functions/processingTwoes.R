@@ -1,43 +1,55 @@
-processingDoubles <- function(x, o) {
-
-  x <- x[order(x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums), ]
-  rownames(x) <- NULL
-
-  #1. Pārbauda vai neiztrūkst datumu vai
-  if (sum(is.na(x$NDZ_sanemsanas_datums)) > 0 || sum(is.na(x$zinkod)) > 0) {
-    stop("processingDoubles() nepilnīgas ailes. \n")
-  } else {
-    cat("PĀRBAUDE IZIETA: processingDoubles. \n")
-  }
-
-  #2 Pārbaudes un sarēķins
+processingTwoes <- function(x, o) {
   
-    testR <- 0
-    z <- data.frame()
-    for (O in seq(1, nrow(x), by = 2)) {
-      if (x$sak_beidz[O] == '1' && x$sak_beidz[O+1] == '2') {
-        y <- x[O :(O + 1),]
-        
-        if (doublesTest(1, y)) {
-          
-          if (all(y$zinkod != "26") && y$NDZ_sanemsanas_datums[y$sak_beidz == '1'] < y$NDZ_sanemsanas_datums[y$sak_beidz == '2']){
-            y$dienas[1] <- as.numeric(difftime(y$NDZ_sanemsanas_datums[y$sak_beidz == '2'], y$NDZ_sanemsanas_datums[y$sak_beidz == '1'], units = "days"))
-            if (y$zinkod[1] %in% c("11", "14", "16", "21", "22", "23", "24", "25", "29")) {
-              y$dienas[1] <- y$dienas[1] + 1}}
-          
-          y$zinkod[1] <- paste0(substr(kodu_tab_nos, nchar(kodu_tab_nos) - 1, nchar(kodu_tab_nos)), "d")
-          y$sak_beidz[1] <- "combined" 
-          z <- rbind(z, y[1, ])  
-          
-          testR <- testR + 2
-        } else {stop("ERROR in doublesTest: processingDoubles")}
-      } else { stop("Rindā ", O, " sak_beidz kodu nesakritība")}}
+  #1 Sakārto tabulu
+  x <- x[order(x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums, x$zinkod), ]
+  rownames(x) <- NULL
+  
+  x2_uzVieniniekiem <- data.frame()
+  x2_trueDoubles <- data.frame()
+  
+  for (r in seq(1, nrow(x), by = 2)) {
+    if (doublesTest(r, x)) { # doublesTest() pārbauda vai katras 2 rindas attiecas uz vienu un to pašu unikālo indivīdu.
+      if ((x$sak_beidz[r] == "2" && x$sak_beidz[r+1] == "1" && diff(x$NDZ_sanemsanas_datums[r:(r+1)]) > 0) || 
+          (x$sak_beidz[r] == x$sak_beidz[r + 1])) {
+        x2_uzVieniniekiem <- rbind(x2_uzVieniniekiem, x[c(r, r + 1),])
+      } else {x2_trueDoubles <- rbind(x2_trueDoubles, x[c(r, r + 1),])}
+    } else {stop("Rindās ", r, " un ", r + 1, " pamatkodi atšķiras.\n")}
+  }
+      
+  cat("Pāra tabula sadalīta tabulās x2_uzVieniniekiem:",
+    nrow(x2_uzVieniniekiem), "rindas; \n un x2_trueDoubles: ", nrow(x2_trueDoubles), "rindas.\n")
+  rm(x, r)
+  
+  #2 Tabulu x2_uzVieniniekiem sūta uz vieninieku apstrādi caur processingOnes().
+  if(nrow(x2_uzVieniniekiem) > 0) {
+    sendTo_tempNDZ(processingOnes(x2_uzVieniniekiem, o))
+  } else {
+    cat("No divniekiem atvasinātajā vieninieku tabulā nav nevienas rindas.\n")
+  }
+  rm(x2_uzVieniniekiem)
+
+  #8 Izstrādā x2_trueDoubles
+  #8.1. Pārbaude vai šie visi ir īstie dubultnieki
+  
+  if (nrow(x2_trueDoubles) > 0) {
+    y <- x2_trueDoubles[order(x2_trueDoubles$PS_code, x2_trueDoubles$NM_code),]
+    test <- 0
     
-    if (testR == nrow(x)) {cat("PĀRBAUDE IZIETA: processingDoubles. \n"); rm(y, testR, O)
-    } else {stop("ERROR: processingDoubles")}
+    for (r in seq(1, nrow(y), by = 2)) {
+      # Pārbaude
+      if (doublesTest(r, y)) {test <- test + 2}}
     
-    z <- z[order(z$PS_code, z$DN_code, z$NM_code, z$NDZ_sanemsanas_datums), ]
-    rm(x)  
+    if (test == nrow(y)) {
+      cat("PĀRBAUDE IZIETA: \n Tabulā visi ir īstie dubultnieki ar sākuma un beigu kodu. \n")
+      rm(y, test, r)
+    } else {
+      stop("ProcessingTwoes: PĀRBAUDE NAV IZIETA\n Tabulā NAV tikai dubultnieki! \n")
+    }
     
-  return(z)
+    sendTo_tempNDZ(processingDoubles(x2_trueDoubles, o)) 
+    
+  } else {
+    cat("Tabula x2_trueDoubles ir tukša")
+  }
+  rm(x2_trueDoubles)
 }
