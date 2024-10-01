@@ -1,4 +1,3 @@
-#Git: 20240425
 processingFours <- function(x, o) {
   x <- x[order(x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums, x$zinkod), ]
 
@@ -6,25 +5,22 @@ processingFours <- function(x, o) {
   x4_trueDoubles <- data.frame()
   x4_uzTrijniekiem <- data.frame()
   check_rows <- 0
-# r <- 1
+
 for (r in seq(1, nrow(x), by = 4)) {
   
   x4 <- x[r:(r + 3), ]
   x4 <- x4[order(x4$PS_code, x4$DN_code, x4$NM_code, x4$NDZ_sanemsanas_datums, x4$zinkod), ]
   
   if(!(doublesTest(1, x4) && doublesTest(3, x4))) {
-    stop(cat("Četrinieku apstrādes tabulā, ko izstrādā caur funkciju processingFours(), 
-               rindās no", r, "līdz", r + 3, "nesakrīt pseidokoda, NM_code, DN_code, period kombinācija visās četrās rindās."))
+    stop("Četrinieku apstrādes tabulā, ko izstrādā caur funkciju processingFours(), 
+               rindās no", r, "līdz", r + 3, "nesakrīt PS_code, NM_code, DN_code, period kombinācija visās četrās rindās."))
   } else if (all(x4$sak_beidz[1:4] == c("2", "1", "2", "2")) &&
              diff(x4$NDZ_sanemsanas_datums[1:2]) > 0 &&
              diff(x4$NDZ_sanemsanas_datums[2:3]) == 0 &&
              x4$zinkod[1] %in% c("40", "41", "50", "51", "53", "54", "91", "92")) {
     x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[1, ])
     x4_trueDoubles <- rbind(x4_trueDoubles, x4[2:3, ])
-  } else if (((all(x4$sak_beidz[1:2] == c("1", "2")) && diff(x4$NDZ_sanemsanas_datums[1:2]) >= 0) || 
-              (all(x4$sak_beidz[1:4] == c("2", "1")) && diff(x4$NDZ_sanemsanas_datums[1:2]) == 0)) &&
-             ((all(x4$sak_beidz[3:4] == c("1", "2")) && diff(x4$NDZ_sanemsanas_datums[3:4]) >= 0) || 
-              (all(x4$sak_beidz[3:4] == c("2", "1")) && diff(x4$NDZ_sanemsanas_datums[3:4]) == 0))) {
+  } else if (all(x4$sak_beidz[1:4] == c("1", "2", "1", "2"))) {
     x4_trueDoubles <- rbind(x4_trueDoubles, x4)
   } else if (all(x4$sak_beidz[1:4] == c("1", "1", "2", "1"))) {
     if (diff(x4$NDZ_sanemsanas_datums[3:4]) > 0) {
@@ -101,25 +97,27 @@ for (r in seq(1, nrow(x), by = 4)) {
     } else {
       stop("Šeit četrinieku izstrādes tabulas rindām ", r, " līdz ", r+3, " trūkst apstrādes koda.")
     }
-    
-    
-    
-    
-  } else if (x4$sak_beidz[1] == "1" && x4$sak_beidz[2] == "2" && x4$sak_beidz[3] == "1" && x4$sak_beidz[4] == "1" && 
-             all(diff(x4$NDZ_sanemsanas_datums[1:2]) != 0) && all(diff(x4$NDZ_sanemsanas_datums[2:3]) == 0) && all(diff(x4$NDZ_sanemsanas_datums[3:4]) != 0)) {
-    x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[4, ])
-    x4_trueDoubles <- rbind(x4_trueDoubles, x4[2:3, ])
-  } else if (all(x4$sak_beidz[1:2] == "1") && all(sapply(seq(1, 4, by = 2), function(i) all(diff(x4$NDZ_sanemsanas_datums[i:(i+1)]) == 0)))) {
-    x4_trueDoubles <- rbind(x4_trueDoubles, x4[c(1,3), ])
-  } else if (all(x4$sak_beidz[1:3] == "2") && all(diff(x4$NDZ_sanemsanas_datums) != 0)) {
-    x4_trueDoubles <- rbind(x4_trueDoubles, x4[3:4, ])
-  } else if (all(x4$sak_beidz[c(1,3,4)] == "1") && x4$sak_beidz[2] == "2" && all(diff(x4$NDZ_sanemsanas_datums) != 0)) {
-    x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[4, ])
-    x4_trueDoubles <- rbind(x4_trueDoubles, x4[1:2, ])
-  } else if (all(x4$sak_beidz[2:3] == "1") && all(x4$sak_beidz[c(1,4)] == "2") && all(sapply(seq(1,4,by=2), function(i) diff(x4$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
-             diff(x4$NDZ_sanemsanas_datums[2:3]) == 0) {
-    x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[1, ])
-    x4_trueDoubles <- rbind(x4_trueDoubles, x4[3:4, ])
+  } else if (all(x4$sak_beidz[1:4] == c("1", "2", "2", "2"))) { 
+    if ("26" %in% x4$zinkod) {
+      x4_trueDoubles <- rbind(x4_trueDoubles, x4[x4$sak_beidz == "1" | x4$zinkod == "26", ])
+    } else {
+      stop("Šeit četrinieku izstrādes tabulas rindām ", r, " līdz ", r+3, " trūkst apstrādes koda.")
+    }
+  #} else if (x4$sak_beidz[1] == "1" && x4$sak_beidz[2] == "2" && x4$sak_beidz[3] == "1" && x4$sak_beidz[4] == "1" && 
+  #           all(diff(x4$NDZ_sanemsanas_datums[1:2]) != 0) && all(diff(x4$NDZ_sanemsanas_datums[2:3]) == 0) && all(diff(x4$NDZ_sanemsanas_datums[3:4]) != 0)) {
+  #  x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[4, ])
+  #  x4_trueDoubles <- rbind(x4_trueDoubles, x4[2:3, ])
+  #} else if (all(x4$sak_beidz[1:2] == "1") && all(sapply(seq(1, 4, by = 2), function(i) all(diff(x4$NDZ_sanemsanas_datums[i:(i+1)]) == 0)))) {
+  #  x4_trueDoubles <- rbind(x4_trueDoubles, x4[c(1,3), ])
+  #} else if (all(x4$sak_beidz[1:3] == "2") && all(diff(x4$NDZ_sanemsanas_datums) != 0)) {
+  #  x4_trueDoubles <- rbind(x4_trueDoubles, x4[3:4, ])
+  #} else if (all(x4$sak_beidz[c(1,3,4)] == "1") && x4$sak_beidz[2] == "2" && all(diff(x4$NDZ_sanemsanas_datums) != 0)) {
+  #  x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[4, ])
+  #  x4_trueDoubles <- rbind(x4_trueDoubles, x4[1:2, ])
+  #} else if (all(x4$sak_beidz[2:3] == "1") && all(x4$sak_beidz[c(1,4)] == "2") && all(sapply(seq(1,4,by=2), function(i) diff(x4$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
+  #           diff(x4$NDZ_sanemsanas_datums[2:3]) == 0) {
+  #  x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[1, ])
+  #  x4_trueDoubles <- rbind(x4_trueDoubles, x4[3:4, ])
   } else {
     stop(cat("Šeit četrinieku izstrādes tabulas rindām", r, "līdz", r+3, "trūkst apstrādes koda."))
   }
@@ -132,20 +130,15 @@ for (r in seq(1, nrow(x), by = 4)) {
         Četrinieku tabula veiksmīgi pārdalījusies apakštabulās.\n")
     rm(x, check_rows, r, x4)
   } else {
-    stop(cat("ERROR in processingFours:\n
+    stop("ERROR in processingFours:\n
         Četrinieku tabula NAV pārdalījusies.\n
              check_rows cipars nesakrīt ar rindu skaitu izejas tabulā.
-             Meklē kļūdas.\n"))  
-  }
-  
-  
+             Meklē kļūdas.\n")
+  }  
   
 # Nosūti vieninieku apstrādei
 if(nrow(x4_uzVieniniekiem) > 0) {
-  
-  
-  
-  ssak_beidzTo_tempNDZ(processingOnes(x4_uzVieniniekiem, o))
+  sendTo_tempNDZ(processingOnes(x4_uzVieniniekiem, o))
 } else {
   cat("No četriniekiem pārsūtāmajā vieninieku tabulā nebija nevienas rindas.")
 }
