@@ -4,6 +4,15 @@ processingFives <- function(x, o) {
   x5_uzVieniniekiem <- data.frame()
   x5_uzDivniekiem <- data.frame()
   x5_uzCetriniekiem <- data.frame()
+  
+  fncResult <- function(result) {
+    if (exists("result")) {
+      x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, result$x5_uzVieniniekiem)
+      x5_uzDivniekiem <- rbind(x5_uzDivniekiem, result$x5_uzDivniekiem)
+      x5_uzCetriniekiem <- rbind(x5_uzCetriniekiem, result$x5_uzCetriniekiem)
+    }
+    rm(result)
+  }
 
   for (r in seq(1, nrow(x), by = 5)) {
     x5 <- x[r:(r+4), ]
@@ -47,21 +56,13 @@ processingFives <- function(x, o) {
       x5_uzCetriniekiem <- rbind(x5_uzCetriniekiem, x5[-1, ])
   
   } else if (sum(x5$sak_beidz == "1") == 3) {
-     result <- processingFives_s3(x5)
+    fncResult(processingFives_s3(x5))
   } else if (sum(x5$sak_beidz == "1") == 2) {
-    result <- processingFives_s2(x5)
+    fncResult(processingFives_s2(x5))
   } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
-  
-    if (exists("result")) {
-      x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, result$x5_uzVieniniekiem)
-      x5_uzDivniekiem <- rbind(x5_uzDivniekiem, result$x5_uzDivniekiem)
-      x5_uzCetriniekiem <- rbind(x5_uzCetriniekiem, result$x5_uzCetriniekiem)
-      
-      rm(result)
-    }
   }
   
-  rm(x, r, x5)
+  rm(x, r, x5, fncResult)
   
 #1 Apakštabulu x5_uzVieniniekiem apstrādā caur funkciju processingOnes().
   if(nrow(x5_uzVieniniekiem) > 0) {
