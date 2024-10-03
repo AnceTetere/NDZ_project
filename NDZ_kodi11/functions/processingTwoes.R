@@ -1,7 +1,7 @@
 processingTwoes <- function(x, o) {
   
   #1 Sakārto tabulu
-  x <- x[order(x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums, x$zinkod), ]
+  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, zinkod)
   rownames(x) <- NULL
   
   x2_uzVieniniekiem <- data.frame()
@@ -16,8 +16,6 @@ processingTwoes <- function(x, o) {
     } else {stop("Rindās ", r, " un ", r + 1, " pamatkodi atšķiras.\n")}
   }
       
-  cat("Pāra tabula sadalīta tabulās x2_uzVieniniekiem:",
-    nrow(x2_uzVieniniekiem), "rindas; \n un x2_trueDoubles: ", nrow(x2_trueDoubles), "rindas.\n")
   rm(x, r)
   
   #2 Tabulu x2_uzVieniniekiem sūta uz vieninieku apstrādi caur processingOnes().
@@ -29,10 +27,9 @@ processingTwoes <- function(x, o) {
   rm(x2_uzVieniniekiem)
 
   #8 Izstrādā x2_trueDoubles
-  #8.1. Pārbaude vai šie visi ir īstie dubultnieki
-  
+ 
   if (nrow(x2_trueDoubles) > 0) {
-    y <- x2_trueDoubles[order(x2_trueDoubles$PS_code, x2_trueDoubles$NM_code),]
+    y <- arrange(x2_trueDoubles, PS_code, NM_code)
     test <- 0
     
     for (r in seq(1, nrow(y), by = 2)) {
@@ -46,6 +43,7 @@ processingTwoes <- function(x, o) {
       stop("ProcessingTwoes: PĀRBAUDE NAV IZIETA\n Tabulā NAV tikai dubultnieki! \n")
     }
     
+    #Atvasinātos un pārbaudītos pārus sūta apstrādei caur funkciju processingDoubles
     sendTo_tempNDZ(processingDoubles(x2_trueDoubles, o)) 
     
   } else {
