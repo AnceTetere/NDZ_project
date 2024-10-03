@@ -1,6 +1,5 @@
 occurencesSplit <- function(NDZ) {
 
-setwd(paste0(path, "data\\intermediate_tables\\"))
 check_number <- nrow(NDZ)
 occurance_number <- 1
 
@@ -22,13 +21,16 @@ while (check_number > 0) {
     check_number <- check_number - nrow(x)
     
     tabs_ndz <- append(tabs_ndz, tab_name)
-    NDZ_list[[length(tabs_ndz)]] <- get(tab_name) 
+    NDZ_list[[length(tabs_ndz)]] <- get(tab_name)
+    #save(list = tab_name, file = paste0(path, "data/intermediate_tables/", tab_name, ".RData"))
+    #rm(list = tab_name) 
     rm(tab_name, x)
     }
     
   occurance_number <- occurance_number + 1
 }
 
+#saveRDS(tabs_ndz, file = "tabs_ndz.rds")
 rm(check_number, occurance_number)
 
 result <- list(tabs_ndz = tabs_ndz, NDZ_list = NDZ_list)
