@@ -7,27 +7,22 @@
   NDZ_list <- result$NDZ_list
   rm(NDZ)
 
-#2 Funkcija tempNDZ izveido tukšu datu rāmi. 
-#  Tā sevī uzkrās no apakštabulām sarēķinātās tabulas ar dienu skaitu.
+#2 Funkcija tempNDZ() izveido tukšu datni. 
+#  Tā sevī uzkrās no apakštabulām, kas nāk result$NDZ_list, sarēķinātās tabulas ar dienu skaitu.
 #  Vektors temp_rows dokumentē, cik rindas katrā solī tiek pievienotas datnei temp_NDZ.
-#  (Tā ir pirmā riņķa tabula, kurā būs gan pareizi sarēķini, gan tie, kas dublēsies.)  
-  tNDZ <- tempNDZ()
-  temp_NDZ <- tNDZ$temp_NDZ
-  temp_rows <- tNDZ$temp_rows
-  rm(tNDZ)
+#  (Tā ir pirmā riņķa tabula, kura nes gan pareizus dienu sarēķinus, gan tos, kas dublējas.)
+  tempNDZ()
   
-
-#3 No funkcijas occurencesSplit atgriezto tabulu nosaukumos pēdējais cipars norāda, 
-#  cik reizes vienā uzņēmumā strādājošais indivīds uzrādas dotajā tabulā.
+#3 No funkcijas occurencesSplit() atgriezto tabulu (NDZ_list) nosaukumos pēdējais cipars norāda, 
+#  cik reizes vienā uzņēmumā strādājošais indivīds uzrādas dotajā kodu tabulā.
 #  To nolasa un saglabā uz burta 'o' (no vārda 'occurences').
   
-#3.1 Attiecīgi, ejot cauri tabulu nosaukumu vektoram tabs_ndz, nolasa o un ielādē atbilstošo tabulu.
-#    Vadoties pēc, to sūta tālāk uz apstrādi.
-
- #i <- 1 #testēšanai
-#for(i in 1:length(tabs_ndz)) {
+#3.1 Attiecīgi, ejot cauri tabulu nosaukumu vektoram tabs_ndz, Šis skripts nolasa o un ielādē atbilstošo tabulu.
+#    To lieto tālākajā apstrādē.
+  
+for(i in 1:length(tabs_ndz)) {
 # Ielādē attiecīgo tabulu  
-  x <- NDZ_list[[i]]
+  x <- NDZ_list[[i]]    
   
     if(nchar(tabs_ndz[i]) == 5) {
       o <- substr(tabs_ndz[i], 5, 5)
@@ -40,17 +35,17 @@
     switch(   
       o,
       # Caur sekojošo apstrādi sarēķina dienas un noglabā tabulā temp_NDZ, kuru būvē.
-      "1"= temp_NDZ <- sendTo_tempNDZ(processingOnes(x, o), temp_NDZ),
-      "2"= processingTwoes(loadTable(o), o),
-      "3"= processingThrees(loadTable(o), o),
-      "4"= processingFours(loadTable(o), o),
-      "5"= processingFives(loadTable(o), o),
-      "6"= processingSixes(loadTable(o), o),
-      "7"= processingSeven(loadTable(o), o),
-      "8"= processingEights(loadTable(o), o),
-      "9"= processingNines(loadTable(o), o),
-      "10"= processingTens(loadTable(o), o),
-      "11"= processingEleven(loadTable(o), o),
+      "1"= sendTo_tempNDZ(processingOnes(x, o)),
+      "2"= processingTwoes(x, o),  
+      "3"= processingThrees(x, o),  
+      "4"= processingFours(x, o), 
+      "5"= processingFives(x, o),
+      "6"= processingSixes(x, o), 
+      "7"= processingSeven(x, o), 
+      "8"= processingEights(x, o), # !! BLOĶĒTS processingEights_s4 testēšanai. Jāatbīvo lai ietu: tā nav kļūda.
+      "9"= processingNines(x, o), 
+      "10"= processingTens(x, o),
+      "11"= processingEleven(x, o), #PALIKU TE
       "12"= processingTwelve(loadTable(o), o),
       "13"= processingThirteen(loadTable(o), o),
       "14"= processingFourteen(loadTable(o), o),
@@ -66,59 +61,49 @@
       "24"= processingTwentyFour(loadTable(o), o),
       "default" = stop("NAV KODA PRIEKŠ NDZ_", o))
   
-  temp_rows <- append(temp_rows, nrow(temp_NDZ) - sum(temp_rows))
   }    
   
   rm(NDZ_list, tabs_ndz, o, i)
 
   #----------------------------BŪVĒJAM PILNO MĒNESI
   
-  #1. Paņemam mēneša izstrādātos kodus un savelkam tos vēlreiz uz duplikātiem.
-  
+#1 Mēneša izstrādāto kodua tabulu sasummē uz duplikātiem.
   load("temp_NDZ.RData")
-  x <- temp_NDZ
-  x <- x[order(x$PS_code, x$DN_code, x$NM_code), ]
+  x <- arrange(temp_NDZ, pseidokods, dnperk, nmrkod)
   
-  cat("Kodu gala tabulā temp_NDZ pārbauda dubultos indivīdus, ja ir, tad sasummē to dienas.\n")
-  if(sum(duplicated(x[c("PS_code", "DN_code", "NM_code")])) > 0) {
+  cat("Kodu gala tabulā temp_NDZ pārbauda dubultos indivīdus.\n 
+       Ja tādi ir, to sarēķinātās dienas summējas uz personu.\n")
+  if(sum(duplicated(x[c("pseidokods", "dnperk", "nmrkod")])) > 0) {
     x <- x %>%
-      group_by(period, PS_code, DN_code, NM_code) %>%
+      group_by(period, pseidokods, dnperk, nmrkod) %>%
       summarise(
         dienas = sum(dienas, na.rm = TRUE)
       ) %>%
-      arrange(PS_code)
+      arrange(pseidokods, dnperk, nmrkod)
     cat("Dubultnieki sasummēti.\n")
   } else {
     cat("Kodu gala tabulā dubultnieku nav.\n")
   }
   
-  #2. Pārbauda, vai kādam dienu skaits ir vairāk nekā mēnesī dienu.
-  if (nrow(x[x$dienas > 31, ]) == 0) { #TODO: Te priekš tā 31, vajag iztrādāt funkciju, kur, vadoties pēc perioda ailes, tiek pānemts datums salīdzināšanai.
+#2 Pārbaude, vai kādam dienu skaits nav vairāk nekā mēnesī dienu.
+if (nrow(x[x$dienas > 31, ]) == 0) { 
     cat("PĀRBAUDE IZIETA: Kodu gala tabulā nevienam nav 
       vairāk dienu par dienu skaitu mēnesī.\n")
-  } else {
-    stop(cat("STOP: Kad izstrādā šo, tad noņem STOP. 
+} else {stop("STOP: Kad izstrādā šo, tad noņem STOP. 
            KODU GALA TABULĀ UZ UNIKĀLO INDIVĪDU SASUMMĒTĀS DIENAS 
-           PĀRSNIEDZ DIENU SKAITU MĒNESĪ.\n"))
-  }
+           PĀRSNIEDZ DIENU SKAITU MĒNESĪ.\n")}
   
-  if (nrow(x[x$dienas < 0, ]) == 0) { #TODO: Te priekš tā 31, vajag iztrādāt funkciju, kur, vadoties pēc perioda ailes, tiek pānemts datums salīdzināšanai.
-    cat("PĀRBAUDE IZIETA: Kodu gala tabulā nevienam nav 
-      mazāk dienu par 0.\n")
-  } else {
-    stop(cat("STOP: Kad izstrādā šo, tad noņem STOP. 
+if(nrow(x[x$dienas < 0, ]) == 0) { 
+  cat("PĀRBAUDE IZIETA: Kodu gala tabulā nevienam nav mazāk dienu par 0.\n")
+} else {stop("STOP: Kad izstrādā šo, tad noņem STOP. 
            KODU GALA TABULĀ UZ UNIKĀLO INDIVĪDU SASUMMĒTĀS DIENAS 
-           IR MAZĀK PAR NULLI.\n"))
-  }
+           IR MAZĀK PAR NULLI.\n")}
   
-  #3. Ieliec nosaukumu un noglabā mēneša mapē.
-  assign(kodu_tab_nos, x)
-  setwd(paste0(path, "data\\intermediate_tables\\buildingMonths"))
-  save(list = kodu_tab_nos, file = paste0("final_", kodu_tab_nos, ".RData"))
+#3 Ieliek nosaukumu un noglabā mēneša mapē.
+assign(kodu_tab_nos, x) ##! assign nav laba priekš pakotnes
+save(list = kodu_tab_nos, file = paste0(path, "data/intermediate_tables/buildingMonths/final_", kodu_tab_nos, ".RData"))
+rm(list = kodu_tab_nos, kodu_tab_nos, temp_NDZ, x)
   
-  rm(list = kodu_tab_nos, kodu_tab_nos, temp_NDZ, x)
-  
-  
-  #4. Nokop aiz sevis.
-  setwd(paste0(path, "data\\intermediate_tables\\"))
-  file.remove("tabs_ndz.rds", "temp_rows.RDS", "temp_NDZ.RData")  
+#4 Nokop aiz sevis.
+#setwd(paste0(path, "data\\intermediate_tables\\"))
+#file.remove("tabs_ndz.rds", "temp_rows.RDS", "temp_NDZ.RData")  
