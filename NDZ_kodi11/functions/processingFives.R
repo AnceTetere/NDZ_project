@@ -1,5 +1,5 @@
 processingFives <- function(x, o) {
-  x <- x[order(x$PS_code, x$DN_code, x$NM_code, x$NDZ_sanemsanas_datums, x$zinkod), ]
+  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, zinkod)
 
   x5_uzVieniniekiem <- data.frame()
   x5_uzDivniekiem <- data.frame()
