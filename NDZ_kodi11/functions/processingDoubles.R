@@ -1,22 +1,18 @@
 processingDoubles <- function(x, o) {
-
-  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, sak_beidz)
+  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   rownames(x) <- NULL
 
-  #1. Pārbaude vai neiztrūkst datums vai ziņojuma kods
-  if (sum(is.na(x$NDZ_sanemsanas_datums)) > 0 || sum(is.na(x$zinkod)) > 0) {
-    stop("processingDoubles() nepilnīgas ailes. \n")
-  } else {
-    cat("PĀRBAUDE IZIETA: processingDoubles. \n")
-  }
+#1 Pārbaude vai neiztrūkst datums vai ziņojuma kods
+if (sum(is.na(x$NDZ_sanemsanas_datums)) > 0 || sum(is.na(x$zinkod)) > 0) {
+  stop("processingDoubles() nepilnīgas ailes. \n")
+} else {cat("PĀRBAUDE IZIETA: processingDoubles. \n")}
 
-  #2 Pārbauda vai datums darba sākšanas kodam ir agrāks par darba beigšanas kodu, un vai pāris attiecas uz vienu un to pašu unikālo indivīdu.
-    
+#2 Pārbaude vai datums darba sākšanas kodam nāk pirms darba beigšanas koda, un 
     testR <- 0
     z <- data.frame()
-    
-    for (O in seq(1, nrow(x), by = 2)) {
-      if (x$sak_beidz[O] == '1' && x$sak_beidz[O+1] == '2') {
+  
+  for (O in seq(1, nrow(x), by = 2)) {
+    if (x$sak_beidz[O] == '1' && x$sak_beidz[O+1] == '2') {
         y <- x[O :(O + 1),]
         
         if (doublesTest(1, y)) {
