@@ -1,5 +1,5 @@
 processingFours <- function(x, o) {
-  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, sak_beidz)
 
   x4_uzVieniniekiem <- data.frame()
   x4_trueDoubles <- data.frame()
@@ -13,7 +13,7 @@ for (r in seq(1, nrow(x), by = 4)) {
   
   if(!(doublesTest(1, x4) && doublesTest(3, x4))) {
     stop("Četrinieku apstrādes tabulā, ko izstrādā caur funkciju processingFours(), 
-               rindās no", r, "līdz", r + 3, "nesakrīt PS_code, NM_code, DN_code, period kombinācija visās četrās rindās.")
+               rindās no", r, "līdz", r + 3, "nesakrīt pseidokoda, NM_code, DN_code, period kombinācija visās četrās rindās.")
   } else if (all(x4$sak_beidz == c("2", "1", "2", "2")) &&
              diff(x4$NDZ_sanemsanas_datums[1:2]) > 0 &&
              diff(x4$NDZ_sanemsanas_datums[2:3]) == 0 &&
@@ -97,7 +97,16 @@ for (r in seq(1, nrow(x), by = 4)) {
     } else {
       stop("Šeit četrinieku izstrādes tabulas rindām ", r, " līdz ", r+3, " trūkst apstrādes koda.")
     }
-      
+  } else if(all(x4$sak_beidz == c("1", "1", "2", "2"))) { 
+    if (diff(x4$NDZ_sanemsanas_datums[2:3]) == 0 && 
+        all(sapply(c(1,3), function(i) diff(x4$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
+        x4$PS_code[1] == '_______' && x4$NM_code[1] == '_______') {
+      x4_trueDoubles <- rbind(x4_trueDoubles, x4[c(1,3, 2, 4), ])
+    } else {
+      stop("Šeit četrinieku izstrādes tabulas rindām ", r, " līdz ", r+3, " trūkst apstrādes koda.")
+    }
+    
+    
   #} else if (x4$sak_beidz[1] == "1" && x4$sak_beidz[2] == "2" && x4$sak_beidz[3] == "1" && x4$sak_beidz[4] == "1" && all(diff(x4$NDZ_sanemsanas_datums[1:2]) != 0) && all(diff(x4$NDZ_sanemsanas_datums[2:3]) == 0) && all(diff(x4$NDZ_sanemsanas_datums[3:4]) != 0)) {
   #  x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, x4[4, ])
   #  x4_trueDoubles <- rbind(x4_trueDoubles, x4[2:3, ])
