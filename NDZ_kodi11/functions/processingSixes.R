@@ -1,6 +1,6 @@
 processingSixes <- function(x, o) {
 
-  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, zinkod, sak_beidz)
+  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, zinkod)
   
   x6_uzVieniniekiem <- data.frame()
   x6_uzDivniekiem <- data.frame()
@@ -8,11 +8,11 @@ processingSixes <- function(x, o) {
   x6_uzCetri <- data.frame()
   x6_uzPieciniekiem <- data.frame()
   check_rows <- 0
-  
+
   for (r in seq(1, nrow(x), by = 6)) {
   
       x6 <- x[r:(r+5),]
-      x6 <- arrange(x6, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, sak_beidz)
+      x6 <- arrange(x6, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
       
     if (sum(x6$sak_beidz == "1") == 6) {
       x_vieninieki <- codes_match(x6)
@@ -36,7 +36,7 @@ processingSixes <- function(x, o) {
     } else if (all(x6$sak_beidz == c("2", "1", "2", "1", "2", "1")) && 
                all(sapply(seq(1,4,by=2), function(i) all(diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
                diff(x6$NDZ_sanemsanas_datums[5:6]) != 0 &&
-               x6$PS_code[1] == "_______" && x6$NM_code[1] == "__________") {
+               x6$PS_code[1] == "________" && x6$NM_code[1] == "___________") {
       x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[1, ])
       x6_uzPieciniekiem <- rbind(x6_uzPieciniekiem, x6[-1, ])
     } else if (all(x6$sak_beidz == c("2", "2", "1", "2", "1", "1")) && 
@@ -78,39 +78,27 @@ if(check_rows == nrow(x)) {
   if(nrow(x6_uzDivniekiem) > 0) {
     x6_uzDivniekiem <- arrange(x6_uzDivniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
     processingTwoes(x6_uzDivniekiem, o)
-    cat("Atvasinātā tabula x6_uzDivniekiem no sešinieku pārsūtīta apstrādei caur processingTwoes, 
-         un, pirms nolikšanas izstrādes tabulā temp_NDZ, dienas tiks sasummētas 
-         uz oriģinālo indivīdu mēnesī definētu kā: period == PS_code == DN_code == NM_code.\n")
   } else {cat("Tabula x6_uzDivniekiem ir tukša.\n")}
   rm(x6_uzDivniekiem)
   
 #3 Apakštabulu x6_uzTris sūta caur funkciju processingThrees().
   if(nrow(x6_uzTris) > 0) {
     x6_uzTris <- arrange(x6_uzTris, PS_code, NM_code,NDZ_sanemsanas_datums)
-    processingThrees(x6_uzTris, "3")
-    cat("Atvasinātā tabula x6_uzTris no sešinieku pārsūtīta apstrādei caur processingFours, 
-       un, pirms nolikšanas izstrādes tabulā temp_NDZ, dienas tiks sasummētas 
-      uz oriģinālo indivīdu mēnesī definētu kā: period == PS_code == DN_code == NM_code.\n")
+    processingThrees(x6_uzTris, o)
   } else {cat("Tabula x6_uzTris ir tukša.\n")}
   rm(x6_uzTris)
 
 #4 Apakštabulu x6_uzCetri sūta caur funkciju processingFours().
   if(nrow(x6_uzCetri) > 0) {
     x6_uzCetri <- arrange(x6_uzCetri, PS_code, NM_code, NDZ_sanemsanas_datums)
-    processingFours(x6_uzCetri, "4")
-    cat("Atvasinātā tabula x6_uzCetri no sešinieku pārsūtīta apstrādei caur processingFours, 
-       un, pirms nolikšanas izstrādes tabulā temp_NDZ, dienas tiks sasummētas 
-      uz oriģinālo indivīdu mēnesī definētu kā: period == PS_code == DN_code == NM_code.\n")
+    processingFours(x6_uzCetri, o)
   } else {cat("Tabula x6_uzCetri ir tukša.\n")}
   rm(x6_uzCetri)
   
 #5 Apakštabulu x6_uzPieciniekiem sūta caur funkciju processingFives().
   if(nrow(x6_uzPieciniekiem) > 0) {
     x6_uzPieciniekiem <- arrange(x6_uzPieciniekiem, PS_code,, NM_code, NDZ_sanemsanas_datums)
-    processingFives(x6_uzPieciniekiem, "5")
-    cat("Atvasinātā tabula x6_uzPieciniekiem no sešinieku pārsūtīta apstrādei caur processingFives(), 
-       un, pirms nolikšanas izstrādes tabulā temp_NDZ, dienas tiks sasummētas 
-      uz oriģinālo indivīdu mēnesī definētu kā: period == PS_code == DN_code == NM_code.\n")
+    processingFives(x6_uzPieciniekiem, o)
   } else {cat("Tabula x6_uzPieciniekiem ir tukša.\n")}
   rm(x6_uzPieciniekiem)
 }
