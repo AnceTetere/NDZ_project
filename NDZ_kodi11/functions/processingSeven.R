@@ -1,6 +1,6 @@
 processingSeven <- function(x, o) {
-  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, sak_beidz)
-
+  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+  
   x7_uzVieniniekiem <- data.frame()
   x7_uzDivniekiem <- data.frame()
   x7_uzTrijniekiem <- data.frame()
@@ -10,15 +10,12 @@ processingSeven <- function(x, o) {
   check_rows <- 0
   
   fncResult <- function(result) {
-    if (exists("result")) {
-      x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, result$x7_uzVieniniekiem)
-      x7_uzDivniekiem   <- rbind(x7_uzDivniekiem, result$x7_uzDivniekiem)
-      x7_uzTrijniekiem  <- rbind(x7_uzTrijniekiem, result$x7_uzTrijniekiem)
-      x7_uzCetriniekiem <- rbind(x7_uzCetriniekiem, result$x7_uzCetriniekiem)
-      x7_uzPieciniekiem <- rbind(x7_uzPieciniekiem, result$x7_uzPieciniekiem)
-      x7_uzSesiniekiem  <- rbind(x7_uzSesiniekiem, result$x7_uzSesiniekiem)
-      }
-    rm(result)
+    x7_uzVieniniekiem <<- rbind(x7_uzVieniniekiem, result$x7_uzVieniniekiem)
+    x7_uzDivniekiem   <<- rbind(x7_uzDivniekiem, result$x7_uzDivniekiem)
+    x7_uzTrijniekiem  <<- rbind(x7_uzTrijniekiem, result$x7_uzTrijniekiem)
+    x7_uzCetriniekiem <<- rbind(x7_uzCetriniekiem, result$x7_uzCetriniekiem)
+    x7_uzPieciniekiem <<- rbind(x7_uzPieciniekiem, result$x7_uzPieciniekiem)
+    x7_uzSesiniekiem  <<- rbind(x7_uzSesiniekiem, result$x7_uzSesiniekiem)
   }
   
   for (r in seq(1, nrow(x), by = 7)) {
@@ -26,7 +23,11 @@ processingSeven <- function(x, o) {
     x7 <- arrange(x7, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
     
     if(sum(x7$sak_beidz == "1") == 4) {
-      fncResult(processingSeven_s4(x7))
+      result <- processingSeven_s4(x7)
+      if (exists("result")) {
+        fncResult(result)
+        rm(result)
+      }
     } else if(sum(x7$sak_beidz == "2") == 4) {
       if ((all(x7$sak_beidz[1:2] == c("2", "1")) && diff(x7$NDZ_sanemsanas_datums[1:2]) != 0) || 
           (x7$sak_beidz[1] == x7$sak_beidz[2] && diff(x7$NDZ_sanemsanas_datums[2:3]) == 0)) {
