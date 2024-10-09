@@ -33,6 +33,9 @@ processingSeven_s4 <- function(x7s4) {
   } else if (all(x7s4$sak_beidz == c("2", "1", "1", "2", "1", "2", "1")) && all(diff(x7s4$NDZ_sanemsanas_datums) != 0)) {
     x7s4_uzCetriniekiem <- rbind(x7s4_uzCetriniekiem, x7s4[3:6, ])
     x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[c(1,7), ])
+  } else if (all(x7s4$sak_beidz == c("1", "2", "1", "2", "1", "2", "1")) && all(diff(x7s4$NDZ_sanemsanas_datums) != 0)) {
+    x7s4_uzSesiniekiem <- rbind(x7s4_uzSesiniekiem, x7s4[1:6, ])
+    x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[7, ])
   } else {
     stop("processingSeven: Septiņnieku apstrādē, gadījumam rindās ", r, " līdz ", r + 6, " trūkst izstrādes koda.\n")
   }
