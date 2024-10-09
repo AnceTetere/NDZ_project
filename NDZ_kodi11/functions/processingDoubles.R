@@ -7,17 +7,18 @@ if (sum(is.na(x$NDZ_sanemsanas_datums)) > 0 || sum(is.na(x$zinkod)) > 0) {
   stop("processingDoubles() nepilnīgas ailes. \n")
 } else {cat("PĀRBAUDE IZIETA: processingDoubles. \n")}
 
-#2 Pārbaude vai datums darba sākšanas kodam nāk pirms darba beigšanas koda, un 
-    testR <- 0
-    z <- data.frame()
+#2 Pārbaude vai datums darba sākšanas kodam nāk pirms darba beigšanas koda un 
+#           vai pāris attiecas uz vienu un to pašu unikālo indivīdu.
+    testR <- 0; z <- data.frame()
   
   for (O in seq(1, nrow(x), by = 2)) {
     if (x$sak_beidz[O] == '1' && x$sak_beidz[O+1] == '2') {
         y <- x[O :(O + 1),]
         
         if (doublesTest(1, y)) {
+#3 Aprēķina dienas starp darba sākšanas un beigšanas datumiem, un ievieto tās ailē [dienas].
           
-          if (all(y$zinkod != "26") && y$NDZ_sanemsanas_datums[y$sak_beidz == '1'] < y$NDZ_sanemsanas_datums[y$sak_beidz == '2']){
+          if(all(y$zinkod != "26") && y$NDZ_sanemsanas_datums[y$sak_beidz == '1'] < y$NDZ_sanemsanas_datums[y$sak_beidz == '2']){
             y$dienas[1] <- as.numeric(difftime(y$NDZ_sanemsanas_datums[y$sak_beidz == '2'], y$NDZ_sanemsanas_datums[y$sak_beidz == '1'], units = "days"))
             if (y$zinkod[1] %in% c("11", "14", "16", "21", "22", "23", "24", "25", "29")) {
               y$dienas[1] <- y$dienas[1] + 1}}
