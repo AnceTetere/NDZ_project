@@ -16,6 +16,7 @@ menesa_dienu_skaits <- function(year, month) {
     
   #3 Sarēkina dienu skaitu
   dienu_skaits <- as.integer(format(nakamais_menesis - 1, "%d"))
+  rm(month, year, nakamais_menesis)
   
   return(dienu_skaits)
 }
