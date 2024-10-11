@@ -5,13 +5,13 @@ processingThrees <- function(x, o) {
   x3_uzDivniekiem <- data.frame()
   x3_uzVieniniekiem <- data.frame()
 
-  for (k in seq(1, nrow(x), by = 3)) {
+for (k in seq(1, nrow(x), by = 3)) {
 
   x3 <- x[k:(k+2),]
   x3 <- arrange(x3, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums) 
   
   # Ja visām trim rindām ir sākuma kodi
-  if (all(x3$sak_beidz == "1")) {
+  if (all(x3$sak_beidz == "1") || all(x3$sak_beidz == "2")) {
       x3_uzVieniniekiem <- rbind(x3_uzVieniniekiem, codes_match(x3))
       # Ja pirmajām divām rindām ir sākuma kodi tabulā, kurā datumi ailē [NDZ_sanemsanas_datums] kārtoti augošā secībā
     } else if (all(x3$sak_beidz[1:2] == "1")) {
