@@ -33,7 +33,12 @@ processingSeven <- function(x, o) {
           (x7$sak_beidz[1] == x7$sak_beidz[2] && diff(x7$NDZ_sanemsanas_datums[2:3]) == 0)) {
         x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
         x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
-      } else  if(all(x7$sak_beidz == c("2", "2", "1", "2", "1", "2", "1")) && all(diff(x7$NDZ_sanemsanas_datums) != 0)) {
+      } else if (all(x7$sak_beidz == c("2","1","2","1","2","2","1")) && 
+                 diff(x7$NDZ_sanemsanas_datums[1:2]) == 0 && 
+                 x7$PS_code[1] == '__________' && x7$NM_code[1] == '___________') {
+        x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
+        x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
+      } else if(all(x7$sak_beidz == c("2", "2", "1", "2", "1", "2", "1")) && all(diff(x7$NDZ_sanemsanas_datums) != 0)) {
         x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[2, ])
         x7_uzPieciniekiem <- rbind(x7_uzCetriniekiem, x7[3:7, ])
       } else if(all(x7$sak_beidz == c("1", "2", "2", "2", "1", "1", "2")) && 
@@ -62,61 +67,51 @@ processingSeven <- function(x, o) {
     check_rows <- check_rows + 7
   }
 
-#1 PĀRBAUDE: Vai rindu skaits no septiņnieku atvasinātajās tabulās sakrīt ar rindām sākuma tabulā x.
-  if (check_rows == nrow(x)) {
+#PĀRBAUDE: Vai rindu skaits no septiņnieku atvasinātajās tabulās sakrīt ar rindām sākuma tabulā x.
+if (check_rows == nrow(x)) {
     cat("PĀRBAUDE IZIETA: Apakštabulu rindu summa sakrīt ar sākotnējo septiņnieku tabulu.\n")
     rm(x, x7, check_rows, fncResult)
-  } else {
-    stop("processingSeven: Pārbaude nav izieta, jo apakštabulu rindu summa NESAKRĪT ar sākotnējo septiņnieku tabulu.\n")
-  }
+} else {stop("processingSeven: Pārbaude nav izieta, jo apakštabulu rindu summa NESAKRĪT ar sākotnējo septiņnieku tabulu.\n")}
   
-#2 Apakštabulu x7_uzVieniniekiem apstrādā caur funkciju processingOnes().
-  if (nrow(x7_uzVieniniekiem) > 0) {
+#1 Apakštabulu x7_uzVieniniekiem apstrādā caur funkciju processingOnes().
+if (nrow(x7_uzVieniniekiem) > 0) {
       x7_uzVieniniekiem <- arrange(x7_uzVieniniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
       sendTo_tempNDZ(processingOnes(x7_uzVieniniekiem, o))
-  } else {cat("Tabula x7_uzVieniniekiem ir tukša.\n")}
-  rm(x7_uzVieniniekiem, r)
+} else {cat("Tabula x7_uzVieniniekiem ir tukša.\n")}
+rm(x7_uzVieniniekiem, r)
   
-#3 Apakštabulu x7_uzDivniekiem sūta caur funkciju processingTwoes().
-  if(nrow(x7_uzDivniekiem) > 0) {
+#2 Apakštabulu x7_uzDivniekiem sūta caur funkciju processingTwoes().
+if(nrow(x7_uzDivniekiem) > 0) {
     x7_uzDivniekiem <- arrange(x7_uzDivniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
     processingTwoes(x7_uzDivniekiem, o)
-  } else {
-    cat("Tabula x7_uzDivniekiem ir tukša.\n")}
-  rm(x7_uzDivniekiem)
+} else {cat("Tabula x7_uzDivniekiem ir tukša.\n")}
+rm(x7_uzDivniekiem)
   
-#4 Apakštabulu x7_uzTrijniekiem sūta caur funkciju processingThrees().
-  if(nrow(x7_uzTrijniekiem) > 0) {
+#3 Apakštabulu x7_uzTrijniekiem sūta caur funkciju processingThrees().
+if(nrow(x7_uzTrijniekiem) > 0) {
     x7_uzTrijniekiem <- arrange(x7_uzTrijniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
     processingThrees(x7_uzTrijniekiem, "3")
-  } else {
-    cat("Tabula x7_uzTrijniekiem ir tukša.\n")}
-  rm(x7_uzTrijniekiem)
+} else {cat("Tabula x7_uzTrijniekiem ir tukša.\n")}
+rm(x7_uzTrijniekiem)
   
-#5 Apakštabulu x7_uzCetriniekiem sūta caur funkciju processingFours().
-  if(nrow(x7_uzCetriniekiem) > 0) {
+#4 Apakštabulu x7_uzCetriniekiem sūta caur funkciju processingFours().
+if(nrow(x7_uzCetriniekiem) > 0) {
     x7_uzCetriniekiem <- arrange(x7_uzCetriniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-    processingFours(x7_uzCetriniekiem, "4")
-  } else {
-    cat("Tabula x7_uzCetriniekiem ir tukša.\n")}
-  rm(x7_uzCetriniekiem)
+    processingFours(x7_uzCetriniekiem, o)
+} else {cat("Tabula x7_uzCetriniekiem ir tukša.\n")}
+rm(x7_uzCetriniekiem)
   
-#6 Apakštabulu x7_uzPieciniekiem sūta caur funkciju processingFives().
-  if(nrow(x7_uzPieciniekiem) > 0) {
+#5 Apakštabulu x7_uzPieciniekiem sūta caur funkciju processingFives().
+if(nrow(x7_uzPieciniekiem) > 0) {
     x7_uzPieciniekiem <- arrange(x7_uzPieciniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-    
-    processingFives(x7_uzPieciniekiem, "5")
-    cat("No septiņniekiem atvasinātā tabula x7_uzPieciniekiem pārsūtīta apstrādei caur processingFives().\n")
-  } else {
-    cat("Tabula x7_uzPieciniekiem ir tukša.\n")}
-  rm(x7_uzPieciniekiem)
+    processingFives(x7_uzPieciniekiem, o)
+} else {cat("Tabula x7_uzPieciniekiem ir tukša.\n")}
+rm(x7_uzPieciniekiem)
   
-#7 Apakštabulu x7_uzSesiniekiem sūta caur funkciju processingSixes().
-  if(nrow(x7_uzSesiniekiem) > 0) {
+#6 Apakštabulu x7_uzSesiniekiem sūta caur funkciju processingSixes().
+if(nrow(x7_uzSesiniekiem) > 0) {
     x7_uzSesiniekiem <- arrange(x7_uzSesiniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-    processingSixes(x7_uzSesiniekiem, "6")
-    cat("No septiņniekiem atvasinātā tabula x7_uzSesiniekiem pārsūtīta apstrādei caur processingSixes().\n")
-  } else {
-    cat("Tabula x7_uzSesiniekiem ir tukša.\n")}
-  rm(x7_uzSesiniekiem)
+    processingSixes(x7_uzSesiniekiem, o)
+} else {cat("Tabula x7_uzSesiniekiem ir tukša.\n")}
+rm(x7_uzSesiniekiem)
 }
