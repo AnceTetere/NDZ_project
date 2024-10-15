@@ -1,7 +1,6 @@
 processingSixes <- function(x, o) {
-
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
-  
+
   x6_uzVieniniekiem <- data.frame()
   x6_uzDivniekiem <- data.frame()
   x6_uzTris <- data.frame()
@@ -10,7 +9,6 @@ processingSixes <- function(x, o) {
   check_rows <- 0
 
   for (r in seq(1, nrow(x), by = 6)) {
-  
       x6 <- x[r:(r+5),]
       x6 <- arrange(x6, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, sak_beidz)
       
@@ -37,20 +35,23 @@ processingSixes <- function(x, o) {
                     diff(x6$NDZ_sanemsanas_datums[2:3]) == 0 && all(diff(x6$NDZ_sanemsanas_datums[3:6]) != 0)) {
           x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[c(1, 6), ])
           x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[2:5, ])
-        } else if(all(x6$sak_beidz == c("2","2","2","1","1","1")) && 
+        } else if (all(x6$sak_beidz == c("2","2","2","1","1","1")) && 
                   diff(x6$NDZ_sanemsanas_datums[3:4]) != 0 && 
                   all(sapply(seq(1,6, by=3), function(i) all(diff(x6$NDZ_sanemsanas_datums[i:(i+2)]) == 0)))) {
           x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[c(1,4), ])
         } else if (all(x6$sak_beidz == c("2", "1", "2", "1", "2", "1")) && 
                   all(sapply(seq(1,4,by=2), function(i) all(diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
                   diff(x6$NDZ_sanemsanas_datums[5:6]) != 0 &&
-                  x6$PS_code[1] == "________" && x6$NM_code[1] == "____________") {
+                  x6$PS_code[1] == "_________" && x6$NM_code[1] == "__________") {
           x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[1, ])
           x6_uzPieciniekiem <- rbind(x6_uzPieciniekiem, x6[-1, ])
         } else if (all(x6$sak_beidz == c("2", "2", "1", "2", "1", "1")) && 
                    all(sapply(seq(2,4, by=2), function(i) all(diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
                    all(sapply(seq(1,5, by=2), function(i) all(diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))) {
           x6_uzPieciniekiem <- rbind(x6_uzPieciniekiem, x6[-1, ])
+        } else if (all(x6$sak_beidz == c("1","2","1","2","2","1")) && all(diff(x6$NDZ_sanemsanas_datums) != 0)) {
+          x6_uzCetri <- rbind(x6_uzCetri, x6[c(1,2,3,5), ])
+          x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[6,])
         } else {stop("processingSixes: Sešinieku tabulā trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
     } else if (sum(x6$sak_beidz == "1") == 4) {
       if(all(x6$sak_beidz == c("1","1","2","1","2","1")) && 
