@@ -50,15 +50,11 @@ processingTens <- function(x, o) {
       if (all(x10$sak_beidz[c(1, 2)] == "2") && all(x10$zinkod[c(1, 2)] == "26") &&
           all(sapply(seq(3, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
           all(sapply(seq(1, 3, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0)))) {
-        # Šis ir unikāla gadījuma, jo strādā ar tiem dubultajiem kodiem īslaicīgi kā fiziska persona, taču
-        # 2023. gadā un 2022. gadā neviens sākšanas kods pirms tiem pirmiem trim 26, 26 un 25 kodiem nav atrodams.
-        # Nu vispār pēc trīs gadiem neatlaiž par darba nesākšanu, bet ja atlaists ar 25 tad tur būs kļūda.
-        # Labo, ja vajag savādāk, bet no pašreizējās informācijas, es šo griežu nost.
         x10_uzAstoniekiem <- rbind(x10_uzAstoniekiem, x10[3:10, ])
       } else if (all(x10$sak_beidz[c(3:4, 7, 9)] == "1") && 
                  all(sapply(seq(1, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
                  all(sapply(seq(2, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0)))&&
-                 x10$PS_code[1] == '_______' & x10$NM_code[1] == '_________') {
+                 x10$PS_code[1] == '________' & x10$NM_code[1] == '________') {
         p <- x10[1:6, ]
         p <- p[p$zinkod %in% c("40", "41"), ]
         x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, p[1, ])
@@ -82,10 +78,10 @@ processingTens <- function(x, o) {
   }
   
 #PĀRBAUDE: Vai rindu skaits no desmitniekiem atvasinātajās tabulās sakrīt ar rindām sākotnējā tabulā x.
-  if (nrow(x) == check_rows) {
+if (nrow(x) == check_rows) {
     cat("PĀRBAUDE IZIETA: Apakštabulu rindu summa sakrīt ar izejošo desmitnieku tabulu.\n")
     rm(x, x10, r, check_rows)
-  } else {stop("PĀRBAUDE NAV IZIETA: Apakštabulu rindu summa NESAKRĪT ar izejošo desmitnieku tabulu.\n")}
+} else {stop("PĀRBAUDE NAV IZIETA: Apakštabulu rindu summa NESAKRĪT ar izejošo desmitnieku tabulu.\n")}
   
 #1 Apakštabulu x10_uzVieniniekiem sūta caur processingOnes().
 if(nrow(x10_uzVieniniekiem) > 0) {
@@ -93,7 +89,7 @@ if(nrow(x10_uzVieniniekiem) > 0) {
   cat("No desmitniekiem atvasināto tabulu x10_uzVieniniekiem pārsūta uz processingOnes() un tad uz tempNDZ, ko būvējam.\n")
   sendTo_tempNDZ(processingOnes(x10_uzVieniniekiem, o))
 } else {cat("Tabula x10_uzVieniniekiem ir tukša.\n")}
-  rm(x10_uzVieniniekiem) 
+rm(x10_uzVieniniekiem) 
   
 #2 Apakštabulu x10_uzDivniekiem sūta caur processingTwoes().
 if(nrow(x10_uzDivniekiem) > 0) {
@@ -101,7 +97,7 @@ if(nrow(x10_uzDivniekiem) > 0) {
   cat("No desmitniekiem atvasinātā tabula x10_uzDivniekiem pārsūtīta uz processingTwoes un caur to uz tempNDZ, ko būvējam.\n")
   processingTwoes(x10_uzDivniekiem, o)
 } else {cat("Tabula x10_uzDivniekiem ir tukša.\n")}
-  rm(x10_uzDivniekiem)
+rm(x10_uzDivniekiem)
   
 #3 Apakštabulu x10_uzSeptini sūta caur processingSeven().
 if(nrow(x10_uzSeptini) > 0) {
@@ -109,7 +105,7 @@ if(nrow(x10_uzSeptini) > 0) {
   cat("No desmitniekiem atvasinātā tabula x10_uzSeptini pārsūtīta uz processingSeven un caur to uz tempNDZ, ko būvējam.\n")
   processingSeven(x10_uzSeptini, o)
 } else {cat("Tabula x10_uzSeptini ir tukša.\n")}
-  rm(x10_uzSeptini)
+rm(x10_uzSeptini)
   
 #4 Apakštabulu x10_uzAstoniekiem sūta caur processingEights().
 if(nrow(x10_uzAstoniekiem) > 0) {
@@ -117,5 +113,5 @@ if(nrow(x10_uzAstoniekiem) > 0) {
   cat("No desmitniekiem atvasinātā tabula x10_uzAstoniekiem pārsūtīta uz processingEights un tad uz tempNDZ, ko būvējam.\n")
   processingEights(x10_uzAstoniekiem, o)
 } else {cat("Tabula x10_uzAstoniekiem ir tukša.\n")}
-  rm(x10_uzAstoniekiem) 
+rm(x10_uzAstoniekiem) 
 }
