@@ -60,42 +60,42 @@ processingTwelve <- function(x, o) {
   } else {stop("PĀRBAUDE NAV IZIETA: Apakštabulu rindu summa NESAKRĪT ar izejošo 12-nieku tabulu.")}
   
 #1 Apakštabulu x12_uzVieniniekiem sūta caur processingOnes().
-  if (nrow(x12_uzVieniniekiem) > 0) {
+if (nrow(x12_uzVieniniekiem) > 0) {
     x12_uzVieniniekiem <- arrange(x12_uzVieniniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
     cat("No 12-niekiem atvasinātā tabula x12_uzVieniniekiem pārsūtīta uz processingOnes() un tad uz tempNDZ, ko būvējam.\n")
     sendTo_tempNDZ(processingOnes(x12_uzVieniniekiem, o))
-  } else {cat("Tabula x12_uzVieniniekiem ir tukša.\n")}
-  rm(x12_uzVieniniekiem)
+} else {cat("Tabula x12_uzVieniniekiem ir tukša.\n")}
+rm(x12_uzVieniniekiem)
   
 #2 Apakštabulu x12_uzDivniekiem sūta caur processingTwoes().
-  if (nrow(x12_uzDivniekiem) > 0) {
+if (nrow(x12_uzDivniekiem) > 0) {
     x12_uzDivniekiem <- arrange(x12_uzDivniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
     cat("No 12-niekiem atvasinātā tabula x12_uzDivniekiem pārsūtīta uz processingTwoes() un caur to uz tempNDZ, ko būvējam.\n")
     processingTwoes(x12_uzDivniekiem, o)
-  } else {cat("Tabula x12_uzDivniekiem ir tukša.\n")}
-  rm(x12_uzDivniekiem) 
+} else {cat("Tabula x12_uzDivniekiem ir tukša.\n")}
+rm(x12_uzDivniekiem) 
   
 #3 Apakštabulu x12_uzSeptini sūta caur processingSeven().
-  if (nrow(x12_uzSeptini) > 0) {
+if (nrow(x12_uzSeptini) > 0) {
     x12_uzSeptini <- arrange(x12_uzSeptini, PS_code, NM_code, NDZ_sanemsanas_datums)
     cat("No 12-niekiem atvasinātā tabula x12_uzSeptini pārsūtīta uz processingSeven() un caur to uz tempNDZ, ko būvējam.\n")
     processingSeven(x12_uzSeptini, o)
-  } else {cat("Tabula x12_uzSeptini ir tukša.\n")}
-  rm(x12_uzSeptini)
+} else {cat("Tabula x12_uzSeptini ir tukša.\n")}
+rm(x12_uzSeptini)
   
 #4 Apakštabulu x12_uzDesmitniekiem sūta caur processingTens().
-  if (nrow(x12_uzDesmitniekiem) > 0) {
+if (nrow(x12_uzDesmitniekiem) > 0) {
     x12_uzDesmitniekiem <- arrange(x12_uzDesmitniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
     cat("No 12-niekiem atvasinātā tabula x12_uzDesmitniekiem pārsūtīta uz processingTens un tad uz tempNDZ, ko būvējam.\n")
     processingTens(x12_uzDesmitniekiem, o)
-  } else {cat("Tabula x12_uzDesmitniekiem ir tukša.\n")}
-  rm(x12_uzDesmitniekiem)
+} else {cat("Tabula x12_uzDesmitniekiem ir tukša.\n")}
+rm(x12_uzDesmitniekiem)
   
 #5 Apakštabulu x12_uzVienpadsmit sūta caur processingEleven().
-  if (nrow(x12_uzVienpadsmit) > 0) {
+if (nrow(x12_uzVienpadsmit) > 0) {
     x12_uzVienpadsmit <- arrange(x12_uzVienpadsmit, PS_code, NM_code, NDZ_sanemsanas_datums)
     cat("No 12-niekiem atvasinātā tabula x12_uzVienpadsmit pārsūtīta uz processingEleven() un tad uz tempNDZ, ko būvējam.\n")
     processingEleven(x12_uzVienpadsmit, o)
-  } else {cat("Tabula x12_uzVienpadsmit ir tukša.\n")}
-  rm(x12_uzVienpadsmit)
+} else {cat("Tabula x12_uzVienpadsmit ir tukša.\n")}
+rm(x12_uzVienpadsmit)
 }
