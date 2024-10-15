@@ -57,34 +57,29 @@ processingNines <- function(x, o) {
     check_rows = check_rows + 9
   }
   
-# PĀRBAUDE: Vai rindu skaits no deviņniekiem atvasinātajās tabulās sakrīt ar rindām izejas tabulā x.
+#PĀRBAUDE: Vai rindu skaits no deviņniekiem atvasinātajās tabulās sakrīt ar rindām izejas tabulā x.
 if (nrow(x) == check_rows) {
   cat("PĀRBAUDE IZIETA: Apakštabulu rindu summa sakrīt ar izejošo devītnieku tabulu.\n")
   rm(x, x9)
-} else {
-  stop("PĀRBAUDE NAV IZIETA: Apakštabulu rindu summa NESAKRĪT ar izejošo devītnieku tabulu.\n")
-}
+} else {stop("PĀRBAUDE NAV IZIETA: Apakštabulu rindu summa NESAKRĪT ar izejošo devītnieku tabulu.\n")}
   
 #1 Apakštabulu x9_uzVieniniekiem sūta caur processingOnes().
 if(nrow(x9_uzVieniniekiem) > 0) {
    x9_uzVieniniekiem <- arrange(x9_uzVieniniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-   cat("No devītniekiem atvasinātā tabula x9_uzVieniniekiem pārsūtīta uz processingOnes() un tad uz tempNDZ, ko būvējam.\n")
    sendTo_tempNDZ(processingOnes(x9_uzVieniniekiem, o))
 } else {cat("Tabula x9_uzVieniniekiem ir tukša.\n")}
-  rm(x9_uzVieniniekiem)
+rm(x9_uzVieniniekiem)
 
 #2 Apakštabulu x9_uzSesi sūta caur processingSixes().
-  if(nrow(x9_uzSesi) > 0) {
+if(nrow(x9_uzSesi) > 0) {
     x9_uzSesi <- arrange(x9_uzSesi, PS_code, NM_code, NDZ_sanemsanas_datums)
-    cat("No devītniekiem atvasinātā tabula x9_uzSesi pārsūtīta uz processingSixes() un tad uz tempNDZ, ko būvējam.\n")
     processingSixes(x9_uzSesi, o)
-  } else {cat("Tabula x9_uzSesi ir tukša.")}
-  rm(x9_uzSesi) 
+} else {cat("Tabula x9_uzSesi ir tukša.")}
+rm(x9_uzSesi) 
 
 #3 Apakštabulu x9_uzAstoniekiem sūta caur processingEights().
 if(nrow(x9_uzAstoniekiem) > 0) {
   x9_uzAstoniekiem <- arrange(x9_uzAstoniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-  cat("No devītniekiem atvasinātā tabula x9_uzAstoniekiem pārsūtīta uz processingEights() un tad uz tempNDZ, ko būvējam.\n")
   processingEights(x9_uzAstoniekiem, o)
 } else {cat("Tabula x9_uzAstoniekiem ir tukša.")}
   rm(x9_uzAstoniekiem) 
