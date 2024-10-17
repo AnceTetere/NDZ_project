@@ -1,5 +1,5 @@
 processingSeven <- function(x, o) {
-  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+  x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   
   x7_uzVieniniekiem <- data.frame()
   x7_uzDivniekiem <- data.frame()
@@ -19,51 +19,45 @@ processingSeven <- function(x, o) {
   }
   
   for (r in seq(1, nrow(x), by = 7)) {
-    x7 <- x[r:(r+6), ]
-    x7 <- arrange(x7, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+    x7 <- x[r:(r+6), ] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
     
     if(sum(x7$sak_beidz == "1") == 4) {
-      result <- processingSeven_s4(x7)
-      if (exists("result")) {
-        fncResult(result)
-        rm(result)
-      }
+          result <- processingSeven_s4(x7)
+          if (exists("result")) {
+            fncResult(result)
+            rm(result)
+          }
     } else if(sum(x7$sak_beidz == "2") == 4) {
-      if ((all(x7$sak_beidz[1:2] == c("2", "1")) && diff(x7$NDZ_sanemsanas_datums[1:2]) != 0) || 
-          (x7$sak_beidz[1] == x7$sak_beidz[2] && diff(x7$NDZ_sanemsanas_datums[2:3]) == 0)) {
-        x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
-        x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
-      } else if (all(x7$sak_beidz == c("2","1","2","1","2","2","1")) && 
-                 diff(x7$NDZ_sanemsanas_datums[1:2]) == 0 && 
-                 x7$PS_code[1] == '__________' && x7$NM_code[1] == '___________') {
-        x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
-        x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
-      } else if(all(x7$sak_beidz == c("2", "2", "1", "2", "1", "2", "1")) && all(diff(x7$NDZ_sanemsanas_datums) != 0)) {
-        x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[2, ])
-        x7_uzPieciniekiem <- rbind(x7_uzCetriniekiem, x7[3:7, ])
-      } else if(all(x7$sak_beidz == c("1", "2", "2", "2", "1", "1", "2")) && 
-                diff(x7$NDZ_sanemsanas_datums[4:5]) == 0 && 
-                x7$zinkod[3] == "26") {
-        x7_uzDivniekiem <- rbind(x7_uzDivniekiem, x7[-2, ])
-      } else if(all(x7$sak_beidz == c("2", "2", "1", "1", "2", "2", "1")) && 
-                all(sapply(seq(1, 6, by = 2), function(i) diff(x7$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-        x7_uzDivniekiem <- rbind(x7_uzDivniekiem, x7[4:5, ])
-        x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[c(1,7), ])
-      } else {
-        stop("processingSeven: Septiņnieku apstrādē, gadījumam rindās ", r, " līdz ", r + 6, " trūkst izstrādes koda.\n")
-      }
+          if ((all(x7$sak_beidz[1:2] == c("2", "1")) && diff(x7$NDZ_sanemsanas_datums[1:2]) != 0) || 
+              (x7$sak_beidz[1] == x7$sak_beidz[2] && diff(x7$NDZ_sanemsanas_datums[2:3]) == 0)) {
+                x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
+                x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
+          } else if (all(x7$sak_beidz == c("2","1","2","1","2","2","1")) && 
+                     diff(x7$NDZ_sanemsanas_datums[1:2]) == 0 && 
+                     x7$PS_code[1] == '___________' && x7$NM_code[1] == '___________') {
+                      x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
+                      x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
+          } else if(all(x7$sak_beidz == c("2", "2", "1", "2", "1", "2", "1")) && all(diff(x7$NDZ_sanemsanas_datums) != 0)) {
+                      x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[2, ])
+                      x7_uzPieciniekiem <- rbind(x7_uzCetriniekiem, x7[3:7, ])
+          } else if(all(x7$sak_beidz == c("1", "2", "2", "2", "1", "1", "2")) && 
+                    diff(x7$NDZ_sanemsanas_datums[4:5]) == 0 && 
+                    x7$zinkod[3] == "26") {
+                      x7_uzDivniekiem <- rbind(x7_uzDivniekiem, x7[-2, ])
+          } else if(all(x7$sak_beidz == c("2", "2", "1", "1", "2", "2", "1")) && 
+                    all(sapply(seq(1, 6, by = 2), function(i) diff(x7$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
+                      x7_uzDivniekiem <- rbind(x7_uzDivniekiem, x7[4:5, ])
+                      x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[c(1,7), ])
+          } else {stop("processingSeven: Septiņnieku apstrādē, gadījumam rindās ", r, " līdz ", r + 6, " trūkst izstrādes koda.\n")}
     } else if(sum(x7$sak_beidz == "1") == 5) {
-      if ((x7$sak_beidz[1] == "1" && x7$sak_beidz[2] == "2") || ((x7$sak_beidz[2] == "1" && x7$sak_beidz[1] == "2") && ((abs(as.numeric(difftime(x7$NDZ_sanemsanas_datums[2], x7$NDZ_sanemsanas_datums[1], units = "days")))) == 0))) {
-        x7_uzDivniekiem <- rbind(x7_uzDivniekiem, x7[c(1, 2), ])
-        x7_uzPieciniekiem <- rbind(x7_uzPieciniekiem, x7[c(3:7), ])
-      } else if (x7$sak_beidz[1] == "1" && x7$sak_beidz[2] == "1" && x7$sak_beidz[3] == "2" && any(diff(x7$NDZ_sanemsanas_datums[1:3]) != 0)) {
-        x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
-      } else {
-        stop("processingSeven: Septiņnieku apstrādē, gadījumam rindās ", r, " līdz ", r + 6, " trūkst izstrādes koda.\n")
-      }
-    } else {
-      stop("processingSeven: Septiņnieku apstrādē, gadījumam rindās ", r, " līdz ", r + 6, " trūkst izstrādes koda.\n")
-    }
+           if ((x7$sak_beidz[1] == "1" && x7$sak_beidz[2] == "2") || ((x7$sak_beidz[2] == "1" && x7$sak_beidz[1] == "2") && ((abs(as.numeric(difftime(x7$NDZ_sanemsanas_datums[2], x7$NDZ_sanemsanas_datums[1], units = "days")))) == 0))) {
+              x7_uzDivniekiem <- rbind(x7_uzDivniekiem, x7[c(1, 2), ])
+              x7_uzPieciniekiem <- rbind(x7_uzPieciniekiem, x7[c(3:7), ])
+            } else if (x7$sak_beidz[1] == "1" && x7$sak_beidz[2] == "1" && x7$sak_beidz[3] == "2" && any(diff(x7$NDZ_sanemsanas_datums[1:3]) != 0)) {
+              x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
+            } else {stop("processingSeven: Septiņnieku apstrādē, gadījumam rindās ", r, " līdz ", r + 6, " trūkst izstrādes koda.\n")}
+    } else {stop("processingSeven: Septiņnieku apstrādē, gadījumam rindās ", r, " līdz ", r + 6, " trūkst izstrādes koda.\n")}
+    
     check_rows <- check_rows + 7
   }
 
@@ -75,8 +69,7 @@ if (check_rows == nrow(x)) {
   
 #1 Apakštabulu x7_uzVieniniekiem apstrādā caur funkciju processingOnes().
 if (nrow(x7_uzVieniniekiem) > 0) {
-      x7_uzVieniniekiem <- arrange(x7_uzVieniniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-      sendTo_tempNDZ(processingOnes(x7_uzVieniniekiem, o))
+      x7_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ()
 } else {cat("Tabula x7_uzVieniniekiem ir tukša.\n")}
 rm(x7_uzVieniniekiem, r)
   
