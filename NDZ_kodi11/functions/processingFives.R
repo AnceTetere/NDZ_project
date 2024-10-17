@@ -1,6 +1,6 @@
 processingFives <- function(x, o) {
-  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
-  
+  x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+
   x5_uzVieniniekiem <- data.frame()
   x5_uzDivniekiem <- data.frame()
   x5_uzCetriniekiem <- data.frame()
@@ -15,33 +15,35 @@ processingFives <- function(x, o) {
   }  
  
   for (r in seq(1, nrow(x), by = 5)) {
-    x5 <- x[r:(r+4), ]
-    x5 <- arrange(x5, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+    x5 <- x[r:(r+4), ] %>% 
+      arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
     
     if (sum(x5$sak_beidz == "1") == 5) {
-      x_vieninieki <- codes_match(x5)
-      x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x_vieninieki)
-      rm(x_vieninieki)
+          x_vieninieki <- codes_match(x5)
+          x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x_vieninieki)
+          rm(x_vieninieki)
     } else if (sum(x5$sak_beidz == "1") == 4) {
-      if (sum(x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"] <= x5$NDZ_sanemsanas_datums[x5$sak_beidz == "2"]) == 4) {
-        logVec_forsak_beidz <- ifelse(is.na(x5$NDZ_sanemsanas_datums == x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"][(abs(as.numeric(difftime(x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"], x5$NDZ_sanemsanas_datums[x5$sak_beidz == "2"], units = "days"))) == min(abs(as.numeric(difftime(x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"], x5$NDZ_sanemsanas_datums[x5$sak_beidz == "2"], units = "days")))))]), FALSE, x5$NDZ_sanemsanas_datums == x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"][(abs(as.numeric(difftime(x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"], x5$NDZ_sanemsanas_datums[x5$sak_beidz == "2"], units = "days"))) == min(abs(as.numeric(difftime(x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"], x5$NDZ_sanemsanas_datums[x5$sak_beidz == "2"], units = "days")))))])
-        x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[logVec_forsak_beidz, ], x5[x5$sak_beidz == "2", ]) 
-        rm(logVec_forsak_beidz)
-      } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
+            if (sum(x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"] <= x5$NDZ_sanemsanas_datums[x5$sak_beidz == "2"]) == 4) {
+                logVec_forsak_beidz <- ifelse(is.na(x5$NDZ_sanemsanas_datums == x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"][(abs(as.numeric(difftime(x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"], x5$NDZ_sanemsanas_datums[x5$sak_beidz == "2"], units = "days"))) == min(abs(as.numeric(difftime(x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"], x5$NDZ_sanemsanas_datums[x5$sak_beidz == "2"], units = "days")))))]), FALSE, x5$NDZ_sanemsanas_datums == x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"][(abs(as.numeric(difftime(x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"], x5$NDZ_sanemsanas_datums[x5$sak_beidz == "2"], units = "days"))) == min(abs(as.numeric(difftime(x5$NDZ_sanemsanas_datums[x5$sak_beidz == "1"], x5$NDZ_sanemsanas_datums[x5$sak_beidz == "2"], units = "days")))))])
+                x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[logVec_forsak_beidz, ], x5[x5$sak_beidz == "2", ]) 
+                rm(logVec_forsak_beidz)
+            } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
     } else if (sum(x5$sak_beidz == "1") == 3) {
-      fncResult(processingFives_s3(x5))
+          x5 %>% 
+            processingFives_s3() %>% 
+            fncResult()
     } else if (sum(x5$sak_beidz == "1") == 2) {
       fncResult(processingFives_s2(x5))
     } else if (sum(x5$sak_beidz == "1") == 1) {
         if (all(x5$sak_beidz == c("2", "1", "2", "2", "2"))) {
           if (all(diff(x5$NDZ_sanemsanas_datums) != 0)){
-            if ((x5$PS_code[1] %in% c('________', '___________') && x5$NM_code[1] == '_____________') ||
-                (x5$PS_code[1] == '__________' && x5$NM_code[1] == '__________________')) {
+            if ((x5$PS_code[1] %in% c('___________', '___________') && x5$NM_code[1] == '___________') ||
+                (x5$PS_code[1] == '___________' && x5$NM_code[1] == '___________')) {
               x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1,])
               x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(2,5),])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
           } else if (diff(x5$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x5$NDZ_sanemsanas_datums[2:5]) != 0)) {
-            if (x5$PS_code[1] == '______________' && x5$NM_code[1] == '___________') {
+            if (x5$PS_code[1] == '___________' && x5$NM_code[1] == '___________') {
               x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1,])
               x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(2,5),])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
