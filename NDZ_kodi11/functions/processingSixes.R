@@ -1,5 +1,5 @@
 processingSixes <- function(x, o) {
-  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+  x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
 
   x6_uzVieniniekiem <- data.frame()
   x6_uzDivniekiem <- data.frame()
@@ -9,8 +9,8 @@ processingSixes <- function(x, o) {
   check_rows <- 0
 
   for (r in seq(1, nrow(x), by = 6)) {
-      x6 <- x[r:(r+5),]
-      x6 <- arrange(x6, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, sak_beidz)
+      x6 <- x[r:(r+5),] %>% 
+        arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, sak_beidz)
       
     if(all(x6$sak_beidz[1:2] == c("2", "1")) && diff(x6$NDZ_sanemsanas_datums[1:2]) != 0) {
         x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[1, ])
@@ -18,7 +18,7 @@ processingSixes <- function(x, o) {
     } else if (diff(x6$NDZ_sanemsanas_datums[1:2]) == 0 && 
                diff(x6$NDZ_sanemsanas_datums[3:4]) != 0 && 
                x6$sak_beidz[1] != x6$sak_beidz[2] && x6$sak_beidz[3] == "2") {
-      x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[2:3, ])
+      x6_uzDivniekiem <- x6[2:3, ] %>% rbind(x6_uzDivniekiem)
       x6_uzTris <- rbind(x6_uzTris, x6[4:6, ])
     } else if (sum(x6$sak_beidz == "1") == 6) {
       x_vieninieki <- codes_match(x6)
@@ -42,7 +42,7 @@ processingSixes <- function(x, o) {
         } else if (all(x6$sak_beidz == c("2", "1", "2", "1", "2", "1")) && 
                   all(sapply(seq(1,4,by=2), function(i) all(diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
                   diff(x6$NDZ_sanemsanas_datums[5:6]) != 0 &&
-                  x6$PS_code[1] == "_________" && x6$NM_code[1] == "__________") {
+                  x6$PS_code[1] == "___________" && x6$NM_code[1] == "___________") {
           x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[1, ])
           x6_uzPieciniekiem <- rbind(x6_uzPieciniekiem, x6[-1, ])
         } else if (all(x6$sak_beidz == c("2", "2", "1", "2", "1", "1")) && 
@@ -78,38 +78,36 @@ if(check_rows == nrow(x)) {
   rm(x, r, x6, check_rows)
   
 #1 Apakštabulu x6_uzVieniniekiem apstrādā caur funkciju processingOnes().
-  if(nrow(x6_uzVieniniekiem) > 0) {
-    x6_uzVieniniekiem <- arrange(x6_uzVieniniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-    sendTo_tempNDZ(processingOnes(x6_uzVieniniekiem, o))
-  } else {
-    cat("Tabula x6_uzVieniniekiem ir tukša.\n")}
-  rm(x6_uzVieniniekiem)
+if(nrow(x6_uzVieniniekiem) > 0) {
+  x6_uzVieniniekiem %>% 
+    arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% 
+    sendTo_tempNDZ(processingOnes(o))
+} else {cat("Tabula x6_uzVieniniekiem ir tukša.\n")}
+rm(x6_uzVieniniekiem)
   
 #2 Apakštabulu x6_uzDivniekiem sūta caur funkciju processingTwoes().
-  if(nrow(x6_uzDivniekiem) > 0) {
-    x6_uzDivniekiem <- arrange(x6_uzDivniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-    processingTwoes(x6_uzDivniekiem, o)
-  } else {cat("Tabula x6_uzDivniekiem ir tukša.\n")}
-  rm(x6_uzDivniekiem)
+if(nrow(x6_uzDivniekiem) > 0) {
+  x6_uzDivniekiem %>% 
+    arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% 
+    processingTwoes(o)
+} else {cat("Tabula x6_uzDivniekiem ir tukša.\n")}
+rm(x6_uzDivniekiem)
   
 #3 Apakštabulu x6_uzTris sūta caur funkciju processingThrees().
-  if(nrow(x6_uzTris) > 0) {
-    x6_uzTris <- arrange(x6_uzTris, PS_code, NM_code,NDZ_sanemsanas_datums)
-    processingThrees(x6_uzTris, o)
-  } else {cat("Tabula x6_uzTris ir tukša.\n")}
-  rm(x6_uzTris)
+if(nrow(x6_uzTris) > 0) {
+  x6_uzTris %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingThrees(o)
+} else {cat("Tabula x6_uzTris ir tukša.\n")}
+rm(x6_uzTris)
 
 #4 Apakštabulu x6_uzCetri sūta caur funkciju processingFours().
-  if(nrow(x6_uzCetri) > 0) {
-    x6_uzCetri <- arrange(x6_uzCetri, PS_code, NM_code, NDZ_sanemsanas_datums)
-    processingFours(x6_uzCetri, o)
-  } else {cat("Tabula x6_uzCetri ir tukša.\n")}
-  rm(x6_uzCetri)
+if(nrow(x6_uzCetri) > 0) {
+  x6_uzCetri %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFours(o)
+} else {cat("Tabula x6_uzCetri ir tukša.\n")}
+rm(x6_uzCetri)
   
 #5 Apakštabulu x6_uzPieciniekiem sūta caur funkciju processingFives().
-  if(nrow(x6_uzPieciniekiem) > 0) {
-    x6_uzPieciniekiem <- arrange(x6_uzPieciniekiem, PS_code,, NM_code, NDZ_sanemsanas_datums)
-    processingFives(x6_uzPieciniekiem, o)
-  } else {cat("Tabula x6_uzPieciniekiem ir tukša.\n")}
-  rm(x6_uzPieciniekiem)
+if(nrow(x6_uzPieciniekiem) > 0) {
+  x6_uzPieciniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFives(o)
+} else {cat("Tabula x6_uzPieciniekiem ir tukša.\n")}
+rm(x6_uzPieciniekiem)
 }
