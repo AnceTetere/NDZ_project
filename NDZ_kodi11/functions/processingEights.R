@@ -1,18 +1,12 @@
 processingEights <- function(x, o){
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
-
-  x8_uzVieniniekiem <- data.frame()
-  x8_uzDivniekiem <- data.frame()
-  x8_uzCetriniekiem <- data.frame()
-  x8_uzSesi <- data.frame()
-  x8_uzSeptini <- data.frame()
+  x8_uzVieniniekiem <- data.frame(); x8_uzDivniekiem <- data.frame(); x8_uzCetriniekiem <- data.frame(); x8_uzSesi <- data.frame(); x8_uzSeptini <- data.frame()
   check_rows <- 0
-  
+
   for (r in seq(1, nrow(x), by = 8)) {
-    x8 <- x[r:(r+7), ]
-    x8 <- arrange(x8, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+    x8 <- x[r:(r+7),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
     
-    if (x8$PS_code[1] == '_________' && x8$NM_code[1] == '____________') {
+    if (x8$PS_code[1] == '_________' && x8$NM_code[1] == '_______________') {
       if (all(x8$sak_beidz == c("2", "1", "2", "2", "2", "2", "2", "2")) && 
          diff(x8$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x8$NDZ_sanemsanas_datums[2:8]) != 0)) {
         x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1:2,])
@@ -23,7 +17,7 @@ processingEights <- function(x, o){
     } else if (all(x8$sak_beidz == c("2","1","2","1","2","2","1","2")) && 
                diff(x8$NDZ_sanemsanas_datums[1:2]) == 0 && 
                diff(x8$NDZ_sanemsanas_datums[2:3]) != 0 &&
-               x8$PS_code[1] == '__________' && x8$NM_code[1] == '_________________') {
+               x8$PS_code[1] == '____________' && x8$NM_code[1] == '____________') {
       x8_uzDivniekiem <- rbind(x8_uzDivniekiem, x8[c(2,3,4,6,7,8), ])
     } else if (all(x8$sak_beidz[c(1,2,4)] == c("1", "2", "1")) && 
                all(diff(x8$NDZ_sanemsanas_datums[1:3]) != 0) && 
@@ -39,7 +33,7 @@ processingEights <- function(x, o){
       if (all(x8$sak_beidz == c("1", "2", "1", "1", "2", "1", "1", "1")) && 
           all(diff(x8$NDZ_sanemsanas_datums[1:7]) != 0) && 
           diff(x8$NDZ_sanemsanas_datums[7:8]) == 0 &&
-          x8$PS_code[1] == '_________' && x8$NM_code[1] == '___________') {
+          x8$PS_code[1] == '____________' && x8$NM_code[1] == '_______________') {
         x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1,])
       } else {stop("processingEights: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
     } else if (sum(x8$sak_beidz == "1") == 5) { 
@@ -70,41 +64,36 @@ if (check_rows == nrow(x)) {
   
 #1 Apakštabulu x8_uzVieniniekiem sūta caur processingOnes().
 if(nrow(x8_uzVieniniekiem) > 0) {
-  x8_uzVieniniekiem <- arrange(x8_uzVieniniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-  sendTo_tempNDZ(processingOnes(x8_uzVieniniekiem, o))
+  x8_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ()
   cat("No astoņniekiem atvasinātā tabula x8_uzVieniniekiem pārsūtīta apstrādei caur processingOnes().\n")
 } else {cat("Tabula x8_uzVieniniekiem ir tukša.\n")}
   rm(x8_uzVieniniekiem)
   
 #2 Apakštabulu x8_uzDivniekiem sūta caur processingTwoes().
 if (nrow(x8_uzDivniekiem) > 0) {
-  x8_uzDivniekiem <- arrange(x8_uzDivniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
   cat("No desmitniekiem atvasinātā tabula x8_uzDivniekiem pārsūtīta uz processingTwoes() un caur to uz tabulu tempNDZ, ko būvējam.\n")
-  processingTwoes(x8_uzDivniekiem, o)
+  x8_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o)
 } else {cat("Tabula x8_uzDivniekiem ir tukša.\n")}
-  rm(x8_uzDivniekiem)
+rm(x8_uzDivniekiem)
   
 #3 Apakštabulu x8_uzCetriniekiem sūta caur processingFours().
 if (nrow(x8_uzCetriniekiem) > 0) {
-  x8_uzCetriniekiem <- arrange(x8_uzCetriniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
   cat("No astoņniekiem atvasinātā tabula x8_uzCetriniekiem pārsūtīta apstrādei caur processingFours.\n")
-  processingFours(x8_uzCetriniekiem, o)
+  x8_uzCetriniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFours(o)
 } else {cat("Tabula x8_uzCetriniekiem ir tukša.\n")}
-  rm(x8_uzCetriniekiem)
+rm(x8_uzCetriniekiem)
   
 #4 Apakštabulu x8_uzSesi sūta caur processingSixes().
 if (nrow(x8_uzSesi) > 0) {
-  x8_uzSesi <- arrange(x8_uzSesi, PS_code, NM_code, NDZ_sanemsanas_datums)
   cat("No astoņniekiem atvasinātā tabula x8_uzSesi pārsūtīta apstrādei caur processingSixes().\n")
-  processingSixes(x8_uzSesi, o)
+  x8_uzSesi %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSixes(o)
 } else {cat("Tabula x8_uzSesi ir tukša.\n")}
-  rm(x8_uzSesi)
+rm(x8_uzSesi)
   
 #5 Apakštabulu x8_uzSeptini sūta caur processingSeven().
 if (nrow(x8_uzSeptini) > 0) {
-  x8_uzSeptini <- arrange(x8_uzSeptini, PS_code, NM_code, NDZ_sanemsanas_datums)
   cat("No astoņniekiem atvasinātā tabula x8_uzSeptini pārsūtīta apstrādei caur processingSeven.\n")
-  processingSeven(x8_uzSeptini, o)
+  x8_uzSeptini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSeven(o)
 } else {cat("Tabula x8_uzSeptini ir tukša.\n")}
-  rm(x8_uzSeptini)
+rm(x8_uzSeptini)
 }
