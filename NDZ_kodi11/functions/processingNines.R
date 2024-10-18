@@ -1,6 +1,5 @@
 processingNines <- function(x, o) {
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
-  
   x9_uzVieniniekiem <- data.frame(); x9_uzSesi <- data.frame(); x9_uzAstoniekiem <- data.frame()
   check_rows <- 0
   
