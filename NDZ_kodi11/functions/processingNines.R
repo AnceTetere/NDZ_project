@@ -1,15 +1,12 @@
 processingNines <- function(x, o) {
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   
-  x9_uzVieniniekiem <- data.frame()
-  x9_uzSesi <- data.frame()
-  x9_uzAstoniekiem <- data.frame()
+  x9_uzVieniniekiem <- data.frame(); x9_uzSesi <- data.frame(); x9_uzAstoniekiem <- data.frame()
   check_rows <- 0
   
   for(r in seq(1, nrow(x), by = 9)) {
 
-    x9 <- x[r : (r + 8), ]
-    x9 <- arrange(x9, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+    x9 <- x[r:(r+8),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
     
     if (all(x9$sak_beidz[1:2] == c("1", "2")) && 
              diff(x9$NDZ_sanemsanas_datums[1:2]) == 0 &&
@@ -65,22 +62,22 @@ if (nrow(x) == check_rows) {
   
 #1 Apakštabulu x9_uzVieniniekiem sūta caur processingOnes().
 if(nrow(x9_uzVieniniekiem) > 0) {
-   x9_uzVieniniekiem <- arrange(x9_uzVieniniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-   sendTo_tempNDZ(processingOnes(x9_uzVieniniekiem, o))
+   cat("No devītniekiem atvasinātā tabula x9_uzVieniniekiem pārsūtīta uz processingOnes() un tad uz tempNDZ, ko būvējam.\n")
+    x9_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ()
 } else {cat("Tabula x9_uzVieniniekiem ir tukša.\n")}
 rm(x9_uzVieniniekiem)
 
 #2 Apakštabulu x9_uzSesi sūta caur processingSixes().
 if(nrow(x9_uzSesi) > 0) {
-    x9_uzSesi <- arrange(x9_uzSesi, PS_code, NM_code, NDZ_sanemsanas_datums)
-    processingSixes(x9_uzSesi, o)
+  cat("No devītniekiem atvasinātā tabula x9_uzSesi pārsūtīta uz processingSixes() un tad uz tempNDZ, ko būvējam.\n")
+  x9_uzSesi %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSixes(o)
 } else {cat("Tabula x9_uzSesi ir tukša.")}
 rm(x9_uzSesi) 
 
 #3 Apakštabulu x9_uzAstoniekiem sūta caur processingEights().
 if(nrow(x9_uzAstoniekiem) > 0) {
-  x9_uzAstoniekiem <- arrange(x9_uzAstoniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
-  processingEights(x9_uzAstoniekiem, o)
+  cat("No devītniekiem atvasinātā tabula x9_uzAstoniekiem pārsūtīta uz processingEights() un tad uz tempNDZ, ko būvējam.\n")
+  x9_uzAstoniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEights(o)
 } else {cat("Tabula x9_uzAstoniekiem ir tukša.")}
-  rm(x9_uzAstoniekiem) 
+rm(x9_uzAstoniekiem) 
 }
