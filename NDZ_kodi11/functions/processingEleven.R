@@ -1,14 +1,12 @@
 processingEleven <- function(x, o) {
+  cat("-------------SĀK 11-nieku APSTRĀDI.")
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
-  
-  x11_uzVieniniekiem <- data.frame()
-  x11_uzDevini <- data.frame()
-  x11_uzDesmitniekiem <- data.frame()
+
+  x11_uzVieniniekiem <- data.frame(); x11_uzDevini <- data.frame(); x11_uzDesmitniekiem <- data.frame()
   check_rows <- 0
   
   for (r in seq(1, nrow(x), by = 11)) {
-    x11 <- x[r:(r+10),]
-    x11 <- arrange(x11, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+    x11 <- x[r:(r+10),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
       
     if (sum(x11$sak_beidz == "1") == 6) {
       if (all(x11$sak_beidz[c(1,3,5,6,8,10)] == "1") && 
@@ -52,31 +50,28 @@ processingEleven <- function(x, o) {
     }
     
 #PĀRBAUDE: Vai rindu skaits no vienpadsmitniekiem atvasinātajās tabulās sakrīt ar rindām izejas tabulā x.
-    if (check_rows == nrow(x)) {
+if (check_rows == nrow(x)) {
       cat("PĀRBAUDE IZIETA: Apakštabulu rindu summa sakrīt ar izejošo vienpadsmitnieku tabulu.\n"); rm(x, x11, r, check_rows)
-    } else {stop("processingEleven: PĀRBAUDE NAV IZIETA. Apakštabulu rindu summa NESAKRĪT ar izejošo vienpadsmitnieku tabulu.")}
-    
+} else {stop("processingEleven: PĀRBAUDE NAV IZIETA. Apakštabulu rindu summa NESAKRĪT ar izejošo vienpadsmitnieku tabulu.")}
+
 #1 Apakštabulu x11_uzVieniniekiem sūta caur funkciju processingOnes().
-    if (nrow(x11_uzVieniniekiem) > 0) {
-      x11_uzVieniniekiem <- arrange(x11_uzVieniniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
+if (nrow(x11_uzVieniniekiem) > 0) {
       cat("No vienpadsmitniekiem atvasinātā tabula x11_uzVieniniekiem pārsūtīta uz processingOnes un tad uz tempNDZ, ko būvējam.\n")
-      sendTo_tempNDZ(processingOnes(x11_uzVieniniekiem, o))
-    } else {cat("Tabula x11_uzVieniniekiem ir tukša.\n")}
-    rm(x11_uzVieniniekiem)
+      x11_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ()
+} else {cat("Tabula x11_uzVieniniekiem ir tukša.\n")}
+rm(x11_uzVieniniekiem)
     
 #2 Apakštabulu x11_uzDeviņi sūta caur processingNines().
-    if (nrow(x11_uzDevini) > 0) {
-      x11_uzDevini <- arrange(x11_uzDevini, PS_code, NM_code, NDZ_sanemsanas_datums)
+if (nrow(x11_uzDevini) > 0) {
       cat("No vienpadsmitniekiem atvasinātā tabula x11_uzDevini pārsūtīta uz processingNines() un tad uz tempNDZ, ko būvējam.\n")
-      processingNines(x11_uzDevini, o)
-    } else {cat("Tabula x11_uzDevini ir tukša.\n")}
-    rm(x11_uzDevini)
+      x11_uzDevini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingNines(o)
+} else {cat("Tabula x11_uzDevini ir tukša.\n")}
+rm(x11_uzDevini)
     
 #3 Apakštabulu x11_uzDesmitniekiem sūta caur processingTens().
-    if (nrow(x11_uzDesmitniekiem) > 0) {
-      x11_uzDesmitniekiem <- arrange(x11_uzDesmitniekiem, PS_code, NM_code, NDZ_sanemsanas_datums)
+if (nrow(x11_uzDesmitniekiem) > 0) {
       cat("No vienpadsmitniekiem atvasinātā tabula x11_uzDesmitniekiem pārsūtīta uz processingTens un tad uz tempNDZ, ko būvējam.\n")
-      processingTens(x11_uzDesmitniekiem, o)
-    } else {cat("Tabula x11_uzDesmitniekiem ir tukša.\n")}
-    rm(x11_uzDesmitniekiem)
+      x11_uzDesmitniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTens(o)
+} else {cat("Tabula x11_uzDesmitniekiem ir tukša.\n")}
+rm(x11_uzDesmitniekiem)
 }
