@@ -7,7 +7,7 @@ x8s4_uzCetriniekiem <- data.frame()
 x8s4_uzSesi <- data.frame()
 x8s4_uzSeptini <- data.frame()
 
-if (x8s4$PS_code[1] == '________' && x8s4$NM_code[1] == '_________') {
+if (x8s4$PS_code[1] == '___________' && x8s4$NM_code[1] == '______________') {
   if (all(x8s4$sak_beidz == c("2","1","2","2","1","2","1","1"))) {
     x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[c(1,8), ])
     x8s4_uzCetriniekiem <- rbind(x8s4_uzCetriniekiem, x8s4[c(2,4,5,6),])
@@ -36,19 +36,19 @@ if (x8s4$PS_code[1] == '________' && x8s4$NM_code[1] == '_________') {
   }
 } else if (all(x8s4$sak_beidz[1:3] == c("2", "1", "2")) && 
            diff(x8s4$NDZ_sanemsanas_datums[1:2]) != 0) {
-  x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[1, ])
-  x8s4_uzSeptini <- rbind(x8s4_uzSeptini, x8s4[-1, ])
+      x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[1, ])
+      x8s4_uzSeptini <- rbind(x8s4_uzSeptini, x8s4[-1, ])
 } else if (all(x8s4$sak_beidz[1:3] == c("2", "2", "1")) && diff(x8s4$NDZ_sanemsanas_datums[2:3]) == 0) {
-  x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[1, ])
-  x8s4_uzSeptini <- rbind(x8s4_uzSeptini, x8s4[-1, ])
+      x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[1, ])
+      x8s4_uzSeptini <- rbind(x8s4_uzSeptini, x8s4[-1, ])
 } else if (all(x8s4$sak_beidz[c(1, 4, 6, 8)] == "1") && all(diff(x8s4$NDZ_sanemsanas_datums) != 0)) {
-  x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[8, ])
-  x8s4_uzSesi <- rbind(x8s4_uzSesi, x8s4[c(1, 3:7), ])
+      x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[8, ])
+      x8s4_uzSesi <- rbind(x8s4_uzSesi, x8s4[c(1, 3:7), ])
 } else if (all(x8s4$sak_beidz[c(1,2,4,7)] == "1") && 
            all(sapply(c(2,4), function(i) diff(x8s4$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
            all(sapply(c(1,3,5:7), function(i) diff(x8s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-  x8s4_uzDivniekiem <- rbind(x8s4_uzDivniekiem, x8s4[c(1,3,4,6), ])
-  x8s4_uzCetriniekiem <- rbind(x8s4_uzCetriniekiem, x8s4[c(2,5,7,8), ]) 
+      x8s4_uzDivniekiem <- rbind(x8s4_uzDivniekiem, x8s4[c(1,3,4,6), ])
+      x8s4_uzCetriniekiem <- rbind(x8s4_uzCetriniekiem, x8s4[c(2,5,7,8), ]) 
 } else {
   x8s4_uzCetriniekiem  <- rbind(x8s4_uzCetriniekiem, x8s4)
   #stop("processingEights_s4: Trūkst izstrādes koda.")
