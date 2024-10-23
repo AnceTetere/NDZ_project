@@ -2,10 +2,11 @@ starpkodi4 <- function(y, t, prev, v) {
   
   if (t$zinkod[1] == "11") {
     yt <- starpkodi4_11(y, t, prev, v)
-#  } else if (t$zinkod[1] == "51") {
+ } else if (t$zinkod[1] == "50") {
+    yt <- starpkodi4_50(y, t, prev, v)
+    
+    #  } else if (t$zinkod[1] == "51") {
 #    yt <- starpkodi4_51(y, t, prev, v)
-#  } else if (t$zinkod[1] == "50") {
-#    yt <- starpkodi4_50(y, t, prev, v)
 # } else if (t$zinkod[1] == "53") {
 #    yt <- starpkodi4_53(y, t, prev, v)
 # } else if (t$zinkod[1] == "91") {
