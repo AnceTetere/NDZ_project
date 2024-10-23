@@ -1,4 +1,5 @@
 starpkodi3 <- function(y, t, prev, v) {
+# for tests y <- y2
   
   if (t$zinkod[1] == "11") {
     yt <- starpkodi3_11(y, t, prev, v)
@@ -53,10 +54,10 @@ starpkodi3 <- function(y, t, prev, v) {
 #    } else if (t$zinkod[1] == "92" && t$zinkod[2] == "41" && t$zinkod[3] == "25" && 
 #               diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
 #      yt <- y2[v, ]
-#      yt$dienas <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days")) + 1
+#      yt$dienas <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days")) + 1 
 #    } else if (t$zinkod[1] == "92" && t$zinkod[2] == "25" && t$zinkod[3] == "92" && 
 #               diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0 && 
-#               t$PS_code[1] == '_________' && t$NM_code[1] == '____________') {
+#               t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
 #      yt <- y2[v, ]
 #      yt$dienas <- as.numeric(difftime(t$sak[1], prev, units = "days")) - 1
 #    } else if (t$zinkod[1] == "54" && t$zinkod[2] == "25" && t$zinkod[3] == "53" && 
@@ -65,6 +66,7 @@ starpkodi3 <- function(y, t, prev, v) {
 #      yt$dienas <- as.numeric(difftime(t$beidz[2], t$sak[1], units = "days"))
     } else {stop("Starpkodi3: Trūkst izstrādes koda.")}
   
+  if(is.na(yt$PS_code[1])) {stop("Dienas NA.")}
   yt$zinkod <- "combined"  #jo starpkodu dienu sarēķins
   return(yt)
 }
