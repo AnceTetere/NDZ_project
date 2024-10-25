@@ -7,8 +7,8 @@ starpkodi3 <- function(y, t, prev, v) {
      yt <- starpkodi3_41(y, t, prev, v)
   } else if (t$zinkod[1] == "50"){
      yt <- starpkodi3_50(y, t, prev, v)
-#  } else if (t$zinkod[1] == "25") {
-#    yt <- starpkodi3_25(y2, t, prev, v)
+  } else if (t$zinkod[1] == "25") {
+     yt <- starpkodi3_25(y, t, prev, v)
 #  } else if (t$zinkod[1] == "53") {  
 #    yt <- starpkodi3_53(y2, t, prev, v)
   } else if (t$zinkod[1] == "51") {  
@@ -54,10 +54,10 @@ starpkodi3 <- function(y, t, prev, v) {
 #    } else if (t$zinkod[1] == "92" && t$zinkod[2] == "41" && t$zinkod[3] == "25" && 
 #               diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
 #      yt <- y2[v, ]
-#      yt$dienas <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days")) + 1 
+#      yt$dienas <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days")) + 1 #jo atlaišana
 #    } else if (t$zinkod[1] == "92" && t$zinkod[2] == "25" && t$zinkod[3] == "92" && 
 #               diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0 && 
-#               t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
+#               t$PS_code[1] == '__________' && t$NM_code[1] == '________________') {
 #      yt <- y2[v, ]
 #      yt$dienas <- as.numeric(difftime(t$sak[1], prev, units = "days")) - 1
 #    } else if (t$zinkod[1] == "54" && t$zinkod[2] == "25" && t$zinkod[3] == "53" && 
