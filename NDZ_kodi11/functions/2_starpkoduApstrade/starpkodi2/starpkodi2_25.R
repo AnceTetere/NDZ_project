@@ -8,7 +8,7 @@ starpkodi2_25 <- function(y, t, prev, v) {
 #    yt$dienas <- 0
 #  } else 
   if (t$zinkod[2] %in% c("41", "51")) {
-      if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
+      if (diff(t$NDZ_sanemsanas_datums[1:2]) != 0) {
           yt <- y[v,]
           yt$dienas <- 0
         #} else if(diff(t$NDZ_sanemsanas_datums[1:2]) != 0) {
@@ -20,5 +20,6 @@ starpkodi2_25 <- function(y, t, prev, v) {
 #    yt <- yt[yt$zinkod == "11", ]
   } else {stop("Starpkodi2_25: Trūkst izstrādes koda.")}
   
+  rm(y, t, prev, v)
   return(yt)
 }
