@@ -13,8 +13,8 @@ dubultkodi <- function(y, t, prev, v, z) {
     z <- rbind(z, starpkodi5(y, t, prev, v))
   #} else if (nrow(t) == 6) {
   #  z <- rbind(z, starpkodi6(y_2plus, t, prev, v))
-  #} else if (nrow(t) == 7) {
-  #  z <- rbind(z, starpkodi7(y_2plus, t, prev, v))
+  } else if (nrow(t) == 7) {
+    z <- rbind(z, starpkodi7(y, t, prev, v))
   #} else if (nrow(t) == 8) {
   #  z <- rbind(z, starpkodi8(y_2plus, t, prev, v))
   #} else if (nrow(t) == 9) {
