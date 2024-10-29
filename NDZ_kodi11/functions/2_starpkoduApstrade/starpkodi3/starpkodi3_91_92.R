@@ -1,6 +1,6 @@
 starpkodi3_91_92 <- function(y, t, prev, v) {
   
-  if (t$zinkod[3] == "25") {
+  if (t$zinkod[3] %in% c("21", "25")) {
         if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
           yt <- y2[v, ]
           yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")), as.numeric(diff(t$NDZ_sanemsanas_datums[2:3]))) 
@@ -8,7 +8,7 @@ starpkodi3_91_92 <- function(y, t, prev, v) {
   } else if (t$zinkod[3] == "50") {
         if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
           yt <- y2[v, ]
-          yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, #jo atvaļinājums
+          yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
                            as.numeric(diff(t$NDZ_sanemsanas_datums[2:3])))
         } else {stop("Starpkodi3_91_92: Trūkst izstrādes koda.")}
   
@@ -18,7 +18,7 @@ starpkodi3_91_92 <- function(y, t, prev, v) {
 #    if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0 &&
 #        diff(t$NDZ_sanemsanas_datums[2:3]) == 0)) { 
 #      yt <- y2[v, ]
-#      yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1 #jo atvaļinājums
+#      yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1 
 #    }
 #  } else if (t$zinkod[3] == "21") {}
 #  if(all(diff(t$NDZ_sanemsanas_datums) != 0)) {
@@ -27,7 +27,7 @@ starpkodi3_91_92 <- function(y, t, prev, v) {
 #  }
 #}
   #    #} else if (t$zinkod[3] == "40" && all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-  #days1 <- as.numeric(difftime(as.Date(t$NDZ_sanemsanas_datums[1]), prev, units = "days")) - 1 #mīnus 1, jo pēdējā datumā viņš jau ir atvaļinājumā
+  #days1 <- as.numeric(difftime(as.Date(t$NDZ_sanemsanas_datums[1]), prev, units = "days")) - 1 
   #days2 <- as.numeric(difftime(as.Date(t$NDZ_sanemsanas_datumsz[3]), as.Date(t$NDZ_sanemsanas_datums[2]), units = "days")) 
   #days <- days1 + days2 
   #rm(days1, days2)
