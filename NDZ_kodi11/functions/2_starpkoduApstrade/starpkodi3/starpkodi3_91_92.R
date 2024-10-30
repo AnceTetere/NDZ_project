@@ -10,6 +10,10 @@ starpkodi3_91_92 <- function(y, t, prev, v) {
           yt <- y2[v, ]
           yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
                            as.numeric(diff(t$NDZ_sanemsanas_datums[2:3])))
+        } else if (diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
+          yt <- y2[v, ]
+          yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
+                           as.numeric(diff(t$NDZ_sanemsanas_datums[2:3])))
         } else {stop("Starpkodi3_91_92: Trūkst izstrādes koda.")}
   
       
