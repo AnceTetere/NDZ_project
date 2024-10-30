@@ -2,6 +2,11 @@ starpkodi3_25 <- function(y, t, prev, v) {
 
   if (t$zinkod[2] == "51") {
     yt <- starpkodi3_25_51(y, t, prev, v)
+  } else if (t$zinkod[2] == "25") {
+          if (diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
+            yt <- y[v,]
+            yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[2], prev, units = "days")) - 1
+          } else {stop("Starpkodi3_25: Trūkst izstrādes koda.")}
   } else {stop("Starpkodi3_25: Trūkst izstrādes koda.")}
   
   
@@ -11,7 +16,7 @@ starpkodi3_25 <- function(y, t, prev, v) {
     
 #    if (t$zinkod[2] == "50" && t$zinkod[3] == "51" && all(diff(t$NDZ_sanemsanas_datums) == 0)) {
 #    yt <- y[v, ]
-#    yt$dienas <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 #Viss pareizi, nepieskaitu viens. Rēķinot no prev, tas pieskaitās automātiski, un es atņemu.
+#    yt$dienas <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 
 #    } else if (t$zinkod[2] == "50" && t$zinkod[3] == "51" && diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
 #      yt <- y[v, ]
 #      yt$dienas <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 
@@ -24,7 +29,7 @@ starpkodi3_25 <- function(y, t, prev, v) {
 #             all(diff(t$NDZ_sanemsanas_datums[1:2]) == 0) && 
 #             all(diff(t$NDZ_sanemsanas_datums[2:3]) != 0)) {
 #    yt <- y[v, ]
-#    yt$dienas <- as.numeric(difftime(t$last_date[3], t$sak[3], units = "days")) + 1 #jo darbs
+#    yt$dienas <- as.numeric(difftime(t$last_date[3], t$sak[3], units = "days")) + 1 
 #    } else } else if (t$zinkod[2] %in% c("92","41") && t$zinkod[3] %in% c("92","41") && all(diff(t$NDZ_sanemsanas_datums) == 0)) {
 #      yt <- y[v, ]
 #      yt$dienas <- 0
