@@ -1,16 +1,14 @@
 starpkodi5_11_50 <- function(y, t, prev, v) {
   
-  if (t$zinkod[3] == "51") {
+  if (t$zinkod[3] %in% c("41", "51", "54", "92")) {
     yt <- starpkodi5_11_50_51(y, t, prev, v)
+  } else if (t$zinkod[3] %in% c("40", "50", "53", "91")) {
+    yt <- starpkodi5_11_50_50(y, t, prev, v)
   } else {stop("Starpkodi5_11_50: Trūkst izstrādes koda.")}
   
   rm(y, t, prev, v)
   return(yt)
-}
-
-  
-
-   
+}   
 
 #  } else if (t$zinkod[3] == "51" && t$zinkod[4] == "21" && t$zinkod[5] == "50" && 
 #             all(diff(t$NDZ_sanemsanas_datums[1:4]) != 0) && all(diff(t$NDZ_sanemsanas_datums[4:5]) == 0)) {
