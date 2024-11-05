@@ -1,6 +1,6 @@
 starpkodi4_11_50 <- function(y, t, prev, v) {
   
-  if(t$zinkod[3] == "51") {
+  if(t$zinkod[3] %in% c("41", "51", "54", "92")) {
     yt <- starpkodi4_11_50_51(y, t, prev, v)
   } else if (t$zinkod[3] %in% c("21", "22", "23", "24", "25", "29")) {
     yt <- starpkodi4_11_50_25(y, t, prev, v)
