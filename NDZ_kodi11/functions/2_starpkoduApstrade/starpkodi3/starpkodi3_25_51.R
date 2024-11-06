@@ -11,7 +11,7 @@ starpkodi3_25_51 <- function(y, t, prev, v) {
         yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[2:3]))
       } else {stop("Starpkodi3_25_51: Trūkst izstrādes koda.")}
     } else {stop("Starpkodi3_25_51: Trūkst izstrādes koda.")}
- } else  if (t$zinkod[3] == "51") {
+ } else if (t$zinkod[3] %in% c("41", "51", "54", "92")) {
            if (diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
              if (t$PS_code[1] == '_________' && t$NM_code[1] == '_________') {
                    t$zinkod[t$zinkod == '25'] <- '50'
@@ -29,7 +29,7 @@ starpkodi3_25_51 <- function(y, t, prev, v) {
             } else if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && diff(t$NDZ_sanemsanas_datums[2:3]) != 0) {
              yt <- y[v, ]
              yt$dienas <- as.numeric(difftime(t$last_date[3], t$NDZ_sanemsanas_datums[3], units = "days")) + 1 + 1 
-			 } else {stop("Starpkodi3_25_51: Trūkst izstrādes koda.")}
+           } else {stop("Starpkodi3_25_51: Trūkst izstrādes koda.")}
 } else {stop("Starpkodi3_25_51: Trūkst izstrādes koda.")}
     
   rm(y, t, prev, v)
