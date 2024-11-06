@@ -57,7 +57,7 @@ starpkodi3_51 <- function(y, t, prev, v) {
 #      yt$dienas <- as.numeric(difftime(t$beidz[3], t$sak[2], units = "days")) + 1 
 #    } else if (t$zinkod[1] == "92" && t$zinkod[2] == "25" && t$zinkod[3] == "92" && 
 #               diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0 && 
-#               t$PS_code[1] == '_____________' && t$NM_code[1] == '_____________') {
+#               t$PS_code[1] == '___________' && t$NM_code[1] == '___________') {
 #      yt <- y2[v, ]
 #      yt$dienas <- as.numeric(difftime(t$sak[1], prev, units = "days")) - 1
 #    } else if (t$zinkod[1] == "54" && t$zinkod[2] == "25" && t$zinkod[3] == "53" && 
