@@ -20,12 +20,19 @@ starpkodi3_11_50 <- function(y, t, prev, v) {
             yt <- y[v, ]
             yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[3], t$NDZ_sanemsanas_datums[1], units = "days"))
           } else if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && diff(t$NDZ_sanemsanas_datums[2:3]) != 0) {
-            if (t$PS_code[1] == '_________' && t$NM_code[1] == '_________') {
+            if (t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
               yt <- y[v, ]
               yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[3], t$NDZ_sanemsanas_datums[1], units = "days"))
             } else {stop("Starpkodi3_11_50: Trūkst izstrādes koda.")}
           } else {stop("Starpkodi3_11_50: Trūkst izstrādes koda.")}
+  } else if (t$zinkod[3] %in% c("11", "14", "16", "61")) {
+    if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
+      if(t$period[1] == '202101' && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
+        yt <- y[v, ]
+        yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
+      } else {stop("Starpkodi3_11_50: Trūkst izstrādes koda.")}
     } else {stop("Starpkodi3_11_50: Trūkst izstrādes koda.")}
+  } else {stop("Starpkodi3_11_50: Trūkst izstrādes koda.")}
   
   rm(y, t, prev, v)
   return(yt) 
@@ -35,15 +42,15 @@ starpkodi3_11_50 <- function(y, t, prev, v) {
 #starpkodi3_11_53 <- function(y2, t, prev, v) {
 #  
 #  } else if (t$zinkod[3] == "54" && all(!diff(t$NDZ_sanemsanas_datums) == 0)) {
-#    days1 <- as.numeric(difftime(t$beidz_darbu[2], t$sak_darbu[1], units = "days"))
-#    days2 <- as.numeric(difftime(t$last_date[3], t$sak_darbu[3], units = "days")) + 1 
+#    days1 <- as.numeric(difftime(t$beidz[2], t$sak[1], units = "days"))
+#    days2 <- as.numeric(difftime(t$last_date[3], t$sak[3], units = "days")) + 1 
 #    
 #    yt <- y2[v, ]
 #    yt$dienas <- sum(days1, days2)
 #    rm(days1, days2)
 #  } else if (t$zinkod[3] == "54") {
-#    days1 <- as.numeric(difftime(t$beidz_darbu[2], t$sak_darbu[1], units = "days"))
-#    days2 <- as.numeric(difftime(t$last_date[3], t$sak_darbu[3], units = "days")) + 1
+#    days1 <- as.numeric(difftime(t$beidz[2], t$sak[1], units = "days"))
+#    days2 <- as.numeric(difftime(t$last_date[3], t$sak[3], units = "days")) + 1
 #    
 #    yt <- y2[v, ]
 #    yt$dienas <- sum(days1, days2)
@@ -61,7 +68,7 @@ starpkodi3_11_50 <- function(y, t, prev, v) {
 
   ##No 40
       # } else if (t$zinkod[3] == "40"){
-      #   if (t$PS_code[1] == '_________' && t$NM_code[1] == '_________') {
+      #   if (t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
       #     yt <- y[v, ]
       #     yt$dienas <- sum(as.numeric(diff(t$NDZ_sanemsanas_datums[1:2])), 
       #                      as.numeric(difftime(t$last_date[3], t$NDZ_sanemsanas_datums[3], units = "days")) + 1)
@@ -75,11 +82,12 @@ starpkodi3_11_50 <- function(y, t, prev, v) {
       #     yt$dienas <- 0
       #   } else {stop("Starpkodi3_11: Trūkst izstrādes koda.")}
 
+#    
     
  
   
     ###No 50  
 
-#  } else if (t$zinkod[3] == "11" && t$PS_code[1] == '_________' && t$NM_code[1] == '_________') {
+#  } else if (t$zinkod[3] == "11" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
 #    yt <- y[v, ]
 #    yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[2], t$NDZ_sanemsanas_datums[1], units = "days"))
