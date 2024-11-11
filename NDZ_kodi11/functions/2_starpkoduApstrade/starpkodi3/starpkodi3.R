@@ -1,5 +1,4 @@
 starpkodi3 <- function(y, t, prev, v) {
-# for tests y <- y2
   
   if (t$zinkod[1] == "11") {
     yt <- starpkodi3_11(y, t, prev, v)
