@@ -25,7 +25,7 @@ processingSeven <- function(x, o) {
                 x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
             } else if (all(x7$sak_beidz == c("2","1","2","1","2","2","1")) && 
                      diff(x7$NDZ_sanemsanas_datums[1:2]) == 0 && 
-                     x7$PS_code[1] == '__________' && x7$NM_code[1] == '___________') {
+                     x7$PS_code[1] == '__________' && x7$NM_code[1] == '__________') {
                     #Pagaidām sabloķēju, jo neesmu droša, ka šis vispārinās.
                       x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
                       x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
