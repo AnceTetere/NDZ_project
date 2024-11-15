@@ -1,6 +1,6 @@
 processingTens <- function(x, o) {
   cat("-------------SĀK 10-nieku APSTRĀDI.")
-  x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+  x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
 
   x10_uzVieniniekiem <- data.frame(); x10_uzDivniekiem <- data.frame(); x10_uzSeptini <- data.frame(); x10_uzAstoniekiem <- data.frame()
   check_rows <- 0
@@ -50,7 +50,7 @@ processingTens <- function(x, o) {
       } else if (all(x10$sak_beidz[c(3:4, 7, 9)] == "1") && 
                  all(sapply(seq(1, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
                  all(sapply(seq(2, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0)))&&
-                 x10$PS_code[1] == '___________' & x10$NM_code[1] == '____________') {
+                 x10$PS_code[1] == '________' & x10$NM_code[1] == '________') {
         p <- x10[1:6, ]
         p <- p[p$zinkod %in% c("40", "41"), ]
         x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, p[1, ])
