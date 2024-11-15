@@ -26,6 +26,8 @@ processingFives <- function(x, o) {
                  x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[5,])
                  x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[2:3,])
                } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
+            } else if (all(x5$sak_beidz == c("1", "1", "1", "1", "2"))) {
+                x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[4:5,])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
     } else if (sum(x5$sak_beidz == "1") == 3) {
           x5 %>% 
@@ -36,13 +38,13 @@ processingFives <- function(x, o) {
     } else if (sum(x5$sak_beidz == "1") == 1) {
         if (all(x5$sak_beidz == c("2", "1", "2", "2", "2"))) {
           if (all(diff(x5$NDZ_sanemsanas_datums) != 0)){
-            if ((x5$PS_code[1] %in% c('____________', '______________') && x5$NM_code[1] == '____________') ||
-                (x5$PS_code[1] == '_______________' && x5$NM_code[1] == '__________________')) {
+            if ((x5$PS_code[1] %in% c('__________', '__________') && x5$NM_code[1] == '__________') ||
+                (x5$PS_code[1] == '__________' && x5$NM_code[1] == '__________')) {
               x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1,])
               x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(2,5),])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
           } else if (diff(x5$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x5$NDZ_sanemsanas_datums[2:5]) != 0)) {
-            if (x5$PS_code[1] == '________' && x5$NM_code[1] == '_____________') {
+            if (x5$PS_code[1] == '__________' && x5$NM_code[1] == '__________') {
               x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1,])
               x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(2,5),])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
