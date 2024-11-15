@@ -13,11 +13,16 @@ processingEleven <- function(x, o) {
           all(diff(x11$NDZ_sanemsanas_datums[c(1:3, 5:11)]) != 0) &&
           diff(x11$NDZ_sanemsanas_datums[4:5]) == 0) {
           x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-5,])
-      } else if (all(x11$sak_beidz[c(1,3,5,8,9,11)] == "1") && 
-                 all(diff(x11$NDZ_sanemsanas_datums[c(1:2, 4:7, 9:11)]) != 0) &&
-                 all(sapply(c(3,7), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-        x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
-        x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+      } else if (all(x11$sak_beidz[c(1,3,5,8,9,11)] == "1")) { 
+          if (all(diff(x11$NDZ_sanemsanas_datums[c(1:2, 4:7, 9:11)]) != 0) &&
+              all(sapply(c(3,7), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
+            x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+            x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,]) 
+          } else if (all(sapply(c(1:6,8:10), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
+                     diff(x11$NDZ_sanemsanas_datums[7:8]) == 0) {
+            x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+            x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[c(1,2,3,4,5,6,8,7,9,10),])
+          } else {stop("processingEleven trūkst apstrādes koda. \n")}
       } else if (all(x11$sak_beidz[c(1,4,6,8,10,11)] == "1") && 
                  all(sapply(c(1,2,4,6,8,10), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && 
                  all(sapply(seq(3,9,by=2), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
