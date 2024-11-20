@@ -1,7 +1,7 @@
 processingFives <- function(x, o) {
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x5_uzVieniniekiem <- data.frame(); x5_uzDivniekiem <- data.frame(); x5_uzCetriniekiem <- data.frame()
-  
+
   fncResult <- function(result) {
     if (exists("result")) {
       x5_uzVieniniekiem <<- rbind(x5_uzVieniniekiem, result$x5_uzVieniniekiem)
