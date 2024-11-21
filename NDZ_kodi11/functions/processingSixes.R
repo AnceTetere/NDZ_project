@@ -13,8 +13,8 @@ processingSixes <- function(x, o) {
     } else if (diff(x6$NDZ_sanemsanas_datums[1:2]) == 0 && 
                diff(x6$NDZ_sanemsanas_datums[3:4]) != 0 && 
                x6$sak_beidz[1] != x6$sak_beidz[2] && x6$sak_beidz[3] == "2") {
-      x6_uzDivniekiem <- x6[2:3, ] %>% rbind(x6_uzDivniekiem)
-      x6_uzTris <- rbind(x6_uzTris, x6[4:6, ])
+      x6_uzDivniekiem <- x6[c(1,3), ] %>% rbind(x6_uzDivniekiem)
+      x6_uzTris <- x6[4:6, ] %>% rbind(x6_uzTris)
     } else if (sum(x6$sak_beidz == "1") == 6) {
       x_vieninieki <- codes_match(x6)
       x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x_vieninieki)
@@ -37,7 +37,7 @@ processingSixes <- function(x, o) {
                } else if (all(x6$sak_beidz == c("2", "1", "2", "1", "2", "1")) && 
                          all(sapply(seq(1,4,by=2), function(i) all(diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
                          diff(x6$NDZ_sanemsanas_datums[5:6]) != 0 &&
-                         x6$PS_code[1] == "____________" && x6$NM_code[1] == "____________") {
+                         x6$PS_code[1] == "___" && x6$NM_code[1] == "___") {
                  x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[1, ])
                  x6_uzPieciniekiem <- rbind(x6_uzPieciniekiem, x6[-1, ])
                } else if (all(x6$sak_beidz == c("2", "2", "1", "2", "1", "1")) && 
@@ -61,8 +61,13 @@ processingSixes <- function(x, o) {
                } else if(all(x6$sak_beidz == c("1", "2", "1", "1", "2", "1"))) {
                       if(all(sapply(c(1,4), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                          all(sapply(c(2,3,5), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                        if(x6$PS_code[1] == '____________' && x6$NM_code[1] == '____________') {
+                        if(x6$PS_code[1] == '___' && x6$NM_code[1] == '___') {
                           x6_uzCetri <- rbind(x6_uzCetri, x6[c(2,3,5,6), ])
+                        } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
+                      } else if(all(diff(x6$NDZ_sanemsanas_datums) != 0)) {
+                        if(x6$PS_code[1] == '___' && x6$NM_code[1] == '___') {
+                          x6_uzCetri <- rbind(x6_uzCetri, x6[c(1,2,4,5), ])
+                          x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[6, ])
                         } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
                       } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
                } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
