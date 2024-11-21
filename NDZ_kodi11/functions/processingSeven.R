@@ -2,7 +2,7 @@ processingSeven <- function(x, o) {
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x7_uzVieniniekiem <- data.frame(); x7_uzDivniekiem <- data.frame(); x7_uzTrijniekiem <- data.frame(); x7_uzCetriniekiem <- data.frame(); x7_uzPieciniekiem <- data.frame(); x7_uzSesiniekiem <- data.frame()
   check_rows <- 0
-  
+
   fncResult <- function(result) {
     x7_uzVieniniekiem <<- rbind(x7_uzVieniniekiem, result$x7_uzVieniniekiem)
     x7_uzDivniekiem   <<- rbind(x7_uzDivniekiem, result$x7_uzDivniekiem)
@@ -25,8 +25,7 @@ processingSeven <- function(x, o) {
                 x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
             } else if (all(x7$sak_beidz == c("2","1","2","1","2","2","1")) && 
                      diff(x7$NDZ_sanemsanas_datums[1:2]) == 0 && 
-                     x7$PS_code[1] == '__________' && x7$NM_code[1] == '__________') {
-                    #Pagaidām sabloķēju, jo neesmu droša, ka šis vispārinās.
+                     x7$PS_code[1] == '___' && x7$NM_code[1] == '___') {
                       x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
                       x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
             } else if(all(x7$sak_beidz == c("2", "2", "1", "2", "1", "2", "1")) && all(diff(x7$NDZ_sanemsanas_datums) != 0)) {
@@ -94,8 +93,8 @@ rm(x7_uzPieciniekiem)
 
 #6 Apakštabulu x7_uzSesiniekiem sūta caur funkciju processingSixes().
 if(nrow(x7_uzSesiniekiem) > 0) {
-    x7_uzSesiniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSixes(o)
-    cat("No septiņniekiem atvasinātā tabula x7_uzSesiniekiem pārsūtīta apstrādei caur processingSixes().\n")
+  cat("No septiņniekiem atvasinātā tabula x7_uzSesiniekiem pārsūtīta apstrādei caur processingSixes().\n")
+  x7_uzSesiniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSixes(o)
 } else {cat("Tabula x7_uzSesiniekiem ir tukša.\n")}
 rm(x7_uzSesiniekiem)
 }
