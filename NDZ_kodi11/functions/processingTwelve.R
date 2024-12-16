@@ -55,35 +55,30 @@ processingTwelve <- function(x, o) {
   
 #1 Apakštabulu x12_uzVieniniekiem sūta caur processingOnes().
 if (nrow(x12_uzVieniniekiem) > 0) {
-    cat("No 12-niekiem atvasinātā tabula x12_uzVieniniekiem pārsūtīta uz processingOnes() un tad uz tempNDZ, ko būvējam.\n")
     x12_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ()
 } else {cat("Tabula x12_uzVieniniekiem ir tukša.\n")}
 rm(x12_uzVieniniekiem)
   
 #2 Apakštabulu x12_uzDivniekiem sūta caur processingTwoes().
 if (nrow(x12_uzDivniekiem) > 0) {
-    cat("No 12-niekiem atvasinātā tabula x12_uzDivniekiem pārsūtīta uz processingTwoes() un caur to uz tempNDZ, ko būvējam.\n")
     x12_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o)
 } else {cat("Tabula x12_uzDivniekiem ir tukša.\n")}
 rm(x12_uzDivniekiem) 
   
 #3 Apakštabulu x12_uzSeptini sūta caur processingSeven().
 if (nrow(x12_uzSeptini) > 0) {
-    cat("No 12-niekiem atvasinātā tabula x12_uzSeptini pārsūtīta uz processingSeven() un caur to uz tempNDZ, ko būvējam.\n")
     x12_uzSeptini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSeven(o)
 } else {cat("Tabula x12_uzSeptini ir tukša.\n")}
 rm(x12_uzSeptini)
   
 #4 Apakštabulu x12_uzDesmitniekiem sūta caur processingTens().
 if (nrow(x12_uzDesmitniekiem) > 0) {
-    cat("No 12-niekiem atvasinātā tabula x12_uzDesmitniekiem pārsūtīta uz processingTens un tad uz tempNDZ, ko būvējam.\n")
     x12_uzDesmitniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTens(o)
 } else {cat("Tabula x12_uzDesmitniekiem ir tukša.\n")}
 rm(x12_uzDesmitniekiem)
   
 #5 Apakštabulu x12_uzVienpadsmit sūta caur processingEleven().
 if (nrow(x12_uzVienpadsmit) > 0) {
-    cat("No 12-niekiem atvasinātā tabula x12_uzVienpadsmit pārsūtīta uz processingEleven() un tad uz tempNDZ, ko būvējam.\n")
     x12_uzVienpadsmit %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEleven(o)
 } else {cat("Tabula x12_uzVienpadsmit ir tukša.\n")}
 rm(x12_uzVienpadsmit)
