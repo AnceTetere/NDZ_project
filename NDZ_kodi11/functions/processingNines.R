@@ -61,21 +61,18 @@ if (nrow(x) == check_rows) {
   
 #1 Apakštabulu x9_uzVieniniekiem sūta caur processingOnes().
 if(nrow(x9_uzVieniniekiem) > 0) {
-   cat("No devītniekiem atvasinātā tabula x9_uzVieniniekiem pārsūtīta uz processingOnes() un tad uz tempNDZ, ko būvējam.\n")
     x9_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ()
 } else {cat("Tabula x9_uzVieniniekiem ir tukša.\n")}
 rm(x9_uzVieniniekiem)
 
 #2 Apakštabulu x9_uzSesi sūta caur processingSixes().
 if(nrow(x9_uzSesi) > 0) {
-  cat("No devītniekiem atvasinātā tabula x9_uzSesi pārsūtīta uz processingSixes() un tad uz tempNDZ, ko būvējam.\n")
   x9_uzSesi %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSixes(o)
 } else {cat("Tabula x9_uzSesi ir tukša.")}
 rm(x9_uzSesi) 
 
 #3 Apakštabulu x9_uzAstoniekiem sūta caur processingEights().
 if(nrow(x9_uzAstoniekiem) > 0) {
-  cat("No devītniekiem atvasinātā tabula x9_uzAstoniekiem pārsūtīta uz processingEights() un tad uz tempNDZ, ko būvējam.\n")
   x9_uzAstoniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEights(o)
 } else {cat("Tabula x9_uzAstoniekiem ir tukša.")}
 rm(x9_uzAstoniekiem) 
