@@ -27,7 +27,7 @@ processingSixteen <- function(x, o) {
   #1 Apakštabulu x16_uz1 sūta caur processingOnes().
   if (nrow(x16_uz1) > 0) {
     x16_uz1 <- x16_uz1 %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% 
-      processingOnes(o) %>%  sendTo_tempNDZ()
+      processingOnes(o) %>% sendTo_tempNDZ(o)
   } else {cat("Tabula x16_uz1 ir tukša.\n")}
   rm(x16_uz1)
   
@@ -36,4 +36,4 @@ processingSixteen <- function(x, o) {
     x16_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o) 
   } else {cat("Tabula x16_uzDivniekiem ir tukša.\n")}
   rm(x16_uzDivniekiem)
-  }
+}
