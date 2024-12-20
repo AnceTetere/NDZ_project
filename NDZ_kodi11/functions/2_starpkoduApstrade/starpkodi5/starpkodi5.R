@@ -10,7 +10,7 @@ starpkodi5 <- function(y, t, prev, v) {
     yt <- starpkodi5_51(y, t, prev, v)
   } else {stop("Starpkodi5: iztrūkst apstrādes koda.")}
     
-    if(is.na(yt$PS_code[1])) {stop("Dienas NA.")}
+    if(is.na(yt$PS_code[1])) {stop("DD NA.")}
     yt$zk <- "combined"
     return(yt)
 }
