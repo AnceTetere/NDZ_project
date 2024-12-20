@@ -33,6 +33,6 @@ starpkodi5_50 <- function(y, t, prev, v) {
   rm(days1, days2, days3)
 } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")}
 
-  if(is.na(yt$PS_code[1])) {stop("Dienas NA.")}
+  if(is.na(yt$PS_code[1])) {stop("DD NA.")}
 return(yt)
 }
