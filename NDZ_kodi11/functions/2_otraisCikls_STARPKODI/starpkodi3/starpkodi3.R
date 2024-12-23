@@ -11,8 +11,8 @@ starpkodi3 <- function(y, t, prev, v) {
 
   } else {stop("Starpkodi3: Trūkst izstrādes koda.")}
   
-  if(is.na(yt$PS_code[1])) {stop("Dienas NA.")}
-  yt$zk <- "combined"  #jo starpkodu dienu sarēķins
+  if(is.na(yt$PS_code[1])) {stop("DD NA.")}
+  yt$zk <- "combined"  
   
   return(yt)
 }
