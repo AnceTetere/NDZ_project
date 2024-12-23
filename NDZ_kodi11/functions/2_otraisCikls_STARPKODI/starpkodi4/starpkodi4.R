@@ -23,6 +23,6 @@ if (t$zk[1] %in% c("11", "14", "16", "61")) {
  } else {stop("Starpkodi4 iztrūkst apstrādes koda.")}
   
   if(is.na(yt$PS_code[1])) {stop("Dienas NA.")}
-  yt$zk <- "combined"  #jo starpkodu dienu sarēķins
+  yt$zk <- "combined"  
   return(yt)
 }
