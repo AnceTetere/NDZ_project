@@ -1,59 +1,72 @@
 tripletkodi3 <- function(y3, t, prev, v) {
   
-  if (t$zinkod[1] == "51" && t$zinkod[2] == "53" && t$zinkod[3] == "21" && 
-      t$NDZ_sanemsanas_datums[1] == t$NDZ_sanemsanas_datums[2] &&
-      t$NDZ_sanemsanas_datums[2] != t$NDZ_sanemsanas_datums[3]) {
-    yt <- y3[v, ]
-    yt$dienas <- 1
-  } else if (t$zinkod[1] == "25" && t$zinkod[2] == "51" && t$zinkod[3] == "53" && 
-             all(diff(t$NDZ_sanemsanas_datums) == 0)) {
-    yt <- y3[v, ]
-    yt$dienas <- 0
-  } else if (t$zinkod[1] == "25" && t$zinkod[2] == "41" && t$zinkod[3] == "50" && 
-             all(diff(t$NDZ_sanemsanas_datums) == 0)) {
-    yt <- y3[v, ]
-    yt$dienas <- 0
-  } else if (t$zinkod[1] == "41" && t$zinkod[2] == "50" && t$zinkod[3] == "21" && 
-             all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-    yt <- y3[v, ]
-    yt$dienas <- as.numeric(difftime(t$beidz[2], t$sak[1], units = "days"))
-  } else if (t$zinkod[1] == "11" && t$zinkod[2] == "50" && t$zinkod[3] == "53" && all(diff(t$NDZ_sanemsanas_datums) == 0)) {
-    yt <- y3[v, ]
-    yt$dienas <- 0
-  } else if (t$zinkod[1] == "40" && t$zinkod[2] == "50" && t$zinkod[3] == "21" && 
-             diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
-    yt <- y3[v, ]
-    yt$dienas <- as.numeric(difftime(t$beidz[1], prev, units = "days")) - 1 
-  } else if (t$zinkod[1] == "11" && t$zinkod[2] == "41" && t$zinkod[3] == "50" && 
-             diff(t$NDZ_sanemsanas_datums[2:3]) == 0 && diff(t$NDZ_sanemsanas_datums[1:2]) != 0 &&
-             t$PS_code[1] == '___________' && t$NM_code[1] == '__________') {
-    yt <- y3[v, ]
-    yt$dienas <- as.numeric(difftime(t$beidz[3], t$sak[1], units = "days"))
-  } else if (t$zinkod[1] == "25" && t$zinkod[2] == "41" && t$zinkod[3] == "51" && 
-             all(diff(t$NDZ_sanemsanas_datums) == 0)) {
-    yt <- y3[v, ]
-    yt$dienas <- 0
-  } else if (t$zinkod[1] == "11" && t$zinkod[2] == "51" && t$zinkod[3] == "40" && 
-             all(diff(t$NDZ_sanemsanas_datums) != 0) && t$PS_code[1] == '_____________' && t$NM_code[1] == '___________') {
-    yt <- y3[v, ]
-    yt$dienas <- as.numeric(difftime(t$beidz[3], t$sak[1], units = "days"))
-  } else if (t$zinkod[1] == "51" && t$zinkod[2] == "53" && t$zinkod[3] == "25" && 
-             all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-    yt <- y3[v, ]
-    yt$dienas <- as.numeric(difftime(t$beidz[2], t$sak[1], units = "days"))
-  } else if (t$zinkod[1] == "21" && t$zinkod[2] == "41" && t$zinkod[3] == "53" && 
-             all(diff(t$NDZ_sanemsanas_datums) == 0)) {
-    yt <- y3[v, ]
-    yt$dienas <- 0
-  } else if (t$zinkod[1] == "11" && t$zinkod[2] == "40" && t$zinkod[3] == "50" && 
-             all(diff(t$NDZ_sanemsanas_datums) == 0)) {
-    yt <- y3[v, ]
-    yt$dienas <- 0
-  } else {
-    stop("Tripletkodi3 iztrūkst apstrādes koda.")
-  }
+  yt <- y3[v, ]
   
-  if(is.na(yt$PS_code[1])) {stop("Dienas NA.")}
-  yt$zinkod <- "combined"  #jo tripletkodu dienu sarēķins
+  if (t$zk[1] %in% c("41", "51", "54", "92")) {
+    if (t$zk[2] %in% c("40", "50", "53", "91")) {
+      if (t$zk[3] %in% c("21", "22", "23", "24", "25", "29")) {
+        if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && diff(t$NDZ_sanemsanas_datums[2:3]) != 0) {
+          yt$dd <- 1
+        } else if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
+          yt$dd <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
+        } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+      } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    } else if (t$zk[2] %in% c("21", "22", "23", "24", "25", "29")) {
+      if (t$zk[3] %in% c("40", "50", "53", "91")) {
+        if (diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
+          yt$dd <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
+        } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+      } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    # } else if (t$zk[1] %in% c("21", "22", "23", "24", "25", "29")) {
+    #           if (t$zk[2] %in% c("41", "51", "54", "92")) {
+    #             if (t$zk[3] %in% c("40", "50", "53", "91")) {
+    #               if (all(diff(t$NDZ_sanemsanas_datums) == 0)) {
+    #                 yt$dd <- 0
+    #               } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    #             } else if (t$zk[3] %in% c("41", "51", "54", "92")) {
+    #               if (all(diff(t$NDZ_sanemsanas_datums) == 0)) {
+    #                 yt$dd <- 0
+    #               } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    #             } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    #           } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+     } else if (t$zk[1] %in% c("11", "14", "16", "61")) {
+             if (t$zk[2] %in% c("40", "50", "53", "91")) {
+                 if (t$zk[3] %in% c("40", "50", "53", "91")) {
+                  if (all(diff(t$NDZ_sanemsanas_datums) == 0)) {
+                    yt$dd <- as.numeric(diff(t$NDZ_sanemsanas_datums[c(1,3)]))
+                  } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+                } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+            } else if (t$zk[2] %in% c("41", "51", "54", "92")) {
+                if (t$zk[3] %in% c("40", "50", "53", "91")) {
+                  if (diff(t$NDZ_sanemsanas_datums[2:3]) == 0 && diff(t$NDZ_sanemsanas_datums[1:2]) != 0) {
+                    if (t$PS_code[1] == '_______________' && t$NM_code[1] == '_______________') {
+                      yt$dd <- as.numeric(diff(t$NDZ_sanemsanas_datums[c(1,3)]))
+                    } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    #              } else if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
+    #                if (t$PS_code[1] == '_______________' && t$NM_code[1] == '_______________') {
+    #                  yt$dd <- as.numeric(diff(t$NDZ_sanemsanas_datums[c(1,3)]))
+    #                } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    #              } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    #            } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    #          } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+    # } else if (t$zk[1] %in% c("40", "50", "53", "91")) {
+  #         if (t$zk[2] %in% c("40", "50", "53", "91")) {
+  #           if (t$zk[3] %in% c("21", "22", "23", "24", "25", "29")) {
+  #             if (diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
+  #               yt$dd <- as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1 
+  #             } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+  #           } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+  #         } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+  
+                  } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+                } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+            } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+        } else {stop("Tripletkodi3 iztrūkst apstrādes koda.")}
+
+
+  rm(y3, t, prev, v)
+  if(is.na(yt$PS_code[1])) {stop("DD NA.")}
+  yt$zk <- "combined"  
   return(yt)
 }
