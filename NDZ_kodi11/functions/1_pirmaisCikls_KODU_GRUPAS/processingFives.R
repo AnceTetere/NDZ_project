@@ -1,4 +1,4 @@
-processingFives <- function(x, o) {
+processingFives <- function(x, o, kods) {
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x5_uzVieniniekiem <- data.frame(); x5_uzDivniekiem <- data.frame(); x5_uzCetriniekiem <- data.frame()
 
@@ -38,13 +38,13 @@ processingFives <- function(x, o) {
     } else if (sum(x5$sak_beidz == "1") == 1) {
         if (all(x5$sak_beidz == c("2", "1", "2", "2", "2"))) {
           if (all(diff(x5$NDZ_sanemsanas_datums) != 0)){
-            if ((x5$PS_code[1] %in% c('_____________', '____') && x5$NM_code[1] == '____') ||
-                (x5$PS_code[1] == '____' && x5$NM_code[1] == '____')) {
+            if ((x5$PS_code[1] %in% c('_________', '_________') && x5$NM_code[1] == '_________') ||
+                (x5$PS_code[1] == '_________' && x5$NM_code[1] == '_________')) {
               x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1,])
               x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(2,5),])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
           } else if (diff(x5$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x5$NDZ_sanemsanas_datums[2:5]) != 0)) {
-            if (x5$PS_code[1] == '____' && x5$NM_code[1] == '____') {
+            if (x5$PS_code[1] == '_________' && x5$NM_code[1] == '_________') {
               x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1,])
               x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(2,5),])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
@@ -60,19 +60,19 @@ processingFives <- function(x, o) {
   
 #1 Apakštabulu x5_uzVieniniekiem apstrādā caur funkciju processingOnes().
 if(nrow(x5_uzVieniniekiem) > 0) {
-    x5_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ()
+    x5_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ(o)
 } else {cat("Tabula x5_uzVieniniekiem ir tukša.\n")}
 rm(x5_uzVieniniekiem)
   
 #2 Apakštabulu x5_uzDivniekiem apstrādā caur funkciju processingTwoes().
 if(nrow(x5_uzDivniekiem) > 0) {
-    x5_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o)
+    x5_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o, kods)
 } else {cat("Tabula x5_uzDivniekiem ir tukša.\n")}
 rm(x5_uzDivniekiem)
   
 #3 Apakštabulu x5_uzCetriniekiem sūta caur funkciju processingFours().
 if(nrow(x5_uzCetriniekiem > 0)) {
-    x5_uzCetriniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFours(o)
+    x5_uzCetriniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFours(o, kods)
 } else {cat("Tabula x5_uzCetriniekiem ir tukša.\n")}
 rm(x5_uzCetriniekiem) 
 }
