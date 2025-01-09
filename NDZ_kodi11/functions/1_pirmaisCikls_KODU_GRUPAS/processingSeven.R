@@ -1,4 +1,4 @@
-processingSeven <- function(x, o) {
+processingSeven <- function(x, o, kods) {
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x7_uzVieniniekiem <- data.frame(); x7_uzDivniekiem <- data.frame(); x7_uzTrijniekiem <- data.frame(); x7_uzCetriniekiem <- data.frame(); x7_uzPieciniekiem <- data.frame(); x7_uzSesiniekiem <- data.frame()
   check_rows <- 0
@@ -25,8 +25,7 @@ processingSeven <- function(x, o) {
                 x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
             } else if (all(x7$sak_beidz == c("2","1","2","1","2","2","1")) && 
                      diff(x7$NDZ_sanemsanas_datums[1:2]) == 0 && 
-                     x7$PS_code[1] == '_______________' && x7$NM_code[1] == '_______________') {
-                    #Pagaidām sabloķēju, jo neesmu droša, ka šis vispārinās.
+                     x7$PS_code[1] == '_____________' && x7$NM_code[1] == '_____________') {
                       x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
                       x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
             } else if(all(x7$sak_beidz == c("2", "2", "1", "2", "1", "2", "1")) && all(diff(x7$NDZ_sanemsanas_datums) != 0)) {
@@ -54,7 +53,7 @@ processingSeven <- function(x, o) {
             } else if (all(x7$sak_beidz[1:3] == c("2", "1", "1"))) {
                    if (diff(x7$NDZ_sanemsanas_datums[1:2]) == 0) {
                      #Neesmu pārliecināta vai šo var vispārināt.
-                     if (x7$PS_code[1] == '_______________' && x7$NM_code[1] == '_______________') {
+                     if (x7$PS_code[1] == '_____________' && x7$NM_code[1] == '_____________') {
                         x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
                         x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
                      } else {stop("processingSeven trūkst izstrādes koda.\n")}
@@ -78,31 +77,31 @@ rm(x7_uzVieniniekiem, r)
   
 #2 Apakštabulu x7_uzDivniekiem sūta caur funkciju processingTwoes().
 if(nrow(x7_uzDivniekiem) > 0) {
-    x7_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o)
+    x7_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o, kods)
 } else {cat("Tabula x7_uzDivniekiem ir tukša.\n")}
 rm(x7_uzDivniekiem)
   
 #3 Apakštabulu x7_uzTrijniekiem sūta caur funkciju processingThrees().
 if(nrow(x7_uzTrijniekiem) > 0) {
-    x7_uzTrijniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingThrees(o)
+    x7_uzTrijniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingThrees(o, kods)
 } else {cat("Tabula x7_uzTrijniekiem ir tukša.\n")}
 rm(x7_uzTrijniekiem)
 
 #4 Apakštabulu x7_uzCetriniekiem sūta caur funkciju processingFours().
 if(nrow(x7_uzCetriniekiem) > 0) {
-    x7_uzCetriniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFours(o)
+    x7_uzCetriniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFours(o, kods)
 } else {cat("Tabula x7_uzCetriniekiem ir tukša.\n")}
 rm(x7_uzCetriniekiem)
 
 #5 Apakštabulu x7_uzPieciniekiem sūta caur funkciju processingFives().
 if(nrow(x7_uzPieciniekiem) > 0) {
-    x7_uzPieciniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFives(o)
+    x7_uzPieciniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFives(o, kods)
 } else {cat("Tabula x7_uzPieciniekiem ir tukša.\n")}
 rm(x7_uzPieciniekiem)
 
 #6 Apakštabulu x7_uzSesiniekiem sūta caur funkciju processingSixes().
 if(nrow(x7_uzSesiniekiem) > 0) {
-  x7_uzSesiniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSixes(o)
+  x7_uzSesiniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSixes(o, kods)
 } else {cat("Tabula x7_uzSesiniekiem ir tukša.\n")}
 rm(x7_uzSesiniekiem)
 }
