@@ -1,4 +1,4 @@
-processingThrees <- function(x, o) {
+processingThrees <- function(x, o, kods) {
 
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums) 
   
@@ -7,8 +7,7 @@ processingThrees <- function(x, o) {
 
 for (k in seq(1, nrow(x), by = 3)) {
 
-  x3 <- x[k:(k+2),]
-  x3 <- arrange(x3, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums) 
+  x3 <- x[k:(k+2),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums) 
   
   # Ja visām trim rindām ir sākuma kodi
   if (all(x3$sak_beidz == "1") || all(x3$sak_beidz == "2")) {
@@ -33,14 +32,14 @@ for (k in seq(1, nrow(x), by = 3)) {
   
 #1 Tabulu x3_uzVieniniekiem sūta caur processingOnes(x, o) funkciju.
   if(nrow(x3_uzVieniniekiem) > 0) {
-    sendTo_tempNDZ(processingOnes(x3_uzVieniniekiem, o))
+    cat(sendTo_tempNDZ(processingOnes(x3_uzVieniniekiem, o), o))
   } else {cat("No trijniekiem pārsūtāmajā vieninieku tabulā nebija nevienas rindas.\n")}
   rm(x3_uzVieniniekiem)
   
   
 #2 x3_uzDivniekiem sūta caur funkciju processingtwoes(x, o).
   if(nrow(x3_uzDivniekiem) > 0) {
-    processingTwoes(x3_uzDivniekiem, o)
+    processingTwoes(x3_uzDivniekiem, o, kods)
   } else {cat("No trijniekiem pārsūtāmajā divnieku tabulā nebija nevienas rindas.\n")}
   rm(x3_uzDivniekiem)
 }
