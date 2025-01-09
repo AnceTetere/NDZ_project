@@ -1,7 +1,6 @@
 processingFives_s2 <- function(x5s2) {  
-  #x5s2 <- x5 for testing
-  x5s2 <- x5s2 %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
 
+  x5s2 <- x5s2 %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x5s2_uzVieniniekiem <- data.frame(); x5s2_uzDivniekiem <- data.frame(); x5s2_uzCetriniekiem <- data.frame()
 
 if (all(diff(x5s2$NDZ_sanemsanas_datums) != 0)) {
@@ -46,7 +45,7 @@ if (all(diff(x5s2$NDZ_sanemsanas_datums) != 0)) {
           if (all(x5s2$sak_beidz[4:5] == "1")) {
             x5s2_uzVieniniekiem <- rbind(x5s2_uzVieniniekiem, x5s2[c(1,5), ])
           } else if (all(x5s2$sak_beidz[3:4] == "1")) {
-            if (x5s2$PS_code[1] == '___' && x5s2$NM_code[1] == '___') {
+            if (x5s2$PS_code[1] == '____________' && x5s2$NM_code[1] == '____________') {
               x5s2_uzVieniniekiem <- rbind(x5s2_uzVieniniekiem, x5s2[1, ])
               x5s2_uzDivniekiem <- rbind(x5s2_uzDivniekiem, x5s2[4:5, ])
             } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
@@ -57,24 +56,34 @@ if (all(diff(x5s2$NDZ_sanemsanas_datums) != 0)) {
             x5s2_uzVieniniekiem <- rbind(x5s2_uzVieniniekiem, x5s2[1,])
             x5s2_uzDivniekiem <- rbind(x5s2_uzDivniekiem, x5s2[c(3,2,4,5),])
           } else if (all(x5s2$sak_beidz == c("2", "1", "2", "1", "2"))) {
-            if (x5s2$PS_code[1] %in% c('___', '___') && x5s2$NM_code[1] %in% c('___', '___')) {
+            if (x5s2$PS_code[1] %in% c('____________', '____________') && x5s2$NM_code[1] %in% c('____________', '____________')) {
               x5s2_uzVieniniekiem <- rbind(x5s2_uzVieniniekiem, x5s2[1,])
               x5s2_uzDivniekiem <- rbind(x5s2_uzDivniekiem, x5s2[2:5,])
+            } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
+          } else if (all(x5s2$sak_beidz == c("2", "2", "1", "2", "1"))) {
+            if (x5s2$PS_code[1] == '____________' && x5s2$NM_code[1] == '____________') {
+              x5s2_uzVieniniekiem <- rbind(x5s2_uzVieniniekiem, x5s2[c(1,5),])
+              x5s2_uzDivniekiem <- rbind(x5s2_uzDivniekiem, x5s2[3:4,])
+            } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
+          } else if (all(x5s2$sak_beidz == c("2", "1", "2", "2", "1"))) {
+            if (x5s2$PS_code[1] == '____________' && x5s2$NM_code[1] == '____________') {
+              x5s2_uzVieniniekiem <- rbind(x5s2_uzVieniniekiem, x5s2[c(1,5),])
+              x5s2_uzDivniekiem <- rbind(x5s2_uzDivniekiem, x5s2[c(2,4),])
             } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
           } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
 } else if (all(sapply(c(2,4), function(i) diff(x5s2$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
            all(sapply(c(1,3), function(i) diff(x5s2$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
           if (all(x5s2$sak_beidz == c("2", "1", "2", "1", "2"))) {
-             if ((x5s2$PS_code[1] == '___' && x5s2$NM_code[1] == '___') ||
-                 (x5s2$PS_code[1] == '___' && x5s2$NM_code[1] == '___')) {
+             if ((x5s2$PS_code[1] == '____________' && x5s2$NM_code[1] == '____________') ||
+                 (x5s2$PS_code[1] == '____________' && x5s2$NM_code[1] == '____________')) {
                  x5s2_uzDivniekiem <- rbind(x5s2_uzDivniekiem, x5s2[c(2,1,4,5),])
                } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
            } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
 } else if (diff(x5s2$NDZ_sanemsanas_datums[4:5]) == 0 &&
            all(diff(x5s2$NDZ_sanemsanas_datums[1:4]) != 0)) {
            if (all(x5s2$sak_beidz == c("2", "1", "2", "2", "1"))) {
-                   if ((x5s2$PS_code[1] == '___' && x5s2$NM_code[1] == '___')||
-                       (x5s2$PS_code[1] == '___' && x5s2$NM_code[1] == '___')) {
+                   if ((x5s2$PS_code[1] == '____________' && x5s2$NM_code[1] == '____________')||
+                       (x5s2$PS_code[1] == '____________' && x5s2$NM_code[1] == '____________')) {
                          x5s2_uzVieniniekiem <- rbind(x5s2_uzVieniniekiem, x5s2[1,])  
                          x5s2_uzDivniekiem <- rbind(x5s2_uzDivniekiem, x5s2[c(2,3,5,4),])
                    } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
@@ -85,9 +94,14 @@ if (all(diff(x5s2$NDZ_sanemsanas_datums) != 0)) {
 } else if (all(sapply(c(2,4), function(i) diff(x5s2$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
            all(sapply(c(1,3), function(i) diff(x5s2$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
           if (all(x5s2$sak_beidz == c("2", "2", "1", "2", "1"))) {
-            if (x5s2$PS_code[1] == '___' && x5s2$NM_code[1] == '___') {
+            if (x5s2$PS_code[1] == '____________' && x5s2$NM_code[1] == '____________') {
               x5s2_uzVieniniekiem <- rbind(x5s2_uzVieniniekiem, x5s2[1,])  
               x5s2_uzDivniekiem <- rbind(x5s2_uzDivniekiem, x5s2[c(3,2,5,4),])
+            } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
+          } else if (all(x5s2$sak_beidz == c("2", "1", "2", "1", "2"))) {
+            if (x5s2$PS_code[1] == '____________' && x5s2$NM_code[1] == '____________' && x5s2$period[1] == "____________") {
+              x5s2_uzVieniniekiem <- rbind(x5s2_uzVieniniekiem, x5s2[1,])  
+              x5s2_uzDivniekiem <- rbind(x5s2_uzDivniekiem, x5s2[2:5,])
             } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
           } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
 } else {stop("processingFives_s2: Trūkst apstrādes koda.")}
