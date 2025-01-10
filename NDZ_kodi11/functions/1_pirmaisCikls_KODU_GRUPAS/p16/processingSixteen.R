@@ -1,4 +1,4 @@
-processingSixteen <- function(x, o) {
+processingSixteen <- function(x, o, kods) {
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x16_uz1 <- data.frame()
   x16_uzDivniekiem <- data.frame()
@@ -33,7 +33,7 @@ processingSixteen <- function(x, o) {
   
   #2 Apakštabulu x16_uzDivniekiem sūta caur processingTwoes().
   if (nrow(x16_uzDivniekiem) > 0) {
-    x16_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o) 
+    x16_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o, kods) 
   } else {cat("Tabula x16_uzDivniekiem ir tukša.\n")}
   rm(x16_uzDivniekiem)
 }
