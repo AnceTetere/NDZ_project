@@ -1,4 +1,4 @@
-processingTwelve <- function(x, o) {
+processingTwelve <- function(x, o, kods) {
   cat("-------------SĀK 12-nieku APSTRĀDI.")
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x12_uzVieniniekiem <- data.frame(); x12_uzDivniekiem <- data.frame(); x12_uzSeptini <- data.frame(); x12_uzDesmitniekiem <- data.frame(); x12_uzVienpadsmit <- data.frame()
@@ -55,31 +55,31 @@ processingTwelve <- function(x, o) {
   
 #1 Apakštabulu x12_uzVieniniekiem sūta caur processingOnes().
 if (nrow(x12_uzVieniniekiem) > 0) {
-    x12_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ()
+    x12_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ(o)
 } else {cat("Tabula x12_uzVieniniekiem ir tukša.\n")}
 rm(x12_uzVieniniekiem)
   
 #2 Apakštabulu x12_uzDivniekiem sūta caur processingTwoes().
 if (nrow(x12_uzDivniekiem) > 0) {
-    x12_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o)
+    x12_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o, kods)
 } else {cat("Tabula x12_uzDivniekiem ir tukša.\n")}
 rm(x12_uzDivniekiem) 
   
 #3 Apakštabulu x12_uzSeptini sūta caur processingSeven().
 if (nrow(x12_uzSeptini) > 0) {
-    x12_uzSeptini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSeven(o)
+    x12_uzSeptini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSeven(o, kods)
 } else {cat("Tabula x12_uzSeptini ir tukša.\n")}
 rm(x12_uzSeptini)
   
 #4 Apakštabulu x12_uzDesmitniekiem sūta caur processingTens().
 if (nrow(x12_uzDesmitniekiem) > 0) {
-    x12_uzDesmitniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTens(o)
+    x12_uzDesmitniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTens(o, kods)
 } else {cat("Tabula x12_uzDesmitniekiem ir tukša.\n")}
 rm(x12_uzDesmitniekiem)
   
 #5 Apakštabulu x12_uzVienpadsmit sūta caur processingEleven().
 if (nrow(x12_uzVienpadsmit) > 0) {
-    x12_uzVienpadsmit %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEleven(o)
+    x12_uzVienpadsmit %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEleven(o, kods)
 } else {cat("Tabula x12_uzVienpadsmit ir tukša.\n")}
 rm(x12_uzVienpadsmit)
 }
