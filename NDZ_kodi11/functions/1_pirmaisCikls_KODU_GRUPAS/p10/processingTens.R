@@ -1,4 +1,4 @@
-processingTens <- function(x, o) {
+processingTens <- function(x, o, kods) {
   cat("-------------SĀK 10-nieku APSTRĀDI.")
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
 
@@ -50,7 +50,7 @@ processingTens <- function(x, o) {
       } else if (all(x10$sak_beidz[c(3:4, 7, 9)] == "1") && 
                  all(sapply(seq(1, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
                  all(sapply(seq(2, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0)))&&
-                 x10$PS_code[1] == '__________' & x10$NM_code[1] == '_____________') {
+                 x10$PS_code[1] == '_____________' & x10$NM_code[1] == '_____________') {
         p <- x10[1:6, ]
         p <- p[p$zinkod %in% c("40", "41"), ]
         x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, p[1, ])
@@ -80,25 +80,25 @@ if (nrow(x) == check_rows) {
   
 #1 Apakštabulu x10_uzVieniniekiem sūta caur processingOnes().
 if(nrow(x10_uzVieniniekiem) > 0) {
-  x10_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ()
+  x10_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ(o)
 } else {cat("Tabula x10_uzVieniniekiem ir tukša.\n")}
 rm(x10_uzVieniniekiem) 
   
 #2 Apakštabulu x10_uzDivniekiem sūta caur processingTwoes().
 if(nrow(x10_uzDivniekiem) > 0) {
-  x10_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o)
+  x10_uzDivniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o, kods)
 } else {cat("Tabula x10_uzDivniekiem ir tukša.\n")}
 rm(x10_uzDivniekiem)
   
 #3 Apakštabulu x10_uzSeptini sūta caur processingSeven().
 if(nrow(x10_uzSeptini) > 0) {
-  x10_uzSeptini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSeven(o)
+  x10_uzSeptini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSeven(o, kods)
 } else {cat("Tabula x10_uzSeptini ir tukša.\n")}
 rm(x10_uzSeptini)
   
 #4 Apakštabulu x10_uzAstoniekiem sūta caur processingEights().
 if(nrow(x10_uzAstoniekiem) > 0) {
-  x10_uzAstoniekiem %>% arrange(PS_code,, NM_code, NDZ_sanemsanas_datums) %>% processingEights(o)
+  x10_uzAstoniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEights(o, kods)
 } else {cat("Tabula x10_uzAstoniekiem ir tukša.\n")}
 rm(x10_uzAstoniekiem) 
 }
