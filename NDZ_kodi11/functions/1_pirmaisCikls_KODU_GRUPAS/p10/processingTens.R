@@ -4,72 +4,45 @@ processingTens <- function(x, o, kods) {
 
   x10_uzVieniniekiem <- data.frame(); x10_uzDivniekiem <- data.frame(); x10_uzSeptini <- data.frame(); x10_uzAstoniekiem <- data.frame()
   check_rows <- 0
+
+  result <- function(y) {
+    x10_uzVieniniekiem <<- rbind(x10_uzVieniniekiem, y$x10_uzVieniniekiem)
+    x10_uzDivniekiem <<- rbind(x10_uzDivniekiem, y$x10_uzDivniekiem)
+    x10_uzSeptini <<- rbind(x10_uzSeptini, y$x10_uzSeptini)
+    x10_uzAstoniekiem <<- rbind(x10_uzAstoniekiem, y$x10_uzAstoniekiem)
+    rm(y)
+  }
   
   for (r in seq(1, nrow(x), by = 10)) {
     x10 <- x[r:(r+9),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
     
     if(sum(x10$sak_beidz == "1") == 5) {
-      if (all(x10$sak_beidz[1:2] == c("1","2")) || (all(x10$sak_beidz[1:2] == c("2","1")) && diff(x10$NDZ_sanemsanas_datums[1:2]) == 0)) {
-        x10_uzDivniekiem <- rbind(x10_uzDivniekiem, x10[1:2, ])
-        x10_uzAstoniekiem <- rbind(x10_uzAstoniekiem, x10[3:10, ])
-      } else if (all(x10$sak_beidz[1:4] == c("2", "1", "2", "1")) && 
-                 diff(x10$NDZ_sanemsanas_datums[1:2]) != 0) {
-        x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, x10[1, ])
-        x10_uzDivniekiem <- rbind(x10_uzDivniekiem, x10[2:3, ])
-        x10_uzSeptini <- rbind(x10_uzSeptini, x10[4:10, ])
-      } else if (all(x10$sak_beidz[c(1, 3, 4, 6, 8)] == "2") && 
-                 all(x10$sak_beidz[c(2, 5, 7, 9, 10)] == "1") && 
-                 all(sapply(seq(4, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
-                 all(sapply(seq(1, 4, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0)))) {
-        x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, x10[1, ])
-        x10_uzDivniekiem <- rbind(x10_uzDivniekiem, x10[2:3, ])
-        x10_uzSeptini <- rbind(x10_uzSeptini, x10[4:10, ])
-      } else if (all(x10$sak_beidz[c(1, 2, 5, 6, 8)] == "2") && 
-                 all(x10$sak_beidz[c(3, 4, 7, 9, 10)] == "1") && 
-                 all(sapply(seq(6, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
-                 all(sapply(seq(3, 6, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0))) &&
-                 all(diff(x10$NDZ_sanemsanas_datums[2:3]) == 0) &&
-                 all(diff(x10$NDZ_sanemsanas_datums[9:10]) != 0)) {
-        x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, x10[1, ])
-        x10_uzDivniekiem <- rbind(x10_uzDivniekiem, x10[2:3, ])
-        x10_uzSeptini <- rbind(x10_uzSeptini, x10[4:10, ])
-      } else if (all(x10$sak_beidz[c(2, 5, 6, 9, 10)] == "1") && 
-                 all(x10$sak_beidz[c(1, 3, 4, 7, 8)] == "2") && 
-                 all(sapply(seq(4, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
-                 all(sapply(seq(1, 4, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0))) &&
-                 all(diff(x10$NDZ_sanemsanas_datums[9:10]) != 0)) {
-        x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, x10[1, ])
-        x10_uzDivniekiem <- rbind(x10_uzDivniekiem, x10[2:3, ])
-        x10_uzSeptini <- rbind(x10_uzSeptini, x10[4:10, ])
-      } else {stop("processingTens: Desmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r+9, "\n")}
-    } else if(sum(x10$sak_beidz == "1") == 4) {
-      if (all(x10$sak_beidz[c(1, 2)] == "2") && all(x10$zinkod[c(1, 2)] == "26") &&
-          all(sapply(seq(3, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
-          all(sapply(seq(1, 3, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0)))) {
-        x10_uzAstoniekiem <- rbind(x10_uzAstoniekiem, x10[3:10, ])
-      } else if (all(x10$sak_beidz[c(3:4, 7, 9)] == "1") && 
-                 all(sapply(seq(1, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) == 0))) &&
-                 all(sapply(seq(2, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:i+1]) != 0)))&&
-                 x10$PS_code[1] == '_____________' & x10$NM_code[1] == '_____________') {
-        p <- x10[1:6, ]
-        p <- p[p$zinkod %in% c("40", "41"), ]
-        x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, p[1, ])
-        x10_uzDivniekiem <- rbind(x10_uzDivniekiem, p[2:3, ])
-        rm(p)
-      } else {stop("processingTens: Desmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r+9, "\n")}
+      result(processingTens_s5(x10))
+    } else if (sum(x10$sak_beidz == "1") == 4) {
+              if (all(sapply(seq(1, 10, by = 2), function(i) diff(x10$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                  all(sapply(seq(2, 8, by = 2), function(i) diff(x10$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+                if (all(x10$sak_beidz[c(1, 2)] == "2") && all(x10$zinkod[c(1, 2)] == "26")) {
+                  x10_uzAstoniekiem <- rbind(x10_uzAstoniekiem, x10[3:10, ])
+                } else if (all(x10$sak_beidz[c(1,2,5,6,9,10)] == "2") && all(x10$sak_beidz[c(3,4,7,8)] == "1") && "91" %in% x10$zinkod) {
+                  x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, x10[2,])
+                  x10_uzDivniekiem <- rbind(x10_uzDivniekiem, x10[c(3,5,7,9), ])
+                } else {stop("processingTens: Desmitnieku tabulas pārdalei trūkst izstrādes koda. \n")}
+              } else if (all(x10$sak_beidz[c(3:4, 7, 9)] == "1") && 
+                             all(sapply(seq(1, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
+                             all(sapply(seq(2, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))&&
+                             x10$PS_code[1] == 'PK3C67AFAA4' & x10$NM_code[1] == '50103923001') {
+                    p <- x10[1:6, ]
+                    p <- p[p$zinkod %in% c("40", "41"), ]
+                    x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, p[1, ])
+                    x10_uzDivniekiem <- rbind(x10_uzDivniekiem, p[2:3, ])
+                    rm(p)
+                } else {stop("processingTens: Desmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r+9, "\n")}
     } else if (sum(x10$sak_beidz == "1") == 6) {
-      result <- processingTens_s6(x10)
+      result(processingTens_s6(x10))
     } else {
       stop("processingTens: Desmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r+9, "\n")
     }
     
-    if(exists("result")) {
-      x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, result$x10_uzVieniniekiem)
-      x10_uzDivniekiem <- rbind(x10_uzDivniekiem, result$x10_uzDivniekiem)
-      x10_uzSeptini <- rbind(x10_uzSeptini, result$x10_uzSeptini)
-      x10_uzAstoniekiem <- rbind(x10_uzAstoniekiem, result$x10_uzAstoniekiem)
-      rm(result)
-    }
     check_rows <- check_rows + 10
   }
   
