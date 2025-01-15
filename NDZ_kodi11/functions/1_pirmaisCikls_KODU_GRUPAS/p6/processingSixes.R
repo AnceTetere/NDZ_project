@@ -4,6 +4,14 @@ processingSixes <- function(x, o, kods) {
   x6_uzVieniniekiem <- data.frame(); x6_uzDivniekiem <- data.frame(); x6_uzTris <- data.frame(); x6_uzCetri <- data.frame(); x6_uzPieciniekiem <- data.frame()
   check_rows <- 0
 
+  result <- function(r) {
+    x6_uzVieniniekiem <<- rbind(x6_uzVieniniekiem, r$x6_uzVieniniekiem)
+    x6_uzDivniekiem <<- rbind(x6_uzDivniekiem, r$x6_uzDivniekiem)
+    x6_uzCetri <<- rbind(x6_uzCetri, r$x6_uzCetri)
+    x6_uzPieciniekiem <<- rbind(x6_uzPieciniekiem, r$x6_uzPieciniekiem)
+    rm(r)
+    }
+  
   for (r in seq(1, nrow(x), by = 6)) {
       x6 <- x[r:(r+5),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, sak_beidz)
       
@@ -20,25 +28,18 @@ processingSixes <- function(x, o, kods) {
       x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x_vieninieki)
       rm(x_vieninieki)
     } else if (sum(x6$sak_beidz == "1") == 3) {
-         result <- processingSixes_s3(x6) 
+               result(processingSixes_s3(x6)) 
     } else if (sum(x6$sak_beidz == "1") == 4) {
-        result <- processingSixes_s4(x6)
+               result(processingSixes_s4(x6))
     } else if (sum(x6$sak_beidz == "1") == 5) {
                 if (all(x6$sak_beidz == c("1", "1", "1", "1", "1", "2"))) {
                   if (all(diff(x6$NDZ_sanemsanas_datums[1:5]) != 0) && diff(x6$NDZ_sanemsanas_datums[5:6]) == 0) {
-                    if (x6$PS_code[1] == '______________' && x6$NM_code[1] == '______________') {
+                    if (x6$PS_code[1] == '________' && x6$NM_code[1] == '________') {
                       x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[5:6, ])
                     } else {stop("processingSeven trūkst izstrādes koda.\n")}
                   } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
                 } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
     } else {stop("processingSixes: Sešinieku tabulā trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
-    
-      if(exists("result")) {
-        x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, result$x6_uzVieniniekiem)  
-        x6_uzDivniekiem <- rbind(x6_uzDivniekiem, result$x6_uzDivniekiem)
-        x6_uzCetri <- rbind(x6_uzCetri, result$x6_uzCetri)
-        x6_uzPieciniekiem <- rbind(x6_uzPieciniekiem, result$x6_uzPieciniekiem)
-      }
       
       check_rows <- check_rows + 6
   }
