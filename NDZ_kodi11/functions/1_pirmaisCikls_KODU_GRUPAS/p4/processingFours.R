@@ -16,7 +16,7 @@ for (r in seq(1, nrow(x), by = 4)) {
   
   if(!(doublesTest(1, x4) && doublesTest(3, x4))) {
     stop("Četrinieku apstrādes tabulā, ko izstrādā caur funkciju processingFours(), 
-               rindās no", r, "līdz", r + 3, "nesakrīt PS_code, NM_code, DN_code, period kombinācija visās četrās rindās.")
+               rindās no", r, "līdz", r + 3, "nesakrīt pseidokoda, NM_code, DN_code, period kombinācija visās četrās rindās.")
   } else if (all(x4$sak_beidz == c("2", "1", "2", "2"))) {
             result(processingFours_2122(x4))
   } else if (all(x4$sak_beidz == c("1", "2", "1", "2"))) {
@@ -25,6 +25,8 @@ for (r in seq(1, nrow(x), by = 4)) {
             result(processingFours_1122(x4))
   } else if (all(x4$sak_beidz == c("2", "1", "2", "1"))) {
             result(processingFours_2121(x4))
+  } else if (all(x4$sak_beidz == c("1", "1", "2", "1"))) {
+            result(processingFours_1121(x4))
   } else if (all(x4$sak_beidz == c("1", "2", "1", "1"))) {
             result(processingFours_1211(x4))  
   } else if (all(x4$sak_beidz == "1") || all(x4$sak_beidz == "2")) {
