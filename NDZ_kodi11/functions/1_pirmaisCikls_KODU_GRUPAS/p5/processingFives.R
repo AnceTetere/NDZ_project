@@ -27,10 +27,14 @@ processingFives <- function(x, o, kods) {
                  x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[2:3,])
                } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
             } else if (all(x5$sak_beidz == c("1", "1", "1", "1", "2"))) {
+                #Indivīds daudzas reizes sāk darbu, un līdz ar pēdējo sākšanu tiek atlaists.
                 x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[4:5,])
             } else if (all(x5$sak_beidz == c("1", "1", "1", "2", "1"))) {
                   if (all(sapply(c(1,2,4), function(i) diff(x5$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                    if (x5$PS_code[1] == '_____________' && x5$NM_code[1] == '_____________') {
+                    #Nezinu, vai šo var vispārināt.
+                    #Indivīds vairākas reizes atgriežas no BK atvaļinājuma (lieto vēlāko).
+                    #Atgriežoties, uzreiz aiziet nākamajā, un tad atgriežas.
+                    if (x5$PS_code[1] == '___________' && x5$NM_code[1] == '____________') {
                       x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[5, ])
                       x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[3:4,])
                     } else {stop("processingFives: Iztrūkst apstrādes kods. \n")}
@@ -45,13 +49,13 @@ processingFives <- function(x, o, kods) {
     } else if (sum(x5$sak_beidz == "1") == 1) {
         if (all(x5$sak_beidz == c("2", "1", "2", "2", "2"))) {
           if (all(diff(x5$NDZ_sanemsanas_datums) != 0)){
-            if ((x5$PS_code[1] %in% c('_____________', '_____________') && x5$NM_code[1] == '_____________') ||
-                (x5$PS_code[1] == '_____________' && x5$NM_code[1] == '_____________')) {
+            if ((x5$PS_code[1] %in% c('___________', '___________') && x5$NM_code[1] == '___________') ||
+                (x5$PS_code[1] == '___________' && x5$NM_code[1] == '___________')) {
               x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1,])
               x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(2,5),])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
           } else if (diff(x5$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x5$NDZ_sanemsanas_datums[2:5]) != 0)) {
-            if (x5$PS_code[1] == '_____________' && x5$NM_code[1] == '_____________') {
+            if (x5$PS_code[1] == '___________' && x5$NM_code[1] == '___________') {
               x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1,])
               x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(2,5),])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
