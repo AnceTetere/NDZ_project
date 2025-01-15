@@ -44,7 +44,7 @@ processingSeven_s4 <- function(x7s4) {
                       x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[7, ])
              } else if (all(sapply(c(1,2,4,5,6), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
                         diff(x7s4$NDZ_sanemsanas_datums[3:4]) == 0) {
-                        if (x7s4$PS_code[1] == '___________' && x7s4$NM_code[1] == '___________') {
+                        if (x7s4$PS_code[1] == '___________' && x7s4$NM_code[1] == '___________0') {
                           x7s4_uzDivniekiem <- rbind(x7s4_uzDivniekiem, x7s4[c(3,4,5,6), ])
                           x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[c(1,7), ])
                         } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
@@ -65,7 +65,6 @@ processingSeven_s4 <- function(x7s4) {
               } else if (all(sapply(c(2,4,6), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                          all(sapply(c(1,3,5), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                          if (x7s4$PS_code[1] == '___________' && x7s4$NM_code[1] == '___________') {
-                          #Te it kā viss kārtībā, bet pagaidām bremzēju.
                           x7s4_uzDivniekiem <- rbind(x7s4_uzSesiniekiem, x7s4[c(1,3,2,5,4,6), ])
                           x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[7, ])
                         } else {stop("processingSeven trūkst izstrādes koda.\n")}
@@ -77,7 +76,6 @@ processingSeven_s4 <- function(x7s4) {
   } else if (all(x7s4$sak_beidz == c("2", "1", "2", "1", "2", "1", "1"))) {
             if (all(sapply(c(1,2,3,4,6), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
                 diff(x7s4$NDZ_sanemsanas_datums[5:6]) == 0) {
-                #It kā viss OK, bet neesmu vēl pārliecināta, ka šo var vispārināt.
                 if (x7s4$period[1] == "___________" && x7s4$PS_code[1] == '___________' && x7s4$NM_code[1] == '___________') {
                   x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[c(1,7),])
                   x7s4_uzCetriniekiem <- rbind(x7s4_uzCetriniekiem, x7s4[c(2,3,4,5), ])
@@ -92,9 +90,9 @@ processingSeven_s4 <- function(x7s4) {
                 } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
               } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
   } else if (x7s4$sak_beidz[1] == x7s4$sak_beidz[2]) {
-          if (diff(x7s4$NDZ_sanemsanas_datums[1:2] != 0)) {
-        x7s4_uzSesiniekiem <- rbind(x7s4_uzSesiniekiem, x7s4[-1, ])
-     } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
+          if (diff(x7s4$NDZ_sanemsanas_datums[1:2]) != 0) {
+            x7s4_uzSesiniekiem <- rbind(x7s4_uzSesiniekiem, x7s4[-1, ])
+          } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
   } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
   
   return(list(x7_uzVieniniekiem = x7s4_uzVieniniekiem,
