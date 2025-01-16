@@ -1,6 +1,6 @@
 processingNines <- function(x, o, kods) {
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
-  x9_uzVieniniekiem <- data.frame(); x9_uzSesi <- data.frame(); x9_uzAstoniekiem <- data.frame()
+  x9_uzVieniniekiem <- data.frame(); x9_uzDivi <- data.frame();  x9_uzSesi <- data.frame(); x9_uzAstoniekiem <- data.frame()
   check_rows <- 0
   
   for(r in seq(1, nrow(x), by = 9)) {
@@ -51,11 +51,15 @@ processingNines <- function(x, o, kods) {
       x9_uzSesi <- rbind(x9_uzSesi, x9[4:9, ])
     } else if (all(x9$sak_beidz == c("1", "2", "1", "1", "2", "1", "2", "1", "2"))) {
           if (diff(x9$NDZ_sanemsanas_datums[2:3]) == 0) {
-            #It kā viss kārtībā, bet neesmu pārliecināta, ka šis ir vispārināms. Pagaidām bloķēju.
-            if (x9$period[1] == "__________" && x9$PS_code[1] == "__________" && x9$NM_code[1] == "__________") {
+            if (x9$period[1] == "__________" && x9$PS_code[1] == "__________" && x9$NM_code[1] == "___________") {
               x9_uzAstoniekiem <- rbind(x9_uzAstoniekiem, x9[c(1:2, 4:9), ])
             } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
           } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
+    } else if (all(x9$sak_beidz[1:3] == c("1", "1", "2")) && x9$sak_beidz[4] != "2") {
+            if (diff(x9$NDZ_sanemsanas_datums[1:2]) != 0) {
+                x9_uzDivi <- rbind(x9_uzDivi, x9[c(1,3), ])
+                x9_uzSesi <- rbind(x9_uzSesi, x9[4:9, ])
+            } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
     } else {stop("processingNines() iztrūkst apstrādes kods: rindas ", r, ":", r+8, "!\n")}
     check_rows = check_rows + 9
   }
@@ -72,13 +76,19 @@ if(nrow(x9_uzVieniniekiem) > 0) {
 } else {cat("Tabula x9_uzVieniniekiem ir tukša.\n")}
 rm(x9_uzVieniniekiem)
 
-#2 Apakštabulu x9_uzSesi sūta caur processingSixes().
+#2 Apakštabulu x9_uzDivi sūta caur processingTwoes().
+if(nrow(x9_uzDivi) > 0) {
+  x9_uzDivi %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTwoes(o, kods)
+} else {cat("Tabula x9_uzDivi ir tukša.")}
+rm(x9_uzDivi) 
+
+#3 Apakštabulu x9_uzSesi sūta caur processingSixes().
 if(nrow(x9_uzSesi) > 0) {
   x9_uzSesi %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSixes(o, kods)
 } else {cat("Tabula x9_uzSesi ir tukša.")}
 rm(x9_uzSesi) 
 
-#3 Apakštabulu x9_uzAstoniekiem sūta caur processingEights().
+#4 Apakštabulu x9_uzAstoniekiem sūta caur processingEights().
 if(nrow(x9_uzAstoniekiem) > 0) {
   x9_uzAstoniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEights(o, kods)
 } else {cat("Tabula x9_uzAstoniekiem ir tukša.")}
