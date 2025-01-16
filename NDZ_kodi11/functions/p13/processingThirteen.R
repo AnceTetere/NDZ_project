@@ -1,4 +1,4 @@
-processingThirteen <- function(x, o) {
+processingThirteen <- function(x, o, kods) {
   cat("-------------SĀK 13-nieku APSTRĀDI.")
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
 
@@ -76,35 +76,30 @@ processingThirteen <- function(x, o) {
   
   #3 Apakštabulu x13_uzVieniniekiem sūta caur processingOnes().
   if (nrow(x13_uzVieniniekiem) > 0) {
-    cat("No 17-niekiem atvasinātā tabula x13_uzVieniniekiem pārsūtīta uz processingOnes() un tad uz tempNDZ, ko būvējam.\n")
-    x13_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums, sak_beidz) %>% processingOnes(o) %>% sendTo_tempNDZ()
+    x13_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums, sak_beidz) %>% processingOnes(o) %>% sendTo_tempNDZ(o)
   } else {cat("Tabula x13_uzVieniniekiem ir tukša.\n")}
   rm(x13_uzVieniniekiem)
   
   #4 Apakštabulu x13_uzTrijniekiem sūta caur processingThrees().
   if (nrow(x13_uzTrijniekiem) > 0) {
-    cat("No 13-niekiem atvasinātā tabula x13_uzTrijniekiem pārsūtīta uz processingThrees() un tad caur to uz tempNDZ, ko būvējam.\n")
-    x13_uzTrijniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingThrees(o)
+    x13_uzTrijniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingThrees(o, kods)
   } else {cat("Tabula x13_uzTrijniekiem ir tukša.\n")}
   rm(x13_uzTrijniekiem)
   
   #5 Apakštabulu x13_uzCetriniekiem sūta caur processingFours().
   if (nrow(x13_uzCetriniekiem) > 0) {
-    cat("No 13-niekiem atvasinātā tabula x13_uzCetriniekiem pārsūtīta uz processingFours() un tad caur to uz tempNDZ, ko būvējam.\n")
-    x13_uzCetriniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFours(o)
+    x13_uzCetriniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFours(o, kods)
   } else {cat("Tabula x13_uzCetriniekiem ir tukša.\n")}
   rm(x13_uzCetriniekiem)
   
   #6 Apakštabulu x13_uzAstoniekiem sūta caur processingFours().
   if (nrow(x13_uzAstoniekiem) > 0) {
-    cat("No 13-niekiem atvasinātā tabula x13_uzAstoniekiem pārsūtīta uz processingEights() un tad caur to uz tempNDZ, ko būvējam.\n")
-    x13_uzAstoniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEights(o)
+    x13_uzAstoniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEights(o, kods)
   } else {cat("Tabula x13_uzAstoniekiem ir tukša.\n")}
   rm(x13_uzAstoniekiem)
   
   #7 Apakštabulu x13_uzDesmitniekiem sūta caur processingTens().
   if (nrow(x13_uzDesmitniekiem) > 0) {
-    cat("No 13-niekiem atvasinātā tabula x13_uzDesmitniekiem pārsūtīta uz processingTens un tad uz tempNDZ, ko būvējam.\n")
-    x13_uzDesmitniekiem %>% arrange (PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTens(o)
+    x13_uzDesmitniekiem %>% arrange (PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTens(o, kods)
   } else {cat("Tabula x13_uzDesmitniekiem ir tukša.\n")}
   rm(x13_uzDesmitniekiem)}
