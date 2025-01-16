@@ -1,7 +1,7 @@
 processingTwelve <- function(x, o, kods) {
   cat("-------------SĀK 12-nieku APSTRĀDI. \n")
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
-  x12_uzVieniniekiem <- data.frame(); x12_uzDivniekiem <- data.frame(); x12_uzSeptini <- data.frame(); x12_uzDesmitniekiem <- data.frame(); x12_uzVienpadsmit <- data.frame()
+  x12_uzVieniniekiem <- data.frame(); x12_uzDivniekiem <- data.frame(); x12_uzSeptini <- data.frame(); x12_uzDevini <- data.frame(); x12_uzDesmitniekiem <- data.frame(); x12_uzVienpadsmit <- data.frame()
   check_rows <- 0
   
   for (r in seq(1, nrow(x), by = 12)) {
@@ -17,10 +17,14 @@ processingTwelve <- function(x, o, kods) {
             } else if (all(x12$sak_beidz[1:2] == c("2", "1")) && diff(x12$NDZ_sanemsanas_datums[1:2]) == 0) {
               x12_uzDivniekiem <- rbind(x12_uzDivniekiem, x12[1:2, ])
               x12_uzDesmitniekiem <- rbind(x12_uzDesmitniekiem, x12[-(1:2), ])
-            } else if (all(x12$sak_beidz[1:2] == c("1", "2")) && 
-                         diff(x12$NDZ_sanemsanas_datums[1:2]) >= 0) {
+            } else if (all(x12$sak_beidz[1:2] == c("1", "2")) && x12$sak_beidz[3] != "2" &&
+                         diff(x12$NDZ_sanemsanas_datums[1:2]) != 0) {
               x12_uzDivniekiem <- rbind(x12_uzDivniekiem, x12[1:2, ])
               x12_uzDesmitniekiem <- rbind(x12_uzDesmitniekiem, x12[-(1:2), ])
+            } else if (all(x12$sak_beidz[1:3] == c("1", "2", "2")) && x12$sak_beidz[4] != "2" &&
+                       all(diff(x12$NDZ_sanemsanas_datums[1:3]) != 0)) {
+                        x12_uzDivniekiem <- rbind(x12_uzDivniekiem, x12[c(1,3), ])
+                        x12_uzDevini <- rbind(x12_uzDevini, x12[4:12, ])
             } else if (all(x12$sak_beidz[c(1,2,4)] == "2") && all(x12$sak_beidz[c(3, 5)] == "1") && 
                        diff(x12$NDZ_sanemsanas_datums[1:2]) != 0 &&
                        all(sapply(seq(2, 5, by = 2), function(i) diff(x12$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
@@ -77,13 +81,19 @@ if (nrow(x12_uzSeptini) > 0) {
 } else {cat("Tabula x12_uzSeptini ir tukša.\n")}
 rm(x12_uzSeptini)
   
-#4 Apakštabulu x12_uzDesmitniekiem sūta caur processingTens().
+#4 Apakštabulu x12_uzDevini sūta caur processingNines().
+if (nrow(x12_uzDevini) > 0) {
+  x12_uzDevini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingNines(o, kods)
+} else {cat("Tabula x12_uzDevini ir tukša.\n")}
+rm(x12_uzDevini)
+
+#5 Apakštabulu x12_uzDesmitniekiem sūta caur processingTens().
 if (nrow(x12_uzDesmitniekiem) > 0) {
     x12_uzDesmitniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTens(o, kods)
 } else {cat("Tabula x12_uzDesmitniekiem ir tukša.\n")}
 rm(x12_uzDesmitniekiem)
   
-#5 Apakštabulu x12_uzVienpadsmit sūta caur processingEleven().
+#6 Apakštabulu x12_uzVienpadsmit sūta caur processingEleven().
 if (nrow(x12_uzVienpadsmit) > 0) {
     x12_uzVienpadsmit %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEleven(o, kods)
 } else {cat("Tabula x12_uzVienpadsmit ir tukša.\n")}
