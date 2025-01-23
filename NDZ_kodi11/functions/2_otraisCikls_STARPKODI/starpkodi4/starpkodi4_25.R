@@ -1,39 +1,43 @@
 starpkodi4_25 <- function(y, t, prev, v) {
   
-  if (t$zk[2] == "51") {
-           if (t$zk[3] == "11") {
-             if (t$zk[4] == "25") {
+  yt <- y[v, ]
+  
+  if (t$zinkod[2] %in% c("41", "51", "54", "92")) {
+           if (t$zinkod[3] %in% c("11", "14", "16", "61")) {
+             if (t$zinkod[4] %in% c("21", "22", "23", "24", "25", "29")) {
                if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && diff(t$NDZ_sanemsanas_datums[3:4]) != 0) {
-                 yt <- y[v, ]
-                 yt$dd <- as.numeric(diff(t$NDZ_sanemsanas_datums[3:4]))
+                 yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[3:4]))
                } else {stop("1starpkodi4_25: Iztrūkst aptrādes koda.")}
              } else {stop("2starpkodi4_25: Iztrūkst aptrādes koda.")}
-           } else if (t$zk[3] == "51") {
-               if (t$zk[4] == "51") {
+           } else if (t$zinkod[3] %in% c("41", "51", "54", "92")) {
+               if (t$zinkod[4] %in% c("41", "51", "54", "92")) {
                 if (all(diff(t$NDZ_sanemsanas_datums[2:4]) != 0) && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
-                   yt <- y[v, ]
-                   yt$dd <- as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days"))
+                   yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days"))
+                } else if (all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
+                           diff(t$NDZ_sanemsanas_datums[2:3]) != 0) {
+                  if (t$period[1] == "________" && t$PS_code[1] == "___________" && t$NM_code[1] == "________") {
+                    yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
+                    ZERO_minus(t %>% slice(2))
+                  } else {stop("7starpkodi4_25: Iztrūkst aptrādes koda.")}
                 } else {stop("7starpkodi4_25: Iztrūkst aptrādes koda.")}
              } else {stop("8starpkodi4_25: Iztrūkst aptrādes koda.")}
            } else {stop("9starpkodi4_25: Iztrūkst aptrādes koda.")}
     
-  } else if (t$zk[2] == "11") {
-          if (t$zk[3] == "50") {
-            if (t$zk[4] == "51") {
+  } else if (t$zinkod[2] == "11") {
+          if (t$zinkod[3] == "50") {
+            if (t$zinkod[4] %in% c("41", "51", "54", "92")) {
               if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-                yt <- y[v, ]
-                yt$dd <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")),
+                yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")),
                                  as.numeric(diff(t$NDZ_sanemsanas_datums[2:3])),
                                  as.numeric(difftime(t$last_date[4], t$NDZ_sanemsanas_datums[4], units = "days")) + 1)
               } else {stop("starpkodi4_25: Iztrūkst aptrādes koda.")}
             } else {stop("starpkodi4_25: Iztrūkst aptrādes koda.")}
-        } else if (t$zk[3] == "11") {
-                if (t$zk[4] == "50") {
+        } else if (t$zinkod[3] == "11") {
+                if (t$zinkod[4] == "50") {
                   if (all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                       diff(t$NDZ_sanemsanas_datums[2:3]) != 0) {
-                      if (t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
-                        yt <- y[v, ]
-                        yt$dd <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days"),
+                      if (t$PS_code[1] == '________' && t$NM_code[1] == '________') {
+                        yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days"),
                                           diff(t$NDZ_sanemsanas_datums[3:4])))
                      } else {stop("starpkodi4_25: Iztrūkst aptrādes koda.")}
                   } else {stop("starpkodi4_25: Iztrūkst aptrādes koda.")}
