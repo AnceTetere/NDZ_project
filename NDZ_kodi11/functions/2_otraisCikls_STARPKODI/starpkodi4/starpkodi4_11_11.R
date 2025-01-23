@@ -45,3 +45,5 @@ starpkodi4_11_11 <- function(y2, t, prev, v) {
   #  yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[4], t$NDZ_sanemsanas_datums[1], units = "days"))
   
   
+
+           
