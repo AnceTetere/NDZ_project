@@ -38,11 +38,17 @@ processingNines <- function(x, o, kods) {
                diff(x9$NDZ_sanemsanas_datums[8:9]) != 0) {
       x9_uzVieniniekiem <- rbind(x9_uzVieniniekiem, x9[9, ])
       x9_uzAstoniekiem <- rbind(x9_uzAstoniekiem, x9[1:8, ])
-    } else if (all(x9$sak_beidz[c(1,2,8,9)] == c("1", "2", "2", "1")) && 
-               diff(x9$NDZ_sanemsanas_datums[1:2]) != 0 &&
-               diff(x9$NDZ_sanemsanas_datums[8:9]) != 0) {
-      x9_uzVieniniekiem <- rbind(x9_uzVieniniekiem, x9[9, ])
-      x9_uzAstoniekiem <- rbind(x9_uzAstoniekiem, x9[1:8, ])
+    } else if (all(x9$sak_beidz[c(1,2,8,9)] == c("1", "2", "2", "1"))) {
+      if (diff(x9$NDZ_sanemsanas_datums[1:2]) != 0 && diff(x9$NDZ_sanemsanas_datums[8:9]) != 0) {
+        x9_uzVieniniekiem <- rbind(x9_uzVieniniekiem, x9[9, ])
+        x9_uzAstoniekiem <- rbind(x9_uzAstoniekiem, x9[1:8, ])
+      } else if (all(sapply(c(2,4,8), function(i) diff(x9$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && diff(x9$NDZ_sanemsanas_datums[1:2]) != 0) {
+
+        if (x9$period[1] == "________" && x9$PS_code[1] == "________" && x9$NM_code[1] == "________") {
+          x9_uzVieniniekiem <- rbind(x9_uzVieniniekiem, x9[9, ])
+          x9_uzAstoniekiem <- rbind(x9_uzAstoniekiem, x9[1:8, ])
+        } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
+      } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
     } else if (all(x9$sak_beidz[1:2] == c("2", "1")) && diff(x9$NDZ_sanemsanas_datums[1:2]) != 0) {
       x9_uzVieniniekiem <- rbind(x9_uzVieniniekiem, x9[1, ])
       x9_uzAstoniekiem <- rbind(x9_uzAstoniekiem, x9[2:9, ])
@@ -51,7 +57,7 @@ processingNines <- function(x, o, kods) {
       x9_uzSesi <- rbind(x9_uzSesi, x9[4:9, ])
     } else if (all(x9$sak_beidz == c("1", "2", "1", "1", "2", "1", "2", "1", "2"))) {
           if (diff(x9$NDZ_sanemsanas_datums[2:3]) == 0) {
-            if (x9$period[1] == "__________" && x9$PS_code[1] == "__________" && x9$NM_code[1] == "___________") {
+            if (x9$period[1] == "________" && x9$PS_code[1] == "________" && x9$NM_code[1] == "________") {
               x9_uzAstoniekiem <- rbind(x9_uzAstoniekiem, x9[c(1:2, 4:9), ])
             } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
           } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
