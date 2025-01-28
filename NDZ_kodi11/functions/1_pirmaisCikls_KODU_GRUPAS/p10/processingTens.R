@@ -31,7 +31,7 @@ processingTens <- function(x, o, kods) {
               } else if (all(x10$sak_beidz[c(3:4, 7, 9)] == "1") && 
                              all(sapply(seq(1, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
                              all(sapply(seq(2, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))&&
-                             x10$PS_code[1] == 'PK3C67AFAA4' & x10$NM_code[1] == '50103923001') {
+                             x10$PS_code[1] == '_________' & x10$NM_code[1] == '_______') {
                     p <- x10[1:6, ]
                     p <- p[p$zinkod %in% c("40", "41"), ]
                     x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, p[1, ])
