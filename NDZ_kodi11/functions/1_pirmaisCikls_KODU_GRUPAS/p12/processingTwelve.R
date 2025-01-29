@@ -4,69 +4,23 @@ processingTwelve <- function(x, o, kods) {
   x12_uzVieniniekiem <- data.frame(); x12_uzDivniekiem <- data.frame(); x12_uzSeptini <- data.frame(); x12_uzDevini <- data.frame(); x12_uzDesmitniekiem <- data.frame(); x12_uzVienpadsmit <- data.frame()
   check_rows <- 0
   
+  result <- function(y) {
+    x12_uzVieniniekiem <<- rbind(x12_uzVieniniekiem, y$x12_uzVieniniekiem)
+    x12_uzDivniekiem <<- rbind(x12_uzDivniekiem, y$x12_uzDivniekiem)
+    x12_uzSeptini <<- rbind(x12_uzSeptini, y$x12_uzSeptini)
+    x12_uzDesmitniekiem <<- rbind(x12_uzDesmitniekiem, y$x12_uzDesmitniekiem)
+    x12_uzVienpadsmit <<- rbind(x12_uzVienpadsmit, y$x12_uzVienpadsmit)
+    rm(y)
+  }
+  
   for (r in seq(1, nrow(x), by = 12)) {
     x12 <- x[r:(r+11),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
     
-    if (sum(x12$sak_beidz == "2") == 6) {
-      if (all(x12$sak_beidz[1:3] == c("2", "1", "2")) && diff(x12$NDZ_sanemsanas_datums[1:2]) != 0) {
-        x12_uzVieniniekiem <- rbind(x12_uzVieniniekiem, x12[1, ])
-        x12_uzVienpadsmit <- rbind(x12_uzVienpadsmit, x12[2:12, ])
-      } else if(all(x12$sak_beidz[1:3] == c("1", "2", "1")) && diff(x12$NDZ_sanemsanas_datums[2:3]) != 0) {
-        x12_uzDivniekiem <- rbind(x12_uzDivniekiem, x12[1:2, ])
-        x12_uzDesmitniekiem <- rbind(x12_uzDesmitniekiem, x12[-(1:2), ])
-      } else if (all(x12$sak_beidz[1:2] == c("2", "1")) && diff(x12$NDZ_sanemsanas_datums[1:2]) == 0) {
-        x12_uzDivniekiem <- rbind(x12_uzDivniekiem, x12[1:2, ])
-        x12_uzDesmitniekiem <- rbind(x12_uzDesmitniekiem, x12[-(1:2), ])
-      } else if (all(x12$sak_beidz[1:2] == c("1", "2"))) {
-        if (x12$sak_beidz[3] != "2") {
-          if (diff(x12$NDZ_sanemsanas_datums[1:2]) != 0) {
-            x12_uzDivniekiem <- rbind(x12_uzDivniekiem, x12[1:2, ])
-            x12_uzDesmitniekiem <- rbind(x12_uzDesmitniekiem, x12[-(1:2), ])
-          } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
-        } else if (x12$sak_beidz[3] == "2") {
-          if (x12$sak_beidz[4] != "2") {
-            if (all(diff(x12$NDZ_sanemsanas_datums[1:3]) != 0)) {
-              x12_uzDivniekiem <- rbind(x12_uzDivniekiem, x12[c(1,3), ])
-              x12_uzDevini <- rbind(x12_uzDevini, x12[4:12, ])
-            } else if (diff(x12$NDZ_sanemsanas_datums[1:2]) == 0 && diff(x12$NDZ_sanemsanas_datums[2:3]) != 0) {
-              if ((x12$period[1] == "_________" && x12$PS_code[1] == ")_________" && x12$NM_code[1] == "_________") ||
-                  (x12$period[1] == "______" && x12$PS_code[1] == "______" && x12$NM_code[1] == "______")) {
-                x12_uzDivniekiem <- rbind(x12_uzDivniekiem, x12[1:2, ])
-                x12_uzDesmitniekiem <- rbind(x12_uzDesmitniekiem, x12[3:12, ])
-              } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
-            } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
-          } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
-        } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
-      } else if (all(x12$sak_beidz[c(1,2,4)] == "2") && all(x12$sak_beidz[c(3, 5)] == "1") && 
-                 diff(x12$NDZ_sanemsanas_datums[1:2]) != 0 &&
-                 all(sapply(seq(2, 5, by = 2), function(i) diff(x12$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-        x12_uzVieniniekiem <- rbind(x12_uzVieniniekiem, x12[1, ])
-        x12_uzVienpadsmit <- rbind(x12_uzVienpadsmit, x12[-1, ])
-      } else if (all(x12$sak_beidz[c(3, 4, 6, 8, 10, 12)] == "1") && 
-                 all(sapply(c(1, 5, 6, 9, 10), function(i) diff(x12$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
-                 all(sapply(c(2, 3, 4, 7, 8, 11), function(i) diff(x12$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-        x12_uzVieniniekiem <- rbind(x12_uzVieniniekiem, x12[1, ])
-        x12_uzSeptini <- rbind(x12_uzSeptini, x12[c(4, 7:12), ])
-      } else if (all(sapply(seq(1,12,by=2), function(i) x12$sak_beidz[i] == x12$sak_beidz[i+1]))) {
-        if (all(sapply(seq(1,12,by=2), function(i) diff(x12$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
-            all(sapply(seq(2,11,by=2), function(i) diff(x12$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-          if ("92" %in% x12$zinkod) {
-            x12_uzVieniniekiem <- rbind(x12_uzVieniniekiem, x12[c(1,12), ])
-            x12_uzDivniekiem <- rbind(x12_uzDivniekiem, x12[c(3,5,7,9), ])
-          } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
-        } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, " līdz ", r + 11)}
-      } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, " līdz ", r + 11)}
-    } else if (sum(x12$sak_beidz == "1") == 5) {
-      if(all(x12$sak_beidz[c(1, 3, 5, 7, 10)] == "1") && all(sapply(c(1:7,9,10), function(i) diff(x12$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
-         all(sapply(c(8,11), function(i) diff(x12$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-        x12_uzDesmitniekiem <- rbind(x12_uzDesmitniekiem, x12[-c(8,11), ])
-      } else {
-        stop("processingTwelve: Tabulas pārdalei trūkst izstrādes koda. Rindas: ",r, " līdz ", r + 11)
-      }
-      
-    } else {
-      stop("12-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, " līdz ", r + 11)
-    }
+    if (sum(x12$sak_beidz == "1") == 5) {
+      result(processingTwelve_s5(x12, o, kods))
+    } else if (sum(x12$sak_beidz == "2") == 6) {
+        result(processingTwelve_s6(x12, o, kods))
+    } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, " līdz ", r + 11)}
     check_rows <- check_rows + 12
   }
   
