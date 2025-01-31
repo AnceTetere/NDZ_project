@@ -5,26 +5,40 @@ processingSixteen <- function(x, o, kods) {
   for (r in seq(1, nrow(x), by = 16)) {
     x16 <- x[r:(r+15), ] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, zinkod)
     
-    if (all(x16$sak_beidz == c("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2"))) {
-      if (all(diff(x16$NDZ_sanemsanas_datums) != 0)) {
-        x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16)
-      } else if (all(sapply(c(1,3,5,9,11,13,15), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
-                 all(sapply(c(2,4,6,7,8,10,12,14), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-        if (x16$period[1] == "__________" && x16$PS_code[1] == "___________" && x16$NM_code[1] == "____________") {
-          x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16)
-        } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
-      } else {stop("16-nieku tabulā trūkst izstrādes koda. Rindas: ", r, ":", r+15, "\n")}
-    } else if (all(x16$sak_beidz == c("2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1"))) {
-      if (all(diff(x16$NDZ_sanemsanas_datums) != 0)) {
-        x16_uz1 <- rbind(x16_uz1,x16[c(1,16), ])
-        x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16[2:15, ])
-      } else {stop("16-nieku tabulā trūkst izstrādes koda. Rindas: ", r, ":", r+15, "\n")}
-    } else if (all(x16$sak_beidz[1:3] == c("2", "1", "1"))) {
-      if (diff(x16$NDZ_sanemsanas_datums[1:2]) == 0) {
-        x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16[c(2,1), ])
-        x16_uz14 <- rbind(x16_uz14, x16[3:16, ])
-      } else {stop("16-nieku tabulā trūkst izstrādes koda. Rindas: ", r, ":", r+15, "\n")}
+    if (sum(x16$sak_beidz == "1") == 8) {
+            if (x16$sak_beidz[1] == "1") {
+              if (all(x16$sak_beidz[2:16] == c("2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2"))) {
+                  if (all(diff(x16$NDZ_sanemsanas_datums) != 0)) {
+                      x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16)
+                  } else if (all(sapply(c(1,3,5,9,11,13,15), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                             all(sapply(c(2,4,6,7,8,10,12,14), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+                              if (x16$period[1] == "__________" && x16$PS_code[1] == "__________" && x16$NM_code[1] == "__________") {
+                               x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16)
+                              } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
+                  } else if (all(sapply(c(1,5,7,9,11,13,15), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
+                             all(sapply(c(2,3,4,6,8,10,12,14), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+                            if (x16$period[1] == "__________" && x16$PS_code[1] == "__________" && x16$NM_code[1] == "__________") {
+                              x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16)
+                            } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
+                  } else {stop("16-nieku tabulā trūkst izstrādes koda. Rindas: ", r, ":", r+15, "\n")}  
+                } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
+        } else if (x16$sak_beidz[1] == "2") {
+              if (all(x16$sak_beidz[2:16] == c("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1"))) {
+               if (all(diff(x16$NDZ_sanemsanas_datums) != 0)) {
+                  x16_uz1 <- rbind(x16_uz1,x16[c(1,16), ])
+                  x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16[2:15, ])
+              } else {stop("16-nieku tabulā trūkst izstrādes koda. Rindas: ", r, ":", r+15, "\n")}          
+              } else if (all(x16$sak_beidz[2:3] == c("1", "1"))) {
+                if (diff(x16$NDZ_sanemsanas_datums[1:2]) == 0 && diff(x16$NDZ_sanemsanas_datums[2:3]) != 0) {
+                  x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16[c(2,1), ])
+                  x16_uz14 <- rbind(x16_uz14, x16[3:16, ])
+                } else {stop("16-nieku tabulā trūkst izstrādes koda. Rindas: ", r, ":", r+15, "\n")}
+            } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}  
+      } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
     } else {stop("16-nieku tabulā trūkst izstrādes koda. Rindas: ", r, ":", r+15, "\n")}
+    
+    if (x16$sak_beidz[1] == "1" && kods %in% c("40", "50", "53") && o == "16") {ZERO_minus(a %>% slice(1))}
+    if (x16$sak_beidz[16] == "2" && kods %in% c("40", "50", "53") && o == "16") {ZERO_plus(a %>% slice(16))}
   }
   
   #PĀRBAUDE: Vai rindu skaits no 16-niekiem atvasinātajās tabulās sakrīt ar rindām izejas tabulā x.
