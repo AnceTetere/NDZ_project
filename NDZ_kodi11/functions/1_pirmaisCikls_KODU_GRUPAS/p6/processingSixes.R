@@ -34,11 +34,23 @@ processingSixes <- function(x, o, kods) {
     } else if (sum(x6$sak_beidz == "1") == 5) {
                 if (all(x6$sak_beidz == c("1", "1", "1", "1", "1", "2"))) {
                   if (all(diff(x6$NDZ_sanemsanas_datums[1:5]) != 0) && diff(x6$NDZ_sanemsanas_datums[5:6]) == 0) {
-                    if (x6$PS_code[1] == '________' && x6$NM_code[1] == '________') {
+                    #Neesmu pārliecināta, ka šo var vispārināt.
+                    if (x6$PS_code[1] == '____________' && x6$NM_code[1] == '____________') {
                       x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[5:6, ])
                     } else {stop("processingSeven trūkst izstrādes koda.\n")}
                   } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
                 } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
+                if (kods %in% c("40", "50", "53")) {ZERO_plus(x6 %>% slice(6)); ZERO_minus(x6 %>% slice(1))}
+    } else if (sum(x6$sak_beidz == "1") == 2) {
+            if (all(x6$sak_beidz[3:4] == "1")) {
+              if (all(diff(x6$NDZ_sanemsanas_datums[2:4]) != 0) && all(sapply(c(1,5), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
+                  if (x6$period[1] == '____________' && x6$PS_code[1] == '_____________' && x6$NM_code[1] == '____________') {
+                  x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[2, ])
+                  x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[4:5, ])
+                  } else {stop("processingSeven trūkst izstrādes koda.\n")}
+                if (kods %in% c("40", "50", "53")) {ZERO_plus(x6 %>% slice(5))}
+          } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
+      } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
     } else {stop("processingSixes: Sešinieku tabulā trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
       
       check_rows <- check_rows + 6
