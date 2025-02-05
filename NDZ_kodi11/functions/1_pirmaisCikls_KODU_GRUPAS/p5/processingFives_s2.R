@@ -14,7 +14,7 @@ if (all(diff(x5s2$NDZ_sanemsanas_datums) != 0)) {
 } else if (diff(x5s2$NDZ_sanemsanas_datums[1:2] == 0) && all(diff(x5s2$NDZ_sanemsanas_datums[2:5]) != 0)) {
   fncResult(processingFives_s2e2(x5s2, kods))
 } else if (all(sapply(c(1,2,4), function(i) diff(x5s2$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && diff(x5s2$NDZ_sanemsanas_datums[3:4]) == 0) {
-  fncResult(processingFives_s2e3(x5s2, o, kods))
+        fncResult(processingFives_s2e3(x5s2, o, kods))
 } else if (all(diff(x5s2$NDZ_sanemsanas_datums[2:5]) != 0) && diff(x5s2$NDZ_sanemsanas_datums[1:2]) == 0) {
   fncResult(processingFives_s2e4(x5s2, kods))
 } else if (all(sapply(c(1,3,4), function(i) diff(x5s2$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
