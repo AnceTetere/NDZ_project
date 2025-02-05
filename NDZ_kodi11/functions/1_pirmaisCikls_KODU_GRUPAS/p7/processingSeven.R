@@ -2,7 +2,7 @@ processingSeven <- function(x, o, kods) {
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x7_uzVieniniekiem <- data.frame(); x7_uzDivniekiem <- data.frame(); x7_uzTrijniekiem <- data.frame(); x7_uzCetriniekiem <- data.frame(); x7_uzPieciniekiem <- data.frame(); x7_uzSesiniekiem <- data.frame()
   check_rows <- 0
-  
+
   fncResult <- function(result) {
     x7_uzVieniniekiem <<- rbind(x7_uzVieniniekiem, result$x7_uzVieniniekiem)
     x7_uzDivniekiem   <<- rbind(x7_uzDivniekiem, result$x7_uzDivniekiem)
@@ -16,7 +16,7 @@ processingSeven <- function(x, o, kods) {
     x7 <- x[r:(r+6),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
     
   if (sum(x7$sak_beidz == "1") == 4) {
-          fncResult(processingSeven_s4(x7))
+          fncResult(processingSeven_s4(x7, o, kods))
     } else if (sum(x7$sak_beidz == "2") == 4) {
           fncResult(processingSeven_b4(x7))
     } else if (sum(x7$sak_beidz == "1") == 5) {
@@ -35,7 +35,7 @@ processingSeven <- function(x, o, kods) {
               } else {stop("processingSeven trūkst izstrādes koda.\n")}
             } else if (all(x7$sak_beidz[1:3] == c("2", "1", "1"))) {
                    if (diff(x7$NDZ_sanemsanas_datums[1:2]) == 0) {
-                     if (x7$PS_code[1] == '___________' && x7$NM_code[1] == '___________') {
+                     if (x7$PS_code[1] == '__________' && x7$NM_code[1] == '___________') {
                         x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
                         x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
                      } else {stop("processingSeven trūkst izstrādes koda.\n")}
