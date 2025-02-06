@@ -35,7 +35,7 @@ processingSeven <- function(x, o, kods) {
               } else {stop("processingSeven trūkst izstrādes koda.\n")}
             } else if (all(x7$sak_beidz[1:3] == c("2", "1", "1"))) {
                    if (diff(x7$NDZ_sanemsanas_datums[1:2]) == 0) {
-                     if (x7$PS_code[1] == '__________' && x7$NM_code[1] == '___________') {
+                     if (x7$PS_code[1] == '______' && x7$NM_code[1] == '______') {
                         x7_uzVieniniekiem <- rbind(x7_uzVieniniekiem, x7[1, ])
                         x7_uzSesiniekiem <- rbind(x7_uzSesiniekiem, x7[-1, ])
                      } else {stop("processingSeven trūkst izstrādes koda.\n")}
