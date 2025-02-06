@@ -6,6 +6,7 @@ x7b4_uzTrijniekiem <- data.frame()
 x7b4_uzCetriniekiem <- data.frame()
 x7b4_uzPieciniekiem <- data.frame()
 x7b4_uzSesiniekiem <- data.frame()
+#x7b4 <- x7
 
   if ((all(x7b4$sak_beidz[1:2] == c("2", "1")) && diff(x7b4$NDZ_sanemsanas_datums[1:2]) != 0) || 
       (x7b4$sak_beidz[1] == x7b4$sak_beidz[2] && diff(x7b4$NDZ_sanemsanas_datums[2:3]) == 0)) {
@@ -43,4 +44,3 @@ x7b4_uzSesiniekiem <- data.frame()
                 x7_uzPieciniekiem = x7b4_uzPieciniekiem,
                 x7_uzSesiniekiem  = x7b4_uzSesiniekiem))
   }
-  
