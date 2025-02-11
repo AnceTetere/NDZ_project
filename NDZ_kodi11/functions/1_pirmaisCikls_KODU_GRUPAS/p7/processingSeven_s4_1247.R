@@ -4,15 +4,19 @@ processingSeven_s4_1247 <- function(a, o, kods) {
   
   if (all(sapply(c(2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
       all(sapply(c(1,3,5,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-            if (a$pseidokods[1] == '______' && a$nmrkod[1] == '______') {
+            if (a$PS_code[1] == '___________' && a$NM_code[1] == '___________') {
               a2 <- rbind(a6, a[c(2,3,4,6), ])
               a1 <- rbind(a1, a[7, ])
               if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
             } else {stop("processingSeven trūkst izstrādes koda.\n")}
   } else if (all(sapply(c(2,4,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
              all(sapply(c(1,3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-             if ((a$pseidokods[1] == '______' && a$nmrkod[1] == '______') ||
-                 (a$period[1] == '______' && a$pseidokods[1] == '______' && a$nmrkod[1] == '______')) {
+             if ((a$PS_code[1] == '___________' && a$NM_code[1] == '___________') ||
+                 (a$period[1] == '___________' && a$PS_code[1] == '___________' && a$NM_code[1] == '___________') ||
+                 (a$period[1] == '___________' && a$PS_code[1] == '___________' && a$NM_code[1] == '___________') ||
+                 (a$period[1] == '___________' && a$PS_code[1] == '___________' && a$NM_code[1] == '___________') ||
+                 (a$period[1] == '___________' && a$PS_code[1] == '___________' && a$NM_code[1] == '___________') ||
+                 (a$period[1] == '___________' && a$PS_code[1] == '___________' && a$NM_code[1] == '___________')) {
                  a2 <- rbind(a6, a[c(1,3,2,5,4,6), ])
                  a1 <- rbind(a1, a[7, ])
                  if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
