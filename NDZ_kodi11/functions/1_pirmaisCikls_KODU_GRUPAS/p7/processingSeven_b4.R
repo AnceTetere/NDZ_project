@@ -14,7 +14,7 @@ x7b4_uzSesiniekiem <- data.frame()
     x7b4_uzSesiniekiem <- rbind(x7b4_uzSesiniekiem, x7b4[-1, ])
   } else if (all(x7b4$sak_beidz == c("2","1","2","1","2","2","1")) && 
              diff(x7b4$NDZ_sanemsanas_datums[1:2]) == 0 && 
-             x7b4$PS_code[1] == '______' && x7b4$NM_code[1] == '______') {
+             x7b4$PS_code[1] == '___________' && x7b4$NM_code[1] == '___________') {
     x7b4_uzVieniniekiem <- rbind(x7b4_uzVieniniekiem, x7b4[1, ])
     x7b4_uzSesiniekiem <- rbind(x7b4_uzSesiniekiem, x7b4[-1, ])
   } else if(all(x7b4$sak_beidz == c("2", "2", "1", "2", "1", "2", "1")) && all(diff(x7b4$NDZ_sanemsanas_datums) != 0)) {
@@ -31,7 +31,7 @@ x7b4_uzSesiniekiem <- data.frame()
     x7b4_uzVieniniekiem <- rbind(x7b4_uzVieniniekiem, x7b4[c(1,7), ])
   } else if(all(x7b4$sak_beidz == c("1", "2", "2", "1", "2", "1", "2"))) {
     if (all(diff(x7b4$NDZ_sanemsanas_datums) != 0)) {
-      if(x7b4$period[1] == "______" && x7b4$PS_code[1] == "______" && x7b4$NM_code[1] == '______') {
+      if(x7b4$period[1] == "___________" && x7b4$PS_code[1] == "___________" && x7b4$NM_code[1] == '___________') {
         x7b4_uzDivniekiem <- rbind(x7b4_uzDivniekiem, x7b4[c(1,3,4,5,6,7), ])
       } else {stop("processingSeven_b4 trūkst izstrādes koda.\n")}
     } else {stop("processingSeven_b4 trūkst izstrādes koda.\n")}
