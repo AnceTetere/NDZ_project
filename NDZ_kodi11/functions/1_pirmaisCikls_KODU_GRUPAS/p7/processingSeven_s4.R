@@ -1,6 +1,5 @@
 processingSeven_s4 <- function(x7s4, o, kods) {
   x7s4_uzVieniniekiem <- data.frame(); x7s4_uzDivniekiem <- data.frame(); x7s4_uzTrijniekiem <- data.frame(); x7s4_uzCetriniekiem <- data.frame(); x7s4_uzPieciniekiem <- data.frame(); x7s4_uzSesiniekiem <- data.frame()
-  #x7s4 <- x7
   
   result <- function(y) {
     x7s4_uzVieniniekiem <<- rbind(x7s4_uzVieniniekiem, y$x7s4_uzVieniniekiem)
@@ -29,79 +28,17 @@ processingSeven_s4 <- function(x7s4, o, kods) {
   } else if (all(x7s4$sak_beidz[c(2,3,6,7)] == "1")) {
            result(processingSeven_s4_2367(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(1,2,4,6)] == "1")) {
-             if (all(sapply(c(1,3,5), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
-                 all(sapply(c(2,4,6), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-               if (x7s4$period[1] == "___________" && x7s4$NM_code[1] == "___________") {
-                 x7s4 <- x7s4[c(1,3,2,5,4,7,6),]
-                 x7s4_uzSesiniekiem <- rbind(x7s4_uzSesiniekiem, x7s4[1:6, ])
-                 x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[7, ])
-                 if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(x7s4 %>% slice(1))}
-               } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
-             } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
+          result(processingSeven_s4_1246(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(1,4,6,7)] == "1")) {
-               if (all(diff(x7s4$NDZ_sanemsanas_datums) != 0)) {
-                 if (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") {
-                   x7s4_uzSesiniekiem <- rbind(x7s4_uzSesiniekiem, x7s4[c(1,3,4,5), ])
-                   x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[7, ])
-                   if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(x7s4 %>% slice(1))}
-                  } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
-               } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
+          result(processingSeven_s4_1467(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(1,2,5,7)] == "1")) {
-                 if (all(sapply(c(1,3,5), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
-                     all(sapply(c(2,4,6), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-                    if ((x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                        (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________")) {
-                       x7s4 <- x7s4[c(1,3,2,4,5,6,7),]
-                       x7s4_uzSesiniekiem <- rbind(x7s4_uzSesiniekiem, x7s4[1:6, ])
-                       x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[7, ])
-                       if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(x7s4 %>% slice(1))}
-                    } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
-                 } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
+          result(processingSeven_s4_1257(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(1,3,4,7)] == "1")) {
-                  if (all(sapply(c(1,3,5), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
-                      all(sapply(c(2,4,6), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-                      if (x7s4$period[1] == "___________" && x7s4$NM_code[1] == "___________") {
-                        x7s4 <- x7s4[c(1,2,3,5,4,6,7),]
-                        x7s4_uzSesiniekiem <- rbind(x7s4_uzSesiniekiem, x7s4[1:6, ])
-                        x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[7, ])
-                        if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(x7s4 %>% slice(1))}
-                      } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
-                  } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
+          result(processingSeven_s4_1347(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(1,2,5,6)] == "1")) {
-                   if (all(sapply(c(1,3,5), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
-                       all(sapply(c(2,4,6), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-                     if ((x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                         (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                         (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                         (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                         (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                         (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                         (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                         (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                         (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                         (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________")) {
-                       x7s4 <- x7s4[c(1,3,2,4,5,7,6),]
-                       x7s4_uzSesiniekiem <- rbind(x7s4_uzSesiniekiem, x7s4[1:6, ])
-                       x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[7, ])
-                       if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(x7s4 %>% slice(1))}
-                     } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
-                   } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
+          result(processingSeven_s4_1256(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(1,3,4,6)] == "1")) {
-                  if (all(sapply(c(1,3,5), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
-                      all(sapply(c(2,4,6), function(i) diff(x7s4$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-                    if ((x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                        (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                        (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                        (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                        (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                        (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________") ||
-                        (x7s4$period[1] == "___________" && x7s4$PS_code[1] == "___________" && x7s4$NM_code[1] == "___________")) {
-                            x7s4 <- x7s4[c(1,2,3,5,4,7,6),]
-                            x7s4_uzSesiniekiem <- rbind(x7s4_uzSesiniekiem, x7s4[1:6, ])
-                            x7s4_uzVieniniekiem <- rbind(x7s4_uzVieniniekiem, x7s4[7, ])
-                            if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(x7s4 %>% slice(1))}
-                    } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
-                  } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
+          result(processingSeven_s4_1346(x7s4, o, kods))
   } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
   
   rm(x7s4, o, kods)
