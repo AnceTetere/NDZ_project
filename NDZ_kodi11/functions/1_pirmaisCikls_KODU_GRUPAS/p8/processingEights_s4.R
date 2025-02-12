@@ -11,7 +11,6 @@ if (x8s4$PS_code[1] == '___________' && x8s4$NM_code[1] == '___________') {
   } else {stop("processingEights_s4: Trūkst izstrādes koda.")}
 } else if (all(sapply(seq(1,8,by=2), function(i) diff(x8s4$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
    all(sapply(seq(2,7,by=2), function(i) diff(x8s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-  #cS (check sak_beidz) norāda kombinācijas, kurās rindās izejas tabulas ailē sak_beidz atrodas "1".
   cS <- list(c(1, 4, 6, 8), c(2, 4, 5, 8), c(2, 4, 6, 8), c(1, 4, 6, 7), c(2, 3, 6, 8), c(2, 3, 5, 7), c(2, 3, 5, 8), c(1, 4, 5, 7), c(1, 3, 6, 8), c(1, 3, 5, 7), c(2, 3, 6, 7))
   found_match <- FALSE
   
@@ -48,10 +47,19 @@ if (x8s4$PS_code[1] == '___________' && x8s4$NM_code[1] == '___________') {
            all(sapply(c(1,3,5:7), function(i) diff(x8s4$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
       x8s4_uzDivniekiem <- rbind(x8s4_uzDivniekiem, x8s4[c(1,3,4,6), ])
       x8s4_uzCetriniekiem <- rbind(x8s4_uzCetriniekiem, x8s4[c(2,5,7,8), ]) 
+} else if (all(x8s4$sak_beidz[c(1,3,6,8)] == "1")) { 
+           if (all(diff(x8s4$NDZ_sanemsanas_datums) != 0)) {
+             if (x8s4$period[1] == "___________" && x8s4$PS_code[1] == "___________" && x8s4$NM_code[1] == "___________") {
+               x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[8, ]) 
+               x8s4_uzDivniekiem <- rbind(x8s4_uzDivniekiem, x8s4[c(1,2,3,4,6,7), ])
+               if (kods %in% c("40", "50", "53") && o == "8") {ZERO_plus(x8s4 %>% slice(5))} 
+             } else {stop("processingEights_s4: Trūkst izstrādes koda.")}
+           } else {stop("processingEights_s4: Trūkst izstrādes koda.")}
 } else {
   x8s4_uzCetriniekiem  <- rbind(x8s4_uzCetriniekiem, x8s4)
   #stop("processingEights_s4: Trūkst izstrādes koda.")
 }
+  
 rm(x8s4)
 return(list(x8_uzVieniniekiem = x8s4_uzVieniniekiem, 
             x8_uzDivniekiem = x8s4_uzDivniekiem, 
