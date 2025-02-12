@@ -1,6 +1,6 @@
 processingNines <- function(x, o, kods) {
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
-  x9_uzVieniniekiem <- data.frame(); x9_uzDivi <- data.frame();  x9_uzSesi <- data.frame(); x9_uzAstoniekiem <- data.frame()
+  x9_uzVieniniekiem <- data.frame(); x9_uzDivi <- data.frame();  x9_uzSesi <- data.frame(); x9_uzSeptini <- data.frame(); x9_uzAstoniekiem <- data.frame()
   check_rows <- 0
   
   for(r in seq(1, nrow(x), by = 9)) {
@@ -43,8 +43,7 @@ processingNines <- function(x, o, kods) {
         x9_uzVieniniekiem <- rbind(x9_uzVieniniekiem, x9[9, ])
         x9_uzAstoniekiem <- rbind(x9_uzAstoniekiem, x9[1:8, ])
       } else if (all(sapply(c(2,4,8), function(i) diff(x9$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && diff(x9$NDZ_sanemsanas_datums[1:2]) != 0) {
-
-        if (x9$period[1] == "________" && x9$PS_code[1] == "________" && x9$NM_code[1] == "________") {
+        if (x9$period[1] == "__________" && x9$PS_code[1] == "__________" && x9$NM_code[1] == "__________") {
           x9_uzVieniniekiem <- rbind(x9_uzVieniniekiem, x9[9, ])
           x9_uzAstoniekiem <- rbind(x9_uzAstoniekiem, x9[1:8, ])
         } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
@@ -57,14 +56,19 @@ processingNines <- function(x, o, kods) {
       x9_uzSesi <- rbind(x9_uzSesi, x9[4:9, ])
     } else if (all(x9$sak_beidz == c("1", "2", "1", "1", "2", "1", "2", "1", "2"))) {
           if (diff(x9$NDZ_sanemsanas_datums[2:3]) == 0) {
-            if (x9$period[1] == "________" && x9$PS_code[1] == "________" && x9$NM_code[1] == "________") {
+            if (x9$period[1] == "__________" && x9$PS_code[1] == "__________" && x9$NM_code[1] == "__________") {
               x9_uzAstoniekiem <- rbind(x9_uzAstoniekiem, x9[c(1:2, 4:9), ])
             } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
           } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
     } else if (all(x9$sak_beidz[1:3] == c("1", "1", "2")) && x9$sak_beidz[4] != "2") {
-            if (diff(x9$NDZ_sanemsanas_datums[1:2]) != 0) {
+            if (all(diff(x9$NDZ_sanemsanas_datums[1:2]) != 0)) {
                 x9_uzDivi <- rbind(x9_uzDivi, x9[c(1,3), ])
                 x9_uzSesi <- rbind(x9_uzSesi, x9[4:9, ])
+            } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
+    } else if (all(x9$sak_beidz[1:4] == c("1", "2", "1", "2"))) {
+            if (all(diff(x9$NDZ_sanemsanas_datums[1:4]) != 0)) {
+              x9_uzDivi <- rbind(x9_uzDivi, x9[1:2, ])
+              x9_uzSeptini <- rbind(x9_uzSeptini, x9[3:9, ])
             } else {stop("processingNines() iztrūkst apstrādes kods. \n")}
     } else {stop("processingNines() iztrūkst apstrādes kods: rindas ", r, ":", r+8, "!\n")}
     check_rows = check_rows + 9
@@ -93,6 +97,12 @@ if(nrow(x9_uzSesi) > 0) {
   x9_uzSesi %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSixes(o, kods)
 } else {cat("Tabula x9_uzSesi ir tukša.")}
 rm(x9_uzSesi) 
+
+#4 Apakštabulu x9_uzSeptini sūta caur processingSeven().
+if(nrow(x9_uzSeptini) > 0) {
+  x9_uzSeptini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSeven(o, kods)
+} else {cat("Tabula x9_uzSeptini ir tukša.")}
+rm(x9_uzSeptini) 
 
 #4 Apakštabulu x9_uzAstoniekiem sūta caur processingEights().
 if(nrow(x9_uzAstoniekiem) > 0) {
