@@ -4,7 +4,7 @@ processingSeven_s4_1347 <- function(a, o, kods) {
   
   if (all(sapply(c(1,3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
       all(sapply(c(2,4,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-    if (a$period[1] == "_________" && a$NM_code[1] == "__________") {
+    if (a$period[1] == "______" && a$NM_code[1] == "______") {
       a <- a[c(1,2,3,5,4,6,7),]
       a6 <- rbind(a6, a[1:6, ])
       a1 <- rbind(a1, a[7, ])
