@@ -1,6 +1,6 @@
 processingTens <- function(x, o, kods) {
   cat("-------------SĀK 10-nieku APSTRĀDI.")
-  x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+  x <- x %>% arrange(PS_code, dnperk, NM_code, NDZ_sanemsanas_datums)
 
   x10_uzVieniniekiem <- data.frame(); x10_uzDivniekiem <- data.frame(); x10_uzPieci <- data.frame(); x10_uzSeptini <- data.frame(); x10_uzAstoniekiem <- data.frame()
   check_rows <- 0
@@ -11,11 +11,10 @@ processingTens <- function(x, o, kods) {
     x10_uzPieci <<- rbind(x10_uzPieci, y$x10_uzPieci)
     x10_uzSeptini <<- rbind(x10_uzSeptini, y$x10_uzSeptini)
     x10_uzAstoniekiem <<- rbind(x10_uzAstoniekiem, y$x10_uzAstoniekiem)
-    rm(y)
-  }
+    rm(y)}
   
   for (r in seq(1, nrow(x), by = 10)) {
-    x10 <- x[r:(r+9),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+    x10 <- x[r:(r+9),] %>% arrange(PS_code, dnperk, NM_code, NDZ_sanemsanas_datums)
   
     if (sum(x10$sak_beidz == "1") == 5) {
             result(processingTens_s5(x10, o, kods))
@@ -31,7 +30,7 @@ processingTens <- function(x, o, kods) {
               } else if (all(x10$sak_beidz[c(3:4, 7, 9)] == "1") && 
                              all(sapply(seq(1, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
                              all(sapply(seq(2, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))&&
-                             x10$PS_code[1] == '___________' & x10$NM_code[1] == '____________') {
+                             x10$PS_code[1] == '____' & x10$NM_code[1] == '____') {
                     p <- x10[1:6, ]
                     p <- p[p$zinkod %in% c("40", "41"), ]
                     x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, p[1, ])
