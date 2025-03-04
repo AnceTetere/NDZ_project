@@ -1,5 +1,5 @@
 processingTens_s6 <- function(x10s6) {
-  x10s6 <- arrange(x10s6, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+  x10s6 <- arrange(x10s6, PS_code, dnperk, NM_code, NDZ_sanemsanas_datums)
   
   x10s6_uzVieniniekiem <- data.frame()
   x10s6_uzDivniekiem <- data.frame()
