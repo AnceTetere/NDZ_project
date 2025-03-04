@@ -14,18 +14,26 @@ processingEights <- function(x, o, kods){
   for (r in seq(1, nrow(x), by = 8)) {
     x8 <- x[r:(r+7),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
     
-    if (x8$PS_code[1] == '___________' && x8$NM_code[1] == '___________') {
-            if (all(x8$sak_beidz == c("2", "1", "2", "2", "2", "2", "2", "2")) && 
+    if (x8$PS_code[1] == '___________' && x8$NM_code[1] == '__________') {
+              if (all(x8$sak_beidz == c("2", "1", "2", "2", "2", "2", "2", "2")) && 
                  diff(x8$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x8$NDZ_sanemsanas_datums[2:8]) != 0)) {
                 x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1:2,])
               } else {stop("processingEights: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
     } else if (all(x8$sak_beidz[1:2] == c("2", "1")) && diff(x8$NDZ_sanemsanas_datums[1:2]) != 0) {
               x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1, ])
               x8_uzSeptini <- rbind(x8_uzSeptini, x8[-1, ])
+    } else if (all(x8$sak_beidz[c(2,3,4,6,8)] == "1")) {
+              if (diff(x8$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x8$NDZ_sanemsanas_datums[2:5]) != 0)) {
+               if (x8$period[1] == "_____" && x8$PS_code[1] == '_____' && x8$NM_code[1] == '__________') {
+                    x8_uzDivniekiem <- rbind(x8_uzDivniekiem, x8[c(2,1,4,5,6,7), ])
+                    x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1, ])
+                    if (kods %in% c("40", "50", "53") && o == "8") {ZERO_minus(x8s4 %>% slice(2))} 
+                } else {stop("processingEights: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
+              } else {stop("processingEights: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
     } else if (all(x8$sak_beidz == c("2","1","2","1","2","2","1","2")) && 
                diff(x8$NDZ_sanemsanas_datums[1:2]) == 0 && 
                diff(x8$NDZ_sanemsanas_datums[2:3]) != 0 &&
-               x8$PS_code[1] == '___________' && x8$NM_code[1] == '___________') {
+               x8$PS_code[1] == '___________' && x8$NM_code[1] == '_____') {
               x8_uzDivniekiem <- rbind(x8_uzDivniekiem, x8[c(2,3,4,6,7,8), ])
     } else if (all(x8$sak_beidz[c(1,2,4)] == c("1", "2", "1")) && 
                all(diff(x8$NDZ_sanemsanas_datums[1:3]) != 0) && 
@@ -36,21 +44,25 @@ processingEights <- function(x, o, kods){
     } else if (x8$sak_beidz[1] == x8$sak_beidz[2] && all(diff(x8$NDZ_sanemsanas_datums[1:3]) != 0)) {
       x8_uzSeptini <- rbind(x8_uzSeptini, x8[2:8, ])
     } else if (sum(x8$sak_beidz == "1") == 4) {
-              result(processingEights_s4(x8))
+              result(processingEights_s4(x8, o, kods))
     } else if (sum(x8$sak_beidz == "1") == 6) {
       if (all(x8$sak_beidz == c("1", "2", "1", "1", "2", "1", "1", "1")) && 
           all(diff(x8$NDZ_sanemsanas_datums[1:7]) != 0) && 
           diff(x8$NDZ_sanemsanas_datums[7:8]) == 0 &&
-          x8$PS_code[1] == '___________' && x8$NM_code[1] == '___________') {
+          x8$PS_code[1] == '_____' && x8$NM_code[1] == '__________') {
         x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[1,])
       } else {stop("processingEights: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
     } else if (sum(x8$sak_beidz == "1") == 5) { 
-      if(all(x8$sak_beidz[c(1, 3, 5, 7, 8)] == "1") && 
-         all(sapply(c(3, 6), function(i) all(diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
-         all(sapply(c(1,2,4,5,7), function(i) all(diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))) {
-        x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[8,])
-        x8_uzSesi <- rbind(x8_uzSesi, x8[1:6,])
-      } else {stop("processingEights: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
+            if(all(x8$sak_beidz[c(1, 3, 5, 7, 8)] == "1") && 
+               all(sapply(c(3, 6), function(i) all(diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
+               all(sapply(c(1,2,4,5,7), function(i) all(diff(x8$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))) {
+              x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[8,])
+              x8_uzSesi <- rbind(x8_uzSesi, x8[1:6,])
+            } else if (all(x8$sak_beidz[c(1, 3, 5, 6, 8)] == "1") && 
+                      all(diff(x8$NDZ_sanemsanas_datums) != 0)) {
+                      x8_uzVieniniekiem <- rbind(x8_uzVieniniekiem, x8[8,])
+                      x8_uzSesi <- rbind(x8_uzSesi, x8[c(1:4,6:7),])
+            } else {stop("processingEights: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
     } else {stop("processingEights: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
     check_rows <- check_rows + 8
   }
