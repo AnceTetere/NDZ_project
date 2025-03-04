@@ -1,5 +1,5 @@
-processingEleven <- function(x, o) {
-  cat("-------------SĀK 11-nieku APSTRĀDI.")
+processingEleven <- function(x, o, kods) {
+  cat("-------------SĀK 11-nieku APSTRĀDI. \n")
   x <- arrange(x, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
 
   x11_uzVieniniekiem <- data.frame(); x11_uzDevini <- data.frame(); x11_uzDesmitniekiem <- data.frame()
@@ -9,10 +9,18 @@ processingEleven <- function(x, o) {
     x11 <- x[r:(r+10),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
       
     if (sum(x11$sak_beidz == "1") == 6) {
-      if (all(x11$sak_beidz[c(1,3,5,6,8,10)] == "1") && 
+      if (all(x11$sak_beidz[c(1,3,5,8,10,11)] == "1") && 
+          all(sapply(c(1,2,3,4,6,8,10), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
+          all(sapply(c(5,7,9), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
+            x11 <- x11[c(1,2,3,4,5,6,8,7,10,9,11),]
+            x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+            x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+            if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(x11 %>% slice(1))}
+      } else if (all(x11$sak_beidz[c(1,3,5,6,8,10)] == "1") && 
           all(diff(x11$NDZ_sanemsanas_datums[c(1:3, 5:11)]) != 0) &&
           diff(x11$NDZ_sanemsanas_datums[4:5]) == 0) {
           x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-5,])
+          if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(x11 %>% slice(1)); ZERO_plus(x11 %>% slice(11))}
       } else if (all(x11$sak_beidz[c(1,3,5,8,9,11)] == "1")) { 
           if (all(diff(x11$NDZ_sanemsanas_datums[c(1:2, 4:7, 9:11)]) != 0) &&
               all(sapply(c(3,7), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
@@ -23,29 +31,49 @@ processingEleven <- function(x, o) {
             x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
             x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[c(1,2,3,4,5,6,8,7,9,10),])
           } else {stop("processingEleven trūkst apstrādes koda. \n")}
+        if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(x11 %>% slice(1))}
       } else if (all(x11$sak_beidz[c(1,4,6,8,10,11)] == "1") && 
                  all(sapply(c(1,2,4,6,8,10), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && 
                  all(sapply(seq(3,9,by=2), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
           x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
           x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+          if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(x11 %>% slice(1))}
       } else if (all(x11$sak_beidz[c(1,4,5,7,9,11)] == "1") &&
                  all(sapply(c(2,4,6,8,10), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && 
                  all(sapply(c(1,3,7), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
           x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
           x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+          if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(x11 %>% slice(1))}
       } else if (all(x11$sak_beidz[c(2,4,6,8,10,11)] == "1") && all(diff(x11$NDZ_sanemsanas_datums) != 0)) {
           x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
           x11_uzDevini <- rbind(x11_uzDevini, x11[1:9,])
-      } else if (all(x11$sak_beidz[seq(1,11,by=2)] == "1") && all(diff(x11$NDZ_sanemsanas_datums) != 0)) {
-          x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
-          x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
-      } else if (all(x11$sak_beidz[seq(1,11,by=2)] == "1") && 
-                 all(sapply(c(1:6,8:10), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
+      } else if (all(x11$sak_beidz[seq(1,11,by=2)] == "1")) { 
+              if (all(diff(x11$NDZ_sanemsanas_datums) != 0)) {
+                x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+                x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+                if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(x11 %>% slice(1))}
+              } else if (all(sapply(c(1:6,8:10), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
                  diff(x11$NDZ_sanemsanas_datums[7:8]) == 0) {
-          x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
-          x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
-        } else {stop("processingEleven: Vienpadsmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 10, "\n")}
-      } else if (sum(x11$sak_beidz == "2") == 6) {
+                x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+                x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+                if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(x11 %>% slice(1))}
+              } else {stop("processingEleven: Vienpadsmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 10, "\n")}
+      } else if (all(x11$sak_beidz[c(2,3,5,7,9,11)] == "1") && 
+                 all(sapply(c(2,4,5,6,7,8,9,10), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
+                 all(sapply(c(1,3), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
+                  x11 <- x11[c(2,1,3,4,5,6,7,8,9,10,11),]
+                  x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+                  x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+                  if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(x11 %>% slice(1))}
+      } else if (all(x11$sak_beidz[c(2,3,5,7,10,11)] == "1") && 
+                 all(sapply(c(2,4,5,6,7,8,10), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
+                 all(sapply(c(1,3,9), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
+                  x11 <- x11[c(2,1,3,4,5,6,7,8,10,9,11),]
+                  x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[11, ])
+                  x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[-11,])
+                  if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(x11 %>% slice(1))}
+      } else {stop("processingEleven: Vienpadsmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 10, "\n")}
+    } else if (sum(x11$sak_beidz == "2") == 6) {
         if (all(x11$sak_beidz[1:2] == c("2", "1")) && diff(x11$NDZ_sanemsanas_datums[1:2]) != 0) {
           x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[1,])
           x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[2:11,])
@@ -61,22 +89,19 @@ if (check_rows == nrow(x)) {
 
 #1 Apakštabulu x11_uzVieniniekiem sūta caur funkciju processingOnes().
 if (nrow(x11_uzVieniniekiem) > 0) {
-      cat("No vienpadsmitniekiem atvasinātā tabula x11_uzVieniniekiem pārsūtīta uz processingOnes un tad uz tempNDZ, ko būvējam.\n")
-      x11_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ()
+      x11_uzVieniniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingOnes(o) %>% sendTo_tempNDZ(o)
 } else {cat("Tabula x11_uzVieniniekiem ir tukša.\n")}
 rm(x11_uzVieniniekiem)
     
 #2 Apakštabulu x11_uzDeviņi sūta caur processingNines().
 if (nrow(x11_uzDevini) > 0) {
-      cat("No vienpadsmitniekiem atvasinātā tabula x11_uzDevini pārsūtīta uz processingNines() un tad uz tempNDZ, ko būvējam.\n")
-      x11_uzDevini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingNines(o)
+      x11_uzDevini %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingNines(o, kods)
 } else {cat("Tabula x11_uzDevini ir tukša.\n")}
 rm(x11_uzDevini)
     
 #3 Apakštabulu x11_uzDesmitniekiem sūta caur processingTens().
 if (nrow(x11_uzDesmitniekiem) > 0) {
-      cat("No vienpadsmitniekiem atvasinātā tabula x11_uzDesmitniekiem pārsūtīta uz processingTens un tad uz tempNDZ, ko būvējam.\n")
-      x11_uzDesmitniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTens(o)
+      x11_uzDesmitniekiem %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingTens(o, kods)
 } else {cat("Tabula x11_uzDesmitniekiem ir tukša.\n")}
 rm(x11_uzDesmitniekiem)
 }
