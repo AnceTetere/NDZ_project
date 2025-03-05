@@ -5,7 +5,7 @@ if (diff(a$NDZ_sanemsanas_datums[1:2]) >= 0 && diff(a$NDZ_sanemsanas_datums[3:4]
   a4_1 <- rbind(a4_1, a[4, ])
   a4_2 <- rbind(a4_2, a[c(1, 3), ])
 } else if (diff(a$NDZ_sanemsanas_datums[1:2]) >= 0 && diff(a$NDZ_sanemsanas_datums[2:3]) > 0 && diff(a$NDZ_sanemsanas_datums[3:4]) == 0) {
-  a <- arrange(a, NDZ_sanemsanas_datums, sak_beidz) 
+  a <- arrange(a, NDZ_sanemsanas_datums, sak_beidz) #jo šis atkal ir gadījums, kur dēļ sakrītošo datumu kodi nav noturējuši kārtību
   a4_2 <- rbind(a4_2, a)
 } else {stop("Šeit četrinieku izstrādes tabulas rindām ", r, " līdz ", r+3, " trūkst apstrādes koda.")}
 
