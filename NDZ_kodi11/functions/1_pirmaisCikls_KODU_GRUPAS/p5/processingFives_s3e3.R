@@ -13,6 +13,7 @@ processingFives_s3e3 <- function(a, o, kods) {
     } else {stop("processingFives_s3e3 iztrūkst apstrādes koda")}
     if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1)); ZERO_plus(a %>% slice(5))}
   } else if (all(a$sak_beidz[c(1,2,5)] == "1")) {
+    #JO PIRMO REIZI
     if (a$period[1] == '_____' && a$PS_code[1] == '_____' && a$NM_code[1] == '_____') {
       a2 <- rbind(a2, a[c(2,3,5,4), ])
       if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(2)); ZERO_plus(a %>% slice(5))}
