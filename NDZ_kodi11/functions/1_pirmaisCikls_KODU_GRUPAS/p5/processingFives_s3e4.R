@@ -1,6 +1,6 @@
 processingFives_s3e4 <- function(a, o, kods) {
   a1 <- data.frame(); a2 <- data.frame(); a4 <- data.frame()
-  
+  #a <- x5s3 for testing
   if (all(a$sak_beidz[c(1,3,5)] == "1")) {
             if((a$PS_code[1] == "_____" && a$NM_code[1] == "_____") ||
                (a$PS_code[1] == "_____" && a$NM_code[1] == "_____")) {
