@@ -2,12 +2,12 @@ processingFives_s3e1 <- function(a, o, kods) {
   a1 <- data.frame(); a2 <- data.frame(); a4 <- data.frame()
 
 if (all(a$sak_beidz[c(2,4,5)] == "1")) {
-  if ((a$PS_code[1] == '____________' && a$NM_code[1] == '____________') ||
-      (a$PS_code[1] == '____________' && a$NM_code[1] == '____________')) {
+  if ((a$PS_code[1] == '_____' && a$NM_code[1] == '_____') ||
+      (a$PS_code[1] == '_____' && a$NM_code[1] == '_____')) {
     a1 <- rbind(a1, a[5,])
     a2 <- rbind(a2, a[2:3,])
     if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(3))}
-  } else if (a$period[1] == '_____' && a$PS_code[1] == '_____' && a$NM_code[1] == '_____') {
+  } else if (a$period[1] == '_____' && a$PS_code[1] == '_____' && a$NM_code[1] == _____') {
     a1 <- rbind(a1, a[c(1,5),])
     a2 <- rbind(a2, a[2:3,])
   } else {stop("processingFives_s3e1: Iztrūkst apstrādes koda!\n")}
