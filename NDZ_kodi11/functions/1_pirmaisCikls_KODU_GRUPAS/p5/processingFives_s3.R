@@ -52,7 +52,7 @@ if (all(x5s3$sak_beidz[c(1,3,5)] == "1")) {
               } else if (x5s3$PS_code[1] == '_____' && x5s3$NM_code[1] == '_____') {
                 x5s3_uzVieniniekiem <- rbind(x5s3_uzVieniniekiem, x5s3[c(1,5),])
                 x5s3_uzDivniekiem <- rbind(x5s3_uzDivniekiem, x5s3[c(4,3),])
-              } else if (x5s3$period[1] == '_____' && x5s3$PS_code[1] == 'PK42C1433E1' && x5s3$NM_code[1] == '40103362321') {
+              } else if (x5s3$period[1] == '_____' && x5s3$PS_code[1] == '_____' && x5s3$NM_code[1] == '_____') {
                 x5s3 <- x5s3[c(2,1,4,3,5), ]
                 x5s3_uzVieniniekiem <- rbind(x5s3_uzVieniniekiem, x5s3[5,])
                 x5s3_uzDivniekiem <- rbind(x5s3_uzDivniekiem, x5s3[1:4,])
