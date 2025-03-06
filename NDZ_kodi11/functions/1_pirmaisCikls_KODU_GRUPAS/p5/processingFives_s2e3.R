@@ -18,7 +18,7 @@ processingFives_s2e3 <- function(a, o, kods) {
           } else {stop("processingFives_s2e3: Trūkst apstrādes koda.")}
   } else if (all(a$sak_beidz[2:3] == "1")) {
           if (kods == "40")  {
-		  if (a$period[1] == "_____" && a$PS_code[1] == '_____' && a$NM_code[1] == '_____') {
+            if (a$period[1] == "_____" && a$PS_code[1] == '_____' && a$NM_code[1] == '_____') {
               a1 <- rbind(a1, a[1, ])
               a2 <- rbind(a2, a[c(3,5), ])
             } else {stop("processingFives_s2e3: Trūkst apstrādes koda.")}
