@@ -1,11 +1,16 @@
 processingFives_s3e2 <- function(a, o, kods) {
   a1 <- data.frame(); a2 <- data.frame(); a4 <- data.frame()
+
   if (all(a$sak_beidz[c(2,4,5)] == "1")) {
     a1 <- rbind(a1, a[c(1,5), ])
     a2 <- rbind(a2, a[2:3, ])
   } else if (all(a$sak_beidz[c(2,3,5)] == "1")) {
     a1 <- rbind(a1, a[c(1,5), ])
     a2 <- rbind(a2, a[3:4, ])
+  } else if (all(a$sak_beidz[3:5] == "1")) {
+    if (a$period[1] == "_____" && a$PS_code[1] == '_____' && a$NM_code[1] == '_____') {
+      a1 <- a[c(2,5), ]
+    } else {stop("processingFives_s3e2 iztrūkst apstrādes koda")} 
   } else if (all(a$sak_beidz[2:4] == "1")) {
     a1 <- rbind(a1, a[1, ])
     a2 <- rbind(a2, a[4:5, ])
@@ -23,7 +28,7 @@ processingFives_s3e2 <- function(a, o, kods) {
       a1 <- rbind(a1, a[1,])
       a4 <- rbind(a4, a[2:5,])
       if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1)); ZERO_plus(a %>% slice(5))}
-    } else if (a$period[1] == "_____" && a$PS_code[1] == 'PK902FC04E1' && a$NM_code[1] == '40003094953') {
+    } else if (a$period[1] == "_____" && a$PS_code[1] == '_____' && a$NM_code[1] == '_____') {
       a4 <- rbind(a4, a[2:5,])
       #Ja atbrīvo, tad pievieno šo. if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1)); ZERO_plus(slice(5))}
     } else {stop("processingFives_s3e2 iztrūkst apstrādes koda")}
