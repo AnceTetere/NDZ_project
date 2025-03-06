@@ -1,5 +1,6 @@
 processingFives_s3e9 <- function(a, o, kods) {
   a1 <- data.frame(); a2 <- data.frame(); a4 <- data.frame()
+  #a <- a for testing
   
   if (!("26" %in% a$zinkod[a$sak_beidz == "2"])) {
     a1 <- rbind(a1, a[5, ])
