@@ -13,7 +13,7 @@ processingEights_s5 <- function(x8s5, o, kods) {
   
  if (all(x8s5$sak_beidz[c(2,3,4,6,8)] == "1")) {
       if (diff(x8s5$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x8s5$NDZ_sanemsanas_datums[2:5]) != 0)) {
-        if (x8s5$period[1] == "_____" && x8s5$PS_code[1] == '_____' && x8s5$NM_code[1] == '_____') {
+        if (x8s5$period[1] == "______" && x8s5$PS_code[1] == '______' && x8s5$NM_code[1] == '______') {
             x8s5_uzDivniekiem <- x8s5[c(2,1,4,5,6,7), ]
             x8s5_uzVieniniekiem <- x8s5[1, ]
             if (kods %in% c("40", "50", "53") && o == "8") {ZERO_minus(x8s5 %>% slice(2))} 
