@@ -1,8 +1,7 @@
 processingSeven_s4_2467 <- function(a, o, kods) {
   
   a1 <- data.frame(); a2 <- data.frame(); a3 <- data.frame(); a4 <- data.frame(); a5 <- data.frame(); a6 <- data.frame()
-  
-  
+    
   if (all(sapply(c(1,2,3,4,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
       diff(a$NDZ_sanemsanas_datums[5:6]) == 0) {
         if (a$period[1] == "______" && a$PS_code[1] == '______' && a$NM_code[1] == '______') {
