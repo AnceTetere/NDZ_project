@@ -14,4 +14,3 @@ processingTwelve_s5 <- function(a, o, kods) {
                 x12_uzSeptini = a7,
                 x12_uzDesmitniekiem = a10,
                 x12_uzVienpadsmit = a11))
-}
