@@ -1,6 +1,6 @@
 processingFives_s3e2 <- function(a, o, kods) {
   a1 <- data.frame(); a2 <- data.frame(); a4 <- data.frame()
-
+  #a <- x5s3 testiem
   if (all(a$sak_beidz[c(2,4,5)] == "1")) {
     a1 <- rbind(a1, a[c(1,5), ])
     a2 <- rbind(a2, a[2:3, ])
