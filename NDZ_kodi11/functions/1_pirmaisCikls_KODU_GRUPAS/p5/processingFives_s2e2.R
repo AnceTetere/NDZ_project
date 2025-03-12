@@ -12,4 +12,5 @@ processingFives_s2e2 <- function(a, kods) {
   return(list(x5s2_uzVieniniekiem = a1,
               x5s2_uzDivniekiem = a2,
               x5s2_uzCetriniekiem = a4))
+
 }
