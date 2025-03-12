@@ -1,5 +1,6 @@
 processingFives_s3_12121 <- function(x5s3s) {
   x5s3s <- x5s3s %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+  #x5s3s <- x5s3
   x5s3s_uzVieniniekiem <- data.frame(); x5s3s_uzDivniekiem <- data.frame(); x5s3s_uzCetriniekiem <- data.frame()
   
 if (diff(x5s3s$NDZ_sanemsanas_datums[3:4]) == 0 &&
