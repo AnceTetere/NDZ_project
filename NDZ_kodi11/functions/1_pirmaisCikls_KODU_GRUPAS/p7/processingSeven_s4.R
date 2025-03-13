@@ -1,5 +1,6 @@
 processingSeven_s4 <- function(x7s4, o, kods) {
   x7s4_uzVieniniekiem <- data.frame(); x7s4_uzDivniekiem <- data.frame(); x7s4_uzTrijniekiem <- data.frame(); x7s4_uzCetriniekiem <- data.frame(); x7s4_uzPieciniekiem <- data.frame(); x7s4_uzSesiniekiem <- data.frame()
+  #x7s4 <- x7
   
   result <- function(y) {
     x7s4_uzVieniniekiem <<- rbind(x7s4_uzVieniniekiem, y$x7s4_uzVieniniekiem)
@@ -13,6 +14,8 @@ processingSeven_s4 <- function(x7s4, o, kods) {
   
   if (all(x7s4$sak_beidz[c(1,3,4,5)] == "1")) {
            result(processingSeven_s4_1345(x7s4, o, kods))
+  } else if (all(x7s4$sak_beidz[c(1,3,4,6)] == "1")) {
+           result(processingSeven_s4_1346(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(1,3,6,7)] == "1")) { 
             result(processingSeven_s4_1367(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(2,3,5,7)] == "1")) {
@@ -37,8 +40,6 @@ processingSeven_s4 <- function(x7s4, o, kods) {
           result(processingSeven_s4_1347(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(1,2,5,6)] == "1")) {
           result(processingSeven_s4_1256(x7s4, o, kods))
-  } else if (all(x7s4$sak_beidz[c(1,3,4,6)] == "1")) {
-          result(processingSeven_s4_1346(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(2,4,5,7)] == "1")) {
           result(processingSeven_s4_2457(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(1,4,5,7)] == "1")) {
