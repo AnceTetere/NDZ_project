@@ -9,7 +9,7 @@ processingSeven_s4_2357 <- function(a, o, kods) {
             a2 <- rbind(a2, a[c(2,1,3,4,5,6), ])
             a1 <- rbind(a1, a[7, ])
   } else if (all(sapply(c(1,2,4,5,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && diff(a$NDZ_sanemsanas_datums[3:4]) == 0) {
-            if (a$PS_code[1] == '______' && a$NM_code[1] == '______') {
+            if (a$PS_code[1] == '_____' && a$NM_code[1] == '_____') {
               a2 <- rbind(a2, a[c(3,4,5,6), ])
               a1 <- rbind(a1, a[c(1,7), ])
             } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
