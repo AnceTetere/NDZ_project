@@ -20,7 +20,9 @@ processingTwelve <- function(x, o, kods) {
     if (sum(x12$sak_beidz == "1") == 5) {
       result(processingTwelve_s5(x12, o, kods))
     } else if (sum(x12$sak_beidz == "2") == 6) {
-        result(processingTwelve_s6(x12, o, kods))
+        result(processingTwelve_b6(x12, o, kods))
+    } else if (sum(x12$sak_beidz == "1") == 8) {
+        result(processingTwelve_s8(x12, o, kods))
     } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda. Rindas:",r, " līdz ", r + 11)}
     check_rows <- check_rows + 12
   }
