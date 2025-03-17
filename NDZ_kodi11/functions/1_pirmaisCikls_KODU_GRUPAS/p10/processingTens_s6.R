@@ -1,5 +1,4 @@
 processingTens_s6 <- function(x10s6, o, kods) {
-
   x10s6 <- arrange(x10s6, PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x10s6_uzVieniniekiem <- data.frame(); x10s6_uzDivniekiem <- data.frame(); x10s6_uzSeptini <- data.frame(); x10s6_uzAstoniekiem <- data.frame()
   
@@ -23,11 +22,19 @@ processingTens_s6 <- function(x10s6, o, kods) {
                             x10s6_uzVieniniekiem <- a[5, ]; x10s6_uzDivniekiem <- a[1:4, ]
                       } else {stop("processingTens_s6: Trūkst izstrādes koda.")}
                       if (kods %in% c("40", "50", "53") && o == "10") {ZERO_minus(x10s6 %>% slice(1:2))}
+                          rm(a)
                   } else {stop("processingTens_s6: Trūkst izstrādes koda.")}
+            } else {stop("processingTens_s6: Trūkst izstrādes koda.")}
+  } else if (all(x10s6$sak_beidz[c(1,3,5,7,8,10)] == "1")) {
+            if (all(diff(x10s6$NDZ_sanemsanas_datums) != 0)) {
+              if (x10s6$period[1] == "_____" && x10s6$PS_code[1] == "__________" && x10s6$NM_code[1] == "__________") {
+                 x10s6_uzDivniekiem <- x10s6[1:2,]; x10s6_uzAstoniekiem <- x10s6[-(1:2), ]
+                if (kods %in% c("40", "50", "53") && o == "10") {ZERO_minus(x10s6 %>% slice(1))}
+              } else {stop("processingTens_s6: Trūkst izstrādes koda.")}
             } else {stop("processingTens_s6: Trūkst izstrādes koda.")}
   } else {stop("processingTens_s6: Trūkst izstrādes koda.")}
   
-  rm(x10s6, o, kods, a)
+  rm(x10s6, o, kods)
   return(list(x10_uzVieniniekiem = x10s6_uzVieniniekiem,
               x10_uzDivniekiem = x10s6_uzDivniekiem,
               x10_uzSeptini = x10s6_uzSeptini,
