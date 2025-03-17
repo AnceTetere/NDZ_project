@@ -31,18 +31,25 @@ processingTens <- function(x, o, kods) {
               } else if (all(x10$sak_beidz[c(3:4, 7, 9)] == "1") && 
                              all(sapply(seq(1, 10, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
                              all(sapply(seq(2, 9, by = 2), function(i) all(diff(x10$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))&&
-                             x10$PS_code[1] == '____________' & x10$NM_code[1] == '_____') {
+                             x10$PS_code[1] == '__________' & x10$NM_code[1] == '__________') {
                     p <- x10[1:6, ]
                     p <- p[p$zinkod %in% c("40", "41"), ]
                     x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, p[1, ])
                     x10_uzDivniekiem <- rbind(x10_uzDivniekiem, p[2:3, ])
                     rm(p)
-                } else {stop("processingTens: Desmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r+9, "\n")}
+              } else if (all(diff(x10$NDZ_sanemsanas_datums) != 0)) {
+                  if (all(x10$sak_beidz[c(2,5,8,10)] == "1")) {
+                    if (all(x10$sak_beidz[c(2,5,8,10)] == "1")) {
+                      if (x10$period[1] == "_____" && x10$PS_code[1] == "__________" && x10$NM_code[1] == "__________") {
+                        x10_uzVieniniekiem <- rbind(x10_uzVieniniekiem, x10[c(1,10), ])
+                        x10_uzDivniekiem <- rbind(x10_uzDivniekiem, x10[c(2,4,5,7,8,9), ])
+                      } else {stop("processingTens: Trūkst izstrādes koda. \n")}}
+                    } else {stop("processingTens: Trūkst izstrādes koda. \n")}}
     } else if (sum(x10$sak_beidz == "1") == 6) {
-      result(processingTens_s6(x10, o, kods))
-    } else {
-      stop("processingTens: Desmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r+9, "\n")
-    }
+          result(processingTens_s6(x10, o, kods))
+    } else if (sum(x10$sak_beidz == "1") == 7) {
+          result(processingTens_s7(x10, o, kods))
+    } else {stop("processingTens: Desmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r+9, "\n")}
     
     check_rows <- check_rows + 10
   }
