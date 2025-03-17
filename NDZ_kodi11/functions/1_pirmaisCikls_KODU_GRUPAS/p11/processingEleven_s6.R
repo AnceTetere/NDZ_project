@@ -67,7 +67,7 @@ processingEleven_s6 <- function(a, o, kods) {
                 if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(a %>% slice(1))}
     } else if (all(a$sak_beidz[1:4] == c("2", "1", "2", "1"))) {
               if (all(diff(a$NDZ_sanemsanas_datums[1:4]) != 0)) {
-                if (a$period[1] == "_____" && a$PS_code[1] == "___________" && a$NM_code[1] == "__________") {
+                if (a$period[1] == "_____" && a$PS_code[1] == "__________" && a$NM_code[1] == "__________") {
                   a1 <- a[1, ]; a10 <- a[-1,]
                 } else {stop("processingEleven_s6 trūkst izstrādes koda. \n")}
               } else {stop("processingEleven_s6 trūkst izstrādes koda. \n")}
