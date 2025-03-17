@@ -12,22 +12,22 @@ processingSixteen <- function(x, o, kods) {
                       x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16)
                   } else if (all(sapply(c(1,3,5,9,11,13,15), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                              all(sapply(c(2,4,6,7,8,10,12,14), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                              if (x16$period[1] == "_____" && x16$PS_code[1] == "_____" && x16$NM_code[1] == "_____") {
+                              if (x16$period[1] == "_____" && x16$PS_code[1] == "___________" && x16$NM_code[1] == "___________") {
                                x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16)
                               } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
                   } else if (all(sapply(c(1,5,7,9,11,13,15), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                              all(sapply(c(2,3,4,6,8,10,12,14), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                            if (x16$period[1] == "_____" && x16$PS_code[1] == "_____" && x16$NM_code[1] == "_____") {
+                            if (x16$period[1] == "_____" && x16$PS_code[1] == "__________" && x16$NM_code[1] == "__________") {
                               x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16)
                             } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
                   } else if (all(sapply(c(1,3,7,9,11,13,15), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                              all(sapply(c(2,4,5,6,8,10,12,14), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                            if (x16$period[1] == "_____" && x16$PS_code[1] == "_____" && x16$NM_code[1] == "_____") {
+                            if (x16$period[1] == "_____" && x16$PS_code[1] == "__________" && x16$NM_code[1] == "__________") {
                               x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16)
                             } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
                   } else if (all(sapply(c(9,13,15), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                              all(sapply(c(1,2,3,4,5,6,7,8,10,11,12,14), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                    if (x16$period[1] == "_____" && x16$PS_code[1] == "_____" && x16$NM_code[1] == "_____") {
+                    if (x16$period[1] == "_____" && x16$PS_code[1] == "__________" && x16$NM_code[1] == "__________") {
                       x16_uzDivniekiem <- rbind(x16_uzDivniekiem, x16)
                     } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
                   } else {stop("16-nieku tabulā trūkst izstrādes koda. Rindas: ", r, ":", r+15, "\n")}  
