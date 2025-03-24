@@ -42,3 +42,26 @@ starpkodi3_11_29 <- function(y, t, prev, v) {
   rm(y, t, prev, v)
   return(yt)
 }
+
+#starpkodi3_11_25 <- function(y2, t, prev, v) {
+#  
+#  if (t$zinkod[3] == "53" && diff(t$NDZ_sanemsanas_datums[2:3]) == 0 &&
+#      diff(t$NDZ_sanemsanas_datums[1:2]) != 0) {
+#    yt <- y2[v, ]
+#    yt$dienas <- as.numeric(difftime(t$beidz_darbu[3], t$sak_darbu[1], units = "days"))
+#  } else if (t$zinkod[3] == "50" && diff(t$NDZ_sanemsanas_datums[1:2]) != 0 &&
+#             diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
+#    yt <- y2[v, ]
+#    yt$dienas <- as.numeric(difftime(t$beidz_darbu[2], t$sak_darbu[1], units = "days"))
+#  } else if (t$zinkod[3] == "50" &&  diff(t$NDZ_sanemsanas_datums[1:2]) != 0 &&
+#             diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
+#    yt <- y2[v, ]
+#    yt$dienas <- as.numeric(difftime(t$beidz_darbu[3], t$sak_darbu[1], units = "days"))
+#  } else if (t$zinkod[3] == "53" && diff(t$NDZ_sanemsanas_datums[1:2]) != 0 &&
+#             diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
+#    yt <- y2[v:(v+1), ]
+#    yt <- yt[yt$zinkod == "11", ]
+#  } else {
+#    stop("Starpkodi3_11_25: Trūkst izstrādes koda.")
+#  }
+#  
