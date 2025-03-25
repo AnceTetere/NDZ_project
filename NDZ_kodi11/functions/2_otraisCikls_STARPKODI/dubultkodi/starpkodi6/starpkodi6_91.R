@@ -14,14 +14,19 @@ starpkodi6_91 <- function(y, t, prev, v) {
                                           difftime(t$last_date[6], t$NDZ_sanemsanas_datums[6], units = "days") + 1))
               } else if (all(sapply(c(1,3,5), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                          all(sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                      if (t$period[1] == "_____" && t$PS_code[1] == '_____' && t$NM_code[1] == '_____') {
+                      if (t$period[1] == "_____" && t$PS_code[1] == '_________' && t$NM_code[1] == '_________') {
                         yt$dienas <- sum(sapply(c(1,3,5), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)])))
                       } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
               } else if (all(sapply(c(1,5), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                          all(diff(t$NDZ_sanemsanas_datums[2:5]) != 0)) {
-                          if (t$period[1] == "_____" && t$PS_code[1] == '_____' && t$NM_code[1] == '_____') {
+                          if (t$period[1] == "_____" && t$PS_code[1] == '_\' && t$NM_code[1] == '_____') {
                             yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")),
                                              sapply(c(2,5), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)])))
+                          } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
+              } else if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
+                          if (t$period[1] == "_____" && t$PS_code[1] == '_____' && t$NM_code[1] == '_____') {
+                            yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1,
+                                             sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]))) + 1
                           } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
               } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
           } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
