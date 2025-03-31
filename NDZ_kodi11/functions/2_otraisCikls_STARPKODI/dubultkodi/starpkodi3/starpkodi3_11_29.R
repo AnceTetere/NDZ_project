@@ -4,36 +4,42 @@ starpkodi3_11_29 <- function(y, t, prev, v) {
   
   if (all(diff(t$NDZ_sanemsanas_datums) == 0)) {
                   if (t$zinkod[3] %in% c("40", "50", "53", "91")) {
-                    if (t$period[1] == "______" && t$PS_code[1] %in% c('__________', '__________') && 
-                        t$NM_code[1] %in% c('__________', '__________')) {
+                    if (t$period[1] == "_____" && t$PS_code[1] %in% c('________', '________') && 
+                        t$NM_code[1] %in% c('_____', '_____')) {
                       yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
-                    } else if (t$period[1] == "______" && 
-                               t$PS_code[1] %in% c('__________', '__________', '__________', '__________', '__________', '__________') && 
-                               t$NM_code[1] %in% c('__________', '__________', '__________', '__________', '__________', '__________')) {
+                    } else if (t$period[1] == "_____" && 
+                               t$PS_code[1] %in% c('________', '_____', '________', '________', '________', '________) && 
+                               t$NM_code[1] %in% c('________', '________', '________', '________', '________', '________')) {
                       yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[c(1,3)]))
-                    }  else if (t$period[1] == "______" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
+                    }  else if (t$period[1] == "_____" && t$PS_code[1] == '________' && t$NM_code[1] == '________') {
                       yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
                     } else {stop("Starpkodi3_11: Trūkst izstrādes koda. \n
                                  Te ir labi, ka tas bremzējas, jo citādi nesaprast")}
-                  } else {stop("Starpkodi3_11: Trūkst izstrādes koda.")}
+                  } else if (t$zinkod[3] %in% c("41", "51", "54", "92")) {
+                     if (t$period[1] == "_____" && t$PS_code[1] == "________" && t$NM_code[1] == "________") {
+                       yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
+                     } } else {stop("Starpkodi3_11_29: Trūkst izstrādes koda.")}
+                  } else {stop("Starpkodi3_11_29: Trūkst izstrādes koda.")}
   } else if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && diff(t$NDZ_sanemsanas_datums[2:3]) != 0) {
                  if (t$zinkod[3] %in% c("40", "50", "53", "91")) {
-                   if (t$period[1] == "______" && t$PS_code[1] == '____________' && t$NM_code[1] == '__________') {
+                   if (t$period[1] == "_____" && t$PS_code[1] == '________' && t$NM_code[1] == '________') {
                      yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
-                   } else if (t$period[1] == "______" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
+                   } else if (t$period[1] == "_____" && t$PS_code[1] == '________' && t$NM_code[1] == '________') {
                      yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
                    } else {stop("Starpkodi3_11: Trūkst izstrādes koda.")}
                  } else {stop("Starpkodi3_11: Trūkst izstrādes koda.")}
   } else if (diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
                if (t$zinkod[3] %in% c("40", "50", "53", "91")) {
-                 if ((t$period[1] == "______" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
-                     (t$period[1] == "______" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
-                     (t$period[1] == "______" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
-                     (t$period[1] == "______" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________')) {
+                 if ((t$period[1] == "_____" && t$PS_code[1] == '________' && t$NM_code[1] == '________') ||
+                     (t$period[1] == "_____" && t$PS_code[1] == '________' && t$NM_code[1] == '________') ||
+                     (t$period[1] == "_____" && t$PS_code[1] == '________' && t$NM_code[1] == '________') ||
+                     (t$period[1] == "_____" && t$PS_code[1] == '________' && t$NM_code[1] == '________') ||
+                     (t$period[1] == "_____" && t$PS_code[1] == '________' && t$NM_code[1] == '________') ||
+                     (t$period[1] == "_____" && t$PS_code[1] == '________' && t$NM_code[1] == '_____')) {
                    yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
                  } else {stop("Starpkodi3_11: Trūkst izstrādes koda.")}
                } else if (t$zinkod[3] %in% c("41", "51", "54", "92")) {
-                 if (t$period[1] == "______" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
+                 if (t$period[1] == "_____" && t$PS_code[1] == '________' && t$NM_code[1] == '________') {
                    yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
                  } else {stop("Starpkodi3_11: Trūkst izstrādes koda.")}
                } else {stop("Starpkodi3_11: Trūkst izstrādes koda.")}
