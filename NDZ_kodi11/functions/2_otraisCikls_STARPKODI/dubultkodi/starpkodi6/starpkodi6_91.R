@@ -8,7 +8,7 @@ starpkodi6_91 <- function(y, t, prev, v) {
           if (t$zinkod[5] %in% c("21", "22", "23", "24", "25", "29")) {
             if (t$zinkod[6] %in% c("41", "51", "54", "92")) {
               if (diff(t$NDZ_sanemsanas_datums[5:6]) == 0 && all(diff(t$NDZ_sanemsanas_datums[1:5]) != 0)) {
-                  yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1, 
+                  yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1,
                                           diff(t$NDZ_sanemsanas_datums[2:3]),
                                           diff(t$NDZ_sanemsanas_datums[4:5]),
                                           difftime(t$last_date[6], t$NDZ_sanemsanas_datums[6], units = "days") + 1))
@@ -34,14 +34,14 @@ starpkodi6_91 <- function(y, t, prev, v) {
                         if (t$period[1] == "_____" && t$PS_code[1] == "_____" && t$NM_code[1] == "_____") {
                           yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")),
                                            sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)])),
-                                           as.numeric(t$last_date[6], t$NDZ_sanemsanas_datums[6], units = "days")) + 1
+                                           as.numeric(difftime(t$last_date[6], t$NDZ_sanemsanas_datums[6], units = "days"))) + 1
                         } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
                       } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
             } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
         } else if (t$zinkod[5] %in% c("40", "50", "53", "91")) {
             if (t$zinkod[6] %in% c("21", "22", "23", "24", "25", "29")) {
               if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-                yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
+                yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, _____
                                  sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)])))
               } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
             } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
@@ -55,8 +55,7 @@ starpkodi6_91 <- function(y, t, prev, v) {
                  if (t$zinkod[6] %in% c("41", "51", "54", "92")) {
                    if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(t$NDZ_sanemsanas_datums[2:6]) != 0)) {
                      if (t$period[1] == "_____" && t$PS_code[1] == "_____" && t$NM_code[1] == "_____") {
-                       yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1, 
-                                                   diff(t$NDZ_sanemsanas_datums[3:4]),
+                       yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1,                                                    diff(t$NDZ_sanemsanas_datums[3:4]),
                                                    difftime(t$last_date[6], t$NDZ_sanemsanas_datums[6], units = "days") + 1))
                      } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
                    } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
@@ -68,7 +67,7 @@ starpkodi6_91 <- function(y, t, prev, v) {
                    if (all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                        all(sapply(c(2,4,5), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                      if (t$period[1] == "_____" && t$PS_code[1] == "_____" && t$NM_code[1] == "_____") {
-                       yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
+                       yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1,
                                         as.numeric(diff(t$NDZ_sanemsanas_datums[c(3,5)])),
                                         as.numeric(difftime(t$last_date[6], t$NDZ_sanemsanas_datums[6], units = "days"))) + 1
                      } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
@@ -86,7 +85,7 @@ starpkodi6_91 <- function(y, t, prev, v) {
                       all(sapply(c(1,4,5), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                     if (t$period[1] == "_____" && t$PS_code[1] == "_____" && t$NM_code[1] == "_____") {
                       t <- t[c(1,5,6),]
-                      yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1, 
+                      yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1, _____
                                             diff(t$NDZ_sanemsanas_datums[2:3])))
               } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
             } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
@@ -107,7 +106,7 @@ starpkodi6_91 <- function(y, t, prev, v) {
 #    if (t$zinkod[6] %in% c("41", "51", "54", "92")) {
 #      if (all(sapply(c(1,3:5), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && 
 #          diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
-#        yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1, 
+#        yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1, _____
 #                                    diff(t$NDZ_sanemsanas_datums[2:3])))
 #      } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
 #    } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
@@ -133,6 +132,7 @@ starpkodi6_91 <- function(y, t, prev, v) {
 #            } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
 #  } else {stop("starpkodi6_91: Trūkst izstrādes koda.")}
 #    
+##GIT: 20240528
 #starpkodi6_50 <- function(y2, t, prev, v) {
 #  
 #  if (all(t$zinkod[c(2, 5)] == "51") && t$zinkod[3] == "50" && t$zinkod[4] == "91" && t$zinkod[6] == "92" && 
