@@ -1,4 +1,5 @@
 processingFives_s2 <- function(x5s2, o, kods) {  
+  #x5s2 <- x5 for testing
   x5s2 <- x5s2 %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x5s2_uzVieniniekiem <- data.frame(); x5s2_uzDivniekiem <- data.frame(); x5s2_uzCetriniekiem <- data.frame()
 
