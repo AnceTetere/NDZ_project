@@ -15,7 +15,8 @@ for (r in seq(1, nrow(x), by = 4)) {
   x4 <- x[r:(r + 3), ] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums, sak_beidz)
   
   if(!(doublesTest(1, x4) && doublesTest(3, x4))) {
-    stop("Četrinieku apstrādes tabulā, ko izstrādā caur funkciju processingFours())
+    stop("Četrinieku apstrādes tabulā, ko izstrādā caur funkciju processingFours(), 
+               rindās no", r, "līdz", r + 3, "nesakrīt pseidokoda, NM_code, DN_code, period kombinācija visās četrās rindās.")
   } else if (all(x4$sak_beidz == c("2", "1", "2", "2"))) {
             result(processingFours_2122(x4))
             if (kods %in% c("40", "50", "53") && o == "4") {ZERO_plus(x4 %>% slice(4))}
@@ -29,7 +30,7 @@ for (r in seq(1, nrow(x), by = 4)) {
   } else if (all(x4$sak_beidz == c("1", "1", "2", "1"))) {
             result(processingFours_1121(x4, o, kods))
   } else if (all(x4$sak_beidz == c("1", "2", "1", "1"))) {
-            result(processingFours_1211(x4))  
+            result(processingFours_1211(x4, o, kods))  
             if (kods %in% c("40", "50", "53") && o == "4") {ZERO_minus(x4 %>% slice(1))}
  # } else if (all(x4$sak_beidz == "1") || all(x4$sak_beidz == "2")) {
 #            x4_uzVieniniekiem <- rbind(x4_uzVieniniekiem, codes_match(x4[1, ]))
@@ -64,7 +65,7 @@ for (r in seq(1, nrow(x), by = 4)) {
     } else {stop(cat("Šeit četrinieku izstrādes tabulas rindām", r, "līdz", r+3, "trūkst apstrādes koda."))}
   check_rows <- check_rows + 4
 }
- noņem.
+
 
 #PĀRBAUDE
 if(nrow(x) == check_rows) {
@@ -91,3 +92,4 @@ if(nrow(x4_uzTrijniekiem) > 0) {
 } else {cat("No četriniekiem pārsūtāmajā trijnieku tabulā nebija nevienas rindas.\n")}
 rm(x4_uzTrijniekiem)
 }
+
