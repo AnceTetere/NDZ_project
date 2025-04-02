@@ -1,4 +1,4 @@
-processingFives <- function(x, o, kods) {
+ processingFives <- function(x, o, kods) {
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x5_uzVieniniekiem <- data.frame(); x5_uzDivniekiem <- data.frame(); x5_uzCetriniekiem <- data.frame()
 
@@ -23,13 +23,13 @@ processingFives <- function(x, o, kods) {
     } else if (sum(x5$sak_beidz == "1") == 1) {
         if (all(x5$sak_beidz == c("2", "1", "2", "2", "2"))) {
           if (all(diff(x5$NDZ_sanemsanas_datums) != 0)){
-            if ((x5$PS_code[1] %in% c('_____', '_____') && x5$NM_code[1] == '40003148739') ||
-                (x5$PS_code[1] == '_____' && x5$NM_code[1] == '_____')) {
+            if ((x5$PS_code[1] %in% c('__________', '__________') && x5$NM_code[1] == '__________') ||
+                (x5$PS_code[1] == '__________' && x5$NM_code[1] == '__________')) {
               x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1,])
               x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(2,5),])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
           } else if (diff(x5$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x5$NDZ_sanemsanas_datums[2:5]) != 0)) {
-            if (x5$PS_code[1] == '_____' && x5$NM_code[1] == '_____') {
+            if (x5$PS_code[1] == '__________' && x5$NM_code[1] == '__________') {
               x5_uzVieniniekiem <- rbind(x5_uzVieniniekiem, x5[1,])
               x5_uzDivniekiem <- rbind(x5_uzDivniekiem, x5[c(2,5),])
             } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
@@ -41,7 +41,6 @@ processingFives <- function(x, o, kods) {
           } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
       } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
     } else {stop("processingFives: Tabula nepārdalījās; rinda: ", r, ".\n")}
-    
   }    
   rm(x, r, x5, fncResult)
   
