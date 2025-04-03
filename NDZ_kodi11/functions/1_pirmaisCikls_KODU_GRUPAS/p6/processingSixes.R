@@ -36,14 +36,14 @@ processingSixes <- function(x, o, kods) {
     } else if (sum(x6$sak_beidz == "1") == 2) {
             if (all(x6$sak_beidz[3:4] == "1")) {
               if (all(diff(x6$NDZ_sanemsanas_datums[2:4]) != 0) && all(sapply(c(1,5), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-                  if (x6$period[1] == '_____' && x6$PS_code[1] == '_________' && x6$NM_code[1] == '_____') {
+                  if (x6$period[1] == '_____' && x6$PS_code[1] == '__________' && x6$NM_code[1] == '__________') {
                   x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[2, ])
                   x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[4:5, ])
                   } else {stop("processingSeven trūkst izstrādes koda.\n")}
                 if (kods %in% c("40", "50", "53")) {ZERO_plus(x6 %>% slice(5))}
               } else if (all(sapply(c(1,3,5), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                          all(sapply(c(2,4), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                        if (x6$period[1] == '_____' && x6$PS_code[1] == '_________' && x6$NM_code[1] == '_________') {
+                        if (x6$period[1] == '_____' && x6$PS_code[1] == '__________' && x6$NM_code[1] == '__________') {
                         x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[1, ])
                         x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[c(3,6), ])
                         } else {stop("processingSeven trūkst izstrādes koda.\n")}
