@@ -44,6 +44,8 @@ processingSeven_s4 <- function(x7s4, o, kods) {
           result(processingSeven_s4_2457(x7s4, o, kods))
   } else if (all(x7s4$sak_beidz[c(1,4,5,7)] == "1")) {
           result(processingSeven_s4_1457(x7s4, o, kods))
+  } else if (all(x7s4$sak_beidz[c(2,3,5,6)] == "1")) {
+          result(processingSeven_s4_2356(x7s4, o, kods))
   } else {stop("processingSeven_s4 trūkst izstrādes koda.\n")}
   
   rm(x7s4, o, kods)
