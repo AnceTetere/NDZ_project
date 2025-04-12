@@ -1,6 +1,5 @@
 processingEights_s5 <- function(x8s5, o, kods) {
   x8s5 <- x8s5 %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
-  #x8s5 <- x8
   x8s5_uzVieniniekiem <- data.frame(); x8s5_uzDivniekiem <- data.frame(); x8s5_uzCetriniekiem <- data.frame()
   x8s5_uzSesi <- data.frame(); x8s5_uzSeptini <- data.frame()
   
