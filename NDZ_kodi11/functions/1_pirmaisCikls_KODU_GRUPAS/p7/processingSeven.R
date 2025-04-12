@@ -1,5 +1,4 @@
 processingSeven <- function(x, o, kods) {
-
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x7_uzVieniniekiem <- data.frame(); x7_uzDivniekiem <- data.frame(); x7_uzTrijniekiem <- data.frame(); x7_uzCetriniekiem <- data.frame(); x7_uzPieciniekiem <- data.frame(); x7_uzSesiniekiem <- data.frame()
   check_rows <- 0
@@ -19,7 +18,7 @@ processingSeven <- function(x, o, kods) {
   if (sum(x7$sak_beidz == "1") == 4) {
           fncResult(processingSeven_s4(x7, o, kods))
     } else if (sum(x7$sak_beidz == "2") == 4) {
-          fncResult(processingSeven_b4(x7))
+          fncResult(processingSeven_b4(x7, o, kods))
     } else if (sum(x7$sak_beidz == "1") == 5) {
            if (all(x7$sak_beidz[1:2] == c("1","2")))  {
                   if (all(diff(x7$NDZ_sanemsanas_datums[1:3]) != 0)) {
