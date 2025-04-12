@@ -7,7 +7,7 @@ processingCodes <- function(NDZ, kods) {
 
   tempNDZ()
   
-#i <- 1 #testēšanai
+#i <- 11 #testēšanai
 #for(i in 1:4) { #TESTIEM
   
   options(warn = 2) #Warnings into errors: Pārliec uz warn = 1, lai atceltu  
@@ -27,7 +27,6 @@ for(i in 1:length(tabs_zdn)) {
   
     switch(   
       o,
-      # Caur sekojošo apstrādi sarēķina dienas un noglabā tabulā temp_NDZ, kuru būvē.
       "1"= cat(sendTo_tempNDZ(processingOnes(x, o), o)),
       "2"= processingTwoes(x, o, kods),  
       "3"= processingThrees(x, o, kods),  
@@ -58,31 +57,3 @@ for(i in 1:length(tabs_zdn)) {
   rm(NDZ_list, tabs_zdn, o, i, x)
   return(cat("Kodu kopums", kods, "apstrādāts."))
 }
-
-#calculations
-#kods <- kodu_vektors[1] #FOR TESTING
-
-create_tempZERO()
-iztrukstKodi <- character(0)
-
-for(kods in kodu_vektors) {
-  NDZ <- NDZ_original(kods) #77454
-  
-  if (nrow(NDZ) > 0) {
-    cat(processingCodes(NDZ, kods))
-    cat(month_byCode(kods))
-  } else {
-    cat(paste0(year, ". gada ", month, ". mēnesī nav neviena ieraksta  ziņojuma kodam ", kods, "."), "\n")
-    iztrukstKodi <- append(iztrukstKodi, kods)
-  }
-}
-
-kodu_vektors <- kodu_vektors[!(kodu_vektors %in% iztrukstKodi)]
-rm(iztrukstKodi, NDZ, kods)
-source("R/scripts/4_months.R")
-source("R/scripts/5_output.R")
-
-
-rm(list = mtab_nos, mtab_nos, kodu_vektors, kods, month, year, md, x)
-rm(list = ls())
-#rm(list = ls()[sapply(ls(), function(x) is.function(get(x)))])
