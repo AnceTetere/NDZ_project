@@ -1,4 +1,4 @@
- processingFives <- function(x, o, kods) {
+processingFives <- function(x, o, kods) {
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x5_uzVieniniekiem <- data.frame(); x5_uzDivniekiem <- data.frame(); x5_uzCetriniekiem <- data.frame()
 
