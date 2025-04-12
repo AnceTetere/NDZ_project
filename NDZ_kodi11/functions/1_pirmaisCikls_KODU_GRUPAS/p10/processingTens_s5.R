@@ -1,7 +1,5 @@
 processingTens_s5 <- function(x10s5, o, kods) {
-  
   x10s5_1 <- data.frame(); x10s5_2 <- data.frame(); x10s5_5 <- data.frame(); x10s5_7 <- data.frame(); x10s5_8 <- data.frame()
-  #x10s5 <- x10
   
   result <- function(y) {
     x10s5_1 <<- rbind(x10s5_1, y$x10s5_1)
@@ -19,16 +17,18 @@ processingTens_s5 <- function(x10s5, o, kods) {
                 if (x10s5$NM_code[1] == "__________" ||
                     (x10s5$period[1] == "_____" && x10s5$PS_code[1] == "__________" && x10s5$NM_code[1] == "__________") ||
                     (x10s5$period[1] == "_____" && x10s5$PS_code[1] == "__________" && x10s5$NM_code[1] == "__________") ||
+                    (x10s5$period[1] == "_____" && x10s5$PS_code[1] == "__________" && x10s5$NM_code[1] == "__________") ||
+                    (x10s5$period[1] == "_____" && x10s5$PS_code[1] == "__________" && x10s5$NM_code[1] == "__________") ||
+                    (x10s5$period[1] == "_____" && x10s5$PS_code[1] == "__________" && x10s5$NM_code[1] == "__________") ||
                     (x10s5$period[1] == "_____" && x10s5$PS_code[1] == "__________" && x10s5$NM_code[1] == "__________")) {
-                      x10s5_2 <- rbind(x10s5_2, x10s5[c(2,1), ])
-                      x10s5_8 <- rbind(x10s5_8, x10s5[3:10, ])
+                      x10s5_2 <- x10s5[c(2,1), ]; x10s5_8 <- x10s5[3:10, ]
                 } else {stop("processingTens_s5: Desmitnieku tabulas pārdalei trūkst izstrādes koda\n")}
                 if (kods %in% c("40", "50", "53") && o == "10") {ZERO_minus(x10s5 %>% slice(2)); ZERO_plus(x10s5 %>% slice(9))}
               } else if (all(diff(x10s5$NDZ_sanemsanas_datums[1:6]) != 0)) {
                 if (x10s5$sak_beidz[4] == "2") {
                   if (x10s5$sak_beidz[5] == "2") {
                     if (x10s5$sak_beidz[6] == "1") {
-                        if (x10s5$period[1] == "_____" && x10s5$PS_code[1] == "__________" && x10s5$NM_code[1] == "__________ {
+                        if (x10s5$period[1] == "_____" && x10s5$PS_code[1] == "__________" && x10s5$NM_code[1] == "__________") {
                           x10s5_1 <- rbind(x10s5_1, x10s5[1, ])
                           x10s5_2 <- rbind(x10s5_2, x10s5[c(3,5), ])
                           x10s5_5 <- rbind(x10s5_5, x10s5[6:10, ])
