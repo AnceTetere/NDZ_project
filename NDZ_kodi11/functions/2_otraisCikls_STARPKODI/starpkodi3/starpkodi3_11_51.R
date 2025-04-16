@@ -1,29 +1,41 @@
-starpkodi3_11_51 <- function(y2, t, prev, v) {
+starpkodi3_11_51 <- function(y, t, prev, v) {
   
-  if (t$zk[3] %in% c("40", "50", "53", "91")) { 
-    if (diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
-    yt <- y2[v, ]
-    yt$dd <- as.numeric(sum(diff(t$NDZ_sanemsanas_datums[c(1,3)]), 
-                                difftime(t$last_date[3], t$NDZ_sanemsanas_datums[2], units = "days") + 1))
-  } else if (all(diff(t$NDZ_sanemsanas_datums) == 0)) {
-    yt <- y2[v, ]
-    yt$dd <- as.numeric(difftime(t$last_date[3], t$NDZ_sanemsanas_datums[1], units = "days")) + 1
-  } else {stop("Starpkodi3_11_51: Trūkst izstrādes koda.")}
+  yt <- y[v, ]
+  
+  if (t$zinkod[3] %in% c("40", "50", "53", "91")) { 
+                if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && diff(t$NDZ_sanemsanas_datums[2:3]) != 0) {
+                    if ((t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
+                        (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________')) {
+                      yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[c(1,3)]))
+                    } else {stop("Starpkodi3_11_51: Trūkst izstrādes koda.")}
+                } else if (diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
+                yt$dienas <- as.numeric(sum(diff(t$NDZ_sanemsanas_datums[c(1,3)]), 
+                                            difftime(t$last_date[3], t$NDZ_sanemsanas_datums[2], units = "days") + 1))
+              } else if (all(diff(t$NDZ_sanemsanas_datums) == 0)) {
+                yt$dienas <- as.numeric(difftime(t$last_date[3], t$NDZ_sanemsanas_datums[1], units = "days")) + 1
+              } else {stop("Starpkodi3_11_51: Trūkst izstrādes koda.")}
+  } else if (t$zinkod[3] %in% c("41", "51", "54", "92")) {
+              if (diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
+                if ((t$period[1] == '_____' && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
+                    (t$period[1] == '_____' && t$PS_code[1] == '__________' && t$NM_code[1] == '__________')) {
+                  yt$dienas <- as.numeric(difftime(t$last_date[3], t$NDZ_sanemsanas_datums[3], units = "days")) + 1
+                } else {stop("Starpkodi3_11_51: Trūkst izstrādes koda.")}
+              } else {stop("Starpkodi3_11_51: Trūkst izstrādes koda.")} 
+  } else if (t$zinkod[3] %in% c("11", "14", "16", "61")) {
+                if (diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
+                  if (t$period[1] == '_____' && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
+                     yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[c(1,3)], units = "days")) + 1
+                } else {stop("Starpkodi3_11_51: Trūkst izstrādes koda.")}
+             } else {stop("Starpkodi3_11_51: Trūkst izstrādes koda.")} 
+  } else if (t$zinkod[3] %in% c("21", "22", "23", "24", "25", "29")) {
+             if (diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
+               if (t$period[1] == '_____' && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
+                 yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[c(1,3)], units = "days")) + 1
+               } else {stop("Starpkodi3_11_51: Trūkst izstrādes koda.")}
+             } else {stop("Starpkodi3_11_51: Trūkst izstrādes koda.")} 
   } else {stop("Starpkodi3_11_51: Trūkst izstrādes koda.")}
   
-  if(is.na(yt$PS_code[1])) {stop("DD NA.")}
+  rm(y, t, prev, v) 
   return(yt) 
 }
-
-#if (t$zk[3] == "51" && diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && 
-#           t$PS_code[1] == '___________' && t$nmrkod[1] == '___________') {
-#  yt <- y2[v, ]
-#  yt$dd <- as.numeric(difftime(t$last_date[3], t$NDZ_sanemsanas_datums[3], units = "days")) + 1
-#} else if (t$zk[3] == "40" && diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && diff(t$NDZ_sanemsanas_datums[2:3]) != 0 &&
-#           t$PS_code[1] == '___________' && t$nmrkod[1] == '___________') {
-#  yt <- y2[v, ]
-#  yt$dd <- as.numeric(difftime(t$NDZ_sanemsanas_datums[3], t$NDZ_sanemsanas_datums[1], units = "days"))
-#} else if (t$zk[3] == "51" && t$PS_code[1] == '___________' && t$nmrkod[1] == '___________') {
-#  yt <- y2[v, ]
-#  yt$dd <- as.numeric(difftime(t$last_date[3], t$NDZ_sanemsanas_datums[3], units = "days")) + 1
-#} else 
+  
