@@ -1,5 +1,6 @@
 processingEleven_s6 <- function(a, o, kods) {
   a1 <- data.frame(); a2 <- data.frame(); a9 <- data.frame(); a10 <- data.frame()
+  #a <- x11
   
     if (all(a$sak_beidz[c(1,3,5,8,10,11)] == "1")) {
               if (all(sapply(c(1,2,3,4,6,8,10), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
@@ -58,6 +59,7 @@ processingEleven_s6 <- function(a, o, kods) {
                if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(a %>% slice(1))}
               } else if (all(diff(a$NDZ_sanemsanas_datums[2:11]) != 0) &&
                          diff(a$NDZ_sanemsanas_datums[1:2]) == 0) {
+                          #JO PIRMOREIZ
                           if (a$period[1] == "_____" && a$PS_code[1] == "__________" && a$NM_code[1] == "__________") {
                             a <- a[c(2,1,3,4,5,6,7,8,9,10,11),]
                             a1 <- a[11, ]; a10 <- a[-11,]
@@ -77,6 +79,7 @@ processingEleven_s6 <- function(a, o, kods) {
                 if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(a %>% slice(1))}
     } else if (all(a$sak_beidz[1:4] == c("2", "1", "2", "1"))) {
               if (all(diff(a$NDZ_sanemsanas_datums[1:4]) != 0)) {
+                #JO PIRMOREIZ
                 if (a$period[1] == "_____" && a$PS_code[1] == "__________" && a$NM_code[1] == "__________") {
                   a1 <- a[1, ]; a10 <- a[-1,]
                 } else {stop("processingEleven_s6 trūkst izstrādes koda. \n")}
@@ -84,6 +87,7 @@ processingEleven_s6 <- function(a, o, kods) {
     } else if (all(a$sak_beidz[1:4] == c("1", "2", "2", "1"))) {
               if (all(sapply(c(1,2,4,5,6,8,9,10), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
                   all(sapply(c(3,7), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
+                    #JO PIRMOREIZ
                     if (a$period[1] == "_____" && a$PS_code[1] == "__________" && a$NM_code[1] == "__________") {
                     a2 <- a[1:2, ]; a9 <- a[3:11,]
                 } else {stop("processingEleven_s6 trūkst izstrādes koda. \n")}
@@ -96,3 +100,4 @@ processingEleven_s6 <- function(a, o, kods) {
               x11_uzDevini = a9,
               x11_uzDesmitniekiem = a10))
 }
+
