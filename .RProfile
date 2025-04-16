@@ -1,29 +1,36 @@
 #Definē periodu, par kuru tiek veikts aprēķins.
 if (interactive()) {
+  cat("Ievadīt atbilstošo gadu NDZ dienu aprēķinam:\n")
   year <- readline()
   
-  cat("Ievadīt mēneša numuru: \
-      ja janvāris, tad 1, \
-      ja februāris, tad 2 utt. \
-      Ievadīt mēneša numuru: ")
-  m <- readline()
-  ifelse(nchar(m) == 1, month <- paste0("0", m), month <- m)
+  repeat {
+    cat("Ievadīt mēneša numuru: \
+         ja janvāris, tad 1, \
+         ja februāris, tad 2 utt. \
+         Ievadīt mēneša numuru: ")
+    m <- readline()
+    ifelse(nchar(m) == 1, month <- paste0("0", m), month <- m)
   
-  M <- switch(m, 
-         "1" = "janvāri",
-         "2" = "februāri",
-         "3" = "martu",
-         "4" = "aprīli",
-         "5" = "maiju",
-         "6" = "jūniju",
-         "7" = "jūliju",
-         "8" = "augustu",
-         "9" = "septembri",
-         "10" = "oktobri",
-         "11" = "novembri",
-         "12" = "decembri",
-         stop("Ievadītais mēnesis netika atpazīts."))
+     M <- switch(m, 
+            "1" = "janvāri",
+            "2" = "februāri",
+            "3" = "martu",
+            "4" = "aprīli",
+            "5" = "maiju",
+            "6" = "jūniju",
+            "7" = "jūliju",
+            "8" = "augustu",
+            "9" = "septembri",
+            "10" = "oktobri",
+            "11" = "novembri",
+            "12" = "decembri",
+            NA)
+   
+     if(!is.na(M)) break
+     message("Ievadītais mēnesis netika atpazīts. Lūdzu, mēģināt vēlreiz.\n")
+  }
   
+  message("\n Dienu aprēķins no NDZ kodiem tiks veikts par ", year, ". gada ", M, "\n")
   rm(m, M)
 }
   
