@@ -74,4 +74,3 @@ return(list(x10s5_1 = a1,
 #  x10s5_1 <- rbind(x10s5_1, x10s5[1, ])
 #  x10s5_2 <- rbind(x10s5_2, x10s5[2:3, ])
 #  x10s5_7 <- rbind(x10s5_7, x10s5[4:10, ])#
-
