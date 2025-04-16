@@ -2,7 +2,6 @@ processingSeven_b4 <- function(x7b4, o, kods) {
 
 x7b4_uzVieniniekiem <- data.frame(); x7b4_uzDivniekiem <- data.frame(); x7b4_uzTrijniekiem <- data.frame()
 x7b4_uzCetriniekiem <- data.frame(); x7b4_uzPieciniekiem <- data.frame(); x7b4_uzSesiniekiem <- data.frame()
-#x7b4 <- x7
 
   if ((all(x7b4$sak_beidz[1:2] == c("2", "1")) && diff(x7b4$NDZ_sanemsanas_datums[1:2]) != 0) || 
       (x7b4$sak_beidz[1] == x7b4$sak_beidz[2] && diff(x7b4$NDZ_sanemsanas_datums[2:3]) == 0)) {
@@ -10,7 +9,7 @@ x7b4_uzCetriniekiem <- data.frame(); x7b4_uzPieciniekiem <- data.frame(); x7b4_u
             x7b4_uzSesiniekiem <- rbind(x7b4_uzSesiniekiem, x7b4[-1, ])
   } else if (all(x7b4$sak_beidz == c("2","1","2","1","2","2","1")) && 
              diff(x7b4$NDZ_sanemsanas_datums[1:2]) == 0 && 
-             x7b4$PS_code[1] == 'PK5F7171903' && x7b4$NM_code[1] == '41503007355') {
+             x7b4$PS_code[1] == '__________' && x7b4$NM_code[1] == '__________') {
             x7b4_uzVieniniekiem <- rbind(x7b4_uzVieniniekiem, x7b4[1, ])
             x7b4_uzSesiniekiem <- rbind(x7b4_uzSesiniekiem, x7b4[-1, ])
   } else if (all(x7b4$sak_beidz == c("2", "2", "1", "2", "1", "2", "1")) && all(diff(x7b4$NDZ_sanemsanas_datums) != 0)) {
