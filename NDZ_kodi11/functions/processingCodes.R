@@ -6,11 +6,8 @@ processingCodes <- function(NDZ, kods) {
   rm(NDZ, result)
 
   tempNDZ()
-  
-#i <- 11 #testēšanai
 #for(i in 1:4) { #TESTIEM
   
-  options(warn = 2) #Warnings into errors: Pārliec uz warn = 1, lai atceltu  
 for(i in 1:length(tabs_zdn)) {
 # Ielādē attiecīgo tabulu  
   x <- NDZ_list[[i]]    ### loadTables nekļūst lieka, jo tiek lietota 1-majā skriptā - skati vai to var aizvietot <- Ievēro, ja tu šādi lieto, funkcija load_table() kļūst lieka
@@ -57,3 +54,4 @@ for(i in 1:length(tabs_zdn)) {
   rm(NDZ_list, tabs_zdn, o, i, x)
   return(cat("Kodu kopums", kods, "apstrādāts."))
 }
+		
