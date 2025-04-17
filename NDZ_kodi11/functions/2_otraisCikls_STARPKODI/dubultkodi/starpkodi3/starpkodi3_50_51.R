@@ -4,15 +4,16 @@ starpkodi3_50_51 <- function(y, t, prev, v) {
   
     if (t$zinkod[3] %in% c("21", "22", "23", "24", "25", "29")) {
                if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-                 yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1, #
+                 yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1,  
                                              diff(t$NDZ_sanemsanas_datums[2:3])))
+                 
                } else if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && diff(t$NDZ_sanemsanas_datums[2:3]) != 0) {
-                      if (t$period[1] == '_____' && t$PS_code[1] %in% c('__________', 
-                                                                            '__________', 
-                                                                            '__________',
-                                                                            '__________',
-                                                                            '__________',
-                                                                            '__________') && 
+                      if (t$period[1] == '_____' && t$PS_code[1] %in% c('_____________', 
+                                                                            '_____________', 
+                                                                            '_____________',
+                                                                            '_____________',
+                                                                            '_____________',
+                                                                            '_____________') && 
                           t$NM_code[1] %in% c('__________', 
                                              '__________', 
                                              '__________',
@@ -22,7 +23,8 @@ starpkodi3_50_51 <- function(y, t, prev, v) {
                           yt$dienas <- 0
                 } else if (t$PS_code[1] %in% c('__________', '__________', '__________', '__________') && t$NM_code[1] == '__________') {
                   yt$dienas <- 0
-                } else if (t$period[1] == '_____' && t$PS_code[1] %in% c('__________', '__________') && t$NM_code[1] %in% c('__________', '__________')) {
+                } else if ((t$period[1] == '_____' && t$PS_code[1] %in% c('__________', '__________') && t$NM_code[1] %in% c('__________', '__________')) ||
+                           (t$period[1] == '_____' && t$PS_code[1] == '__________' && t$NM_code[1] == '__________')) {
                   yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
                 } else if ((t$period[1] == '_____' && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
                            (t$period[1] == '_____' && t$PS_code[1] == '__________' && t$NM_code[1] == '__________')) {
@@ -32,7 +34,7 @@ starpkodi3_50_51 <- function(y, t, prev, v) {
              } else {stop("starpkodi3_50_51: Iztrūkst apstrādes koda.")}
     } else if (t$zinkod[3] %in% c("40", "50", "53", "91")) {
              if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-               yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
+               yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1,  
                                 as.numeric(diff(t$NDZ_sanemsanas_datums[2:3])))
              } else if (diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
                yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1
@@ -89,4 +91,4 @@ return(yt)
 #  rm(days1, days2)
 #} else {
 #  stop("Starpkodi3_40: Trūkst izstrādes koda.")
-#} 
+#}
