@@ -39,11 +39,6 @@ starpkodi5_11_50_51 <- function(y, t, prev, v) {
               if (t$period[1] == "_____" && t$PS_code[1] == "__________" && t$NM_code[1] == "__________") {
                 yt$dienas <- sum(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)])))
               } else {stop("Starpkodi5_11_50: Trūkst izstrādes koda.")}
-            } else if (all(sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && 
-                       all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-                        if (t$period[1] == "_____" && t$PS_code[1] == "__________" && t$NM_code[1] == "__________") {
-                          yt$dienas <- sum(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)])))
-                        } else {stop("Starpkodi5_11_50: Trūkst izstrādes koda.")}
             } else {stop("Starpkodi5_11_50: Trūkst izstrādes koda.")}
         } else {stop("Starpkodi5_11_50: Trūkst izstrādes koda.")}  
   } else if (t$zinkod[4] %in% c("41", "51", "54", "92")) {
