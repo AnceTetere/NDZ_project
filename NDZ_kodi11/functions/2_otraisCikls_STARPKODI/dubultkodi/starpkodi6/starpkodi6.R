@@ -12,10 +12,10 @@ starpkodi6 <- function(y, t, prev, v) {
  #   yt <- starpkodi6_26(y, t, prev, v)
  # } else 
  } else if (t$zinkod[1] %in% c("40", "50", "53", "91")) {
-    yt <- starpkodi6_91(y, t, prev, v)
+    yt <- starpkodi6_50(y, t, prev, v)
   } else {stop("Starpkodi6 iztrūkst apstrādes koda.")}
   
-  if(is.na(yt$PS_code[1])) {stop("DD NA.")}
+  if(is.na(yt$PS_code[1])) {stop("Dienas NA.")}
   yt$zinkod <- "combined"  
   return(yt)
 }
