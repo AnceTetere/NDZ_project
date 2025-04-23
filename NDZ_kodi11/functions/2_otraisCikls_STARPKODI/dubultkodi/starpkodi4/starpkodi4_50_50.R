@@ -7,7 +7,7 @@ starpkodi4_50_50 <- function(y, t, prev, v) {
   } else if (t$zinkod[3] %in% c("40", "50", "53", "91")) {
              if (t$zinkod[4] %in% c("41", "51", "54", "92")) {
                if(all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && diff(t$NDZ_sanemsanas_datums[2:3]) != 0) {
-                 if (t$period[1] == "_____" && t$PS_code[1] == '_____' && t$NM_code[1] == '_____') {
+                 if (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') {
                    yt$dienas <- as.numeric(sum(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days") - 1,
                                                diff(t$NDZ_sanemsanas_datums[3:4]) + 1))
                  } else {stop("starpkodi4_50_50: Trūkst izstrādes koda.")}
@@ -16,10 +16,12 @@ starpkodi4_50_50 <- function(y, t, prev, v) {
   } else if (t$zinkod[3] %in% c("21", "22", "23", "24", "25", "29")) {
     if (t$zinkod[4] %in% c("41", "51", "54", "92")) {
       if (all(diff(t$NDZ_sanemsanas_datums[1:3]) != 0) && diff(t$NDZ_sanemsanas_datums[3:4]) == 0) {
-        if ((t$period[1] == "_____" && t$PS_code[1] == '_____' && t$NM_code[1] == '_____') ||
-            (t$period[1] == "_____" && t$PS_code[1] == '_____' && t$NM_code[1] == '_____') ||
-            (t$period[1] == "_____" && t$PS_code[1] == '_____' && t$NM_code[1] == '_____') || 
-            (t$period[1] == "_____" && t$PS_code[1] == '_____' && t$NM_code[1] == '_____')) {
+        if ((t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
+            (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
+            (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') || 
+            (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
+            (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
+            (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________')) {
               yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[2], prev, units = "days")) - 1,
                                as.numeric(diff(t$NDZ_sanemsanas_datums[3:4])))
         } else {stop("starpkodi4_50_50: Trūkst izstrādes koda.")}
