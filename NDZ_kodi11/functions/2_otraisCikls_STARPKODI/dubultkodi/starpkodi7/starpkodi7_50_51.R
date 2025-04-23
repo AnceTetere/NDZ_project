@@ -35,6 +35,7 @@ starpkodi7_50_51 <- function(y, t, prev, v) {
                 if ((t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
                     (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
                     (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
+                    (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________') ||
                     (t$period[1] == "_____" && t$PS_code[1] == '__________' && t$NM_code[1] == '__________')) {
                       yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1,
                                        sapply(c(2,4,6), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]))) + 1
