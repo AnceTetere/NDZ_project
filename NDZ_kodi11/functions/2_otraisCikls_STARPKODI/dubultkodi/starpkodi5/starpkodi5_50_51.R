@@ -23,10 +23,16 @@ starpkodi5_50_51 <- function(y, t, prev, v) {
            } else if (t$zinkod[4] %in% c("40", "50", "53", "91")) {
              if (t$zinkod[5] %in% c("41", "51", "54", "92")) {
                if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
-                 if (t$period[1] == "_____" && t$PS_code[1] == "______" && t$NM_code[1] == "______") {
+                 if (t$period[1] == "_____" && t$PS_code[1] == "__________" && t$NM_code[1] == "__________") {
                    yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1,
                                     as.numeric(diff(t$NDZ_sanemsanas_datums[2:3])) + 1) 
                  } else {stop("Starpkodi5_50_51: iztrūkst apstrādes koda.")}
+               } else if (all(sapply(c(1,2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
+                          diff(t$NDZ_sanemsanas_datums[3:4]) == 0) {
+                           if (t$period[1] == "_____" && t$PS_code[1] == "__________" && t$NM_code[1] == "__________") {
+                             yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1,
+                                              as.numeric(diff(t$NDZ_sanemsanas_datums[2:3]))) + 1  
+                          } else {stop("Starpkodi5_50_51: iztrūkst apstrādes koda.")}
                } else {stop("Starpkodi5_50_51: iztrūkst apstrādes koda.")}
              } else {stop("Starpkodi5_50_51: iztrūkst apstrādes koda.")}
            } else {stop("Starpkodi5_50_51: iztrūkst apstrādes koda.")}
@@ -35,6 +41,11 @@ starpkodi5_50_51 <- function(y, t, prev, v) {
   rm(y, t, prev, v)
   return(yt)
 }
+
+      
+             
+             
+               
     
     
     #     } else {stop("Starpkodi5_50_51: iztrūkst apstrādes koda.")} 
