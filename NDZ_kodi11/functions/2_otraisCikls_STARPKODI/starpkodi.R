@@ -1,7 +1,5 @@
-#FOR TESTS: y_2plus = y2; n = 2; rm(y2)
-
 starpkodi <- function(y_2plus, n) { 
-  y_2plus <- y_2plus %>% arrange(PS_code, dnperk, NM_code)
+  y_2plus <- y_2plus %>% arrange(PS_code, DN_code, NM_code)
   
   prev <- as.Date(paste0(substr(y_2plus$period[1], 1, 4), "-", substr(y_2plus$period[1], 5, 6), "-01")) - 1
   z <- data.frame()
@@ -12,7 +10,7 @@ starpkodi <- function(y_2plus, n) {
     t <- subTable(y_2plus, n, v)
 
     if(!(all(t$PS_code == t$PS_code[1] & t$NM_code == t$NM_code[1]))) {
-      stop("Pseidokodu nesakritība! Tabula: y_2plus; rinda:", v)}
+      stop("PS_code nesakritība! Tabula: y_2plus; rinda:", v)}
 
     z <- switch(
       as.character(n),
@@ -21,6 +19,7 @@ starpkodi <- function(y_2plus, n) {
       default = stop("Starpkodi neatpazīst atšķirīgo kodu tabulu y_2plus.")
     )
     print(v)
+    #testam  if(t$PS_code[1] == "___________"   && t$NM_code[1] == "___________" ) {stop("STOP")}
   }
   rm(prev, t, y_2plus)
   return(z) 
