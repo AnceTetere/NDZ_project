@@ -7,6 +7,7 @@ starpkodi <- function(y_2plus, n) {
   #options(warn = 1)
   for(v in seq(1, nrow(y_2plus), by = n)) {
 
+    # izveido apakštabulu no oriģinālajiem datiem, pārrēķinam
     t <- subTable(y_2plus, n, v)
 
     if(!(all(t$PS_code == t$PS_code[1] & t$NM_code == t$NM_code[1]))) {
@@ -19,7 +20,7 @@ starpkodi <- function(y_2plus, n) {
       default = stop("Starpkodi neatpazīst atšķirīgo kodu tabulu y_2plus.")
     )
     print(v)
-    #testam  if(t$PS_code[1] == "___________"   && t$NM_code[1] == "___________" ) {stop("STOP")}
+    #testam  if(t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {stop("STOP")}
   }
   rm(prev, t, y_2plus)
   return(z) 
