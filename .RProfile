@@ -30,7 +30,7 @@ if (interactive()) {
      message("Ievadītais mēnesis netika atpazīts. Lūdzu, mēģināt vēlreiz.\n")
   }
   
-  message("\n Dienu aprēķins no NDZ kodiem tiks veikts par ", year, ". gada ", M, "\n")
+  message("\n Aprēķins no NDZ kodiem tiks veikts par ", year, ". gada ", M, "\n")
   rm(m, M)
 }
   
@@ -223,6 +223,7 @@ source("R/functions/2_otraisCikls_STARPKODI/dubultkodi/starpkodi5/starpkodi5_11_
 source("R/functions/2_otraisCikls_STARPKODI/dubultkodi/starpkodi5/starpkodi5_11_50_50.R")
 source("R/functions/2_otraisCikls_STARPKODI/dubultkodi/starpkodi5/starpkodi5_11_50_51.R")
 source("R/functions/2_otraisCikls_STARPKODI/dubultkodi/starpkodi5/starpkodi5_50.R")
+source("R/functions/2_otraisCikls_STARPKODI/dubultkodi/starpkodi5/starpkodi5_50_25.R")
 source("R/functions/2_otraisCikls_STARPKODI/dubultkodi/starpkodi5/starpkodi5_50_51.R")
 source("R/functions/2_otraisCikls_STARPKODI/dubultkodi/starpkodi5/starpkodi5_50_51_50.R")
 source("R/functions/2_otraisCikls_STARPKODI/dubultkodi/starpkodi5/starpkodi5_50_51_51.R")
