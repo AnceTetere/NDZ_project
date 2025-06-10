@@ -1,4 +1,4 @@
-processingFives_s3e1 <- function(a, o, kods) {
+processingFives_s3e1 <- function(a, o, kods) { 
   a1 <- data.frame(); a2 <- data.frame(); a4 <- data.frame()
   #a <- x5s3
 
