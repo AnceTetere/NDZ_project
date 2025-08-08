@@ -1,3 +1,4 @@
+#Tiek izmanta mēneša kodu tabulu no SQL eksporta uz data/originals.
 NDZ_original <- function(kods) {
   
   #1 Ielādē datus
@@ -8,7 +9,7 @@ NDZ_original <- function(kods) {
   if (nrow(NDZ) > 0) {
     if (sum(NDZ$period != paste0(year, month)) == 0) {
       #Tad izņem NAs.
-        NDZ$dnperk[is.na(NDZ$dnperk)] <- ""
+        NDZ$DN_code[is.na(NDZ$DN_code)] <- ""
         NDZ$PS_code[is.na(NDZ$PS_code)] <- ""
         A <- c("NM_code", "sak_beidz", "NDZ_sanemsanas_datums", "zinkod", "last_date") 
         for(a in A) {
