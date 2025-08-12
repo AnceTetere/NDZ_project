@@ -1,4 +1,3 @@
-#dubultkodi <- function(y_2plus, t, prev, v, z) {
 dubultkodi <- function(y, t, prev, v, z) {
 #for tests y <- y_2plus
   
@@ -23,6 +22,8 @@ dubultkodi <- function(y, t, prev, v, z) {
     z <- rbind(z, starpkodi10(y, t, prev, v))
   } else if (nrow(t) == 11) {
     z <- rbind(z, starpkodi11(y, t, prev, v))
+  } else if (nrow(t) == 12) {
+    z <- rbind(z, starpkodi12(y, t, prev, v))
   #} else if (nrow(t) == 13) {
   #  z <- rbind(z, starpkodi13(y_2plus, t, prev, v))
   #} else if (nrow(t) == 16) {
