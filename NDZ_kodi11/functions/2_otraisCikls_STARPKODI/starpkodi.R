@@ -11,7 +11,7 @@ starpkodi <- function(y_2plus, n) {
     t <- subTable(y_2plus, n, v)
 
     if(!(all(t$PS_code == t$PS_code[1] & t$NM_code == t$NM_code[1]))) {
-      stop("PS_code nesakritība! Tabula: y_2plus; rinda:", v)}
+      stop("Nesakritība! Tabula: y_2plus; rinda:", v)}
 
     z <- switch(
       as.character(n),
