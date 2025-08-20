@@ -52,7 +52,6 @@ processingTens_s5e12 <- function(a, o, kods) {
                           if (kods %in% c("40", "50", "53") && o == "10") {ZERO_minus(a %>% slice(1))}
                     } else {stop("processingTens_s5: Desmitnieku tabulas pārdalei trūkst izstrādes koda\n")}
 #      } else if (all(sapply(c(1,2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && diff(a$NDZ_sanemsanas_datums[3:4]) == 0) {
-#               #BLOĶĒJU, JO PIRMOREIZ
 #               if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
 #                   (a$period[1] == '______' && a$NM_code[1] ==  '______________') ||
 #                   (a$period[1] == '______' && a$NM_code[1] ==  '______________') ||
@@ -88,7 +87,6 @@ processingTens_s5e12 <- function(a, o, kods) {
                     } else {stop("processingTens_s5: Desmitnieku tabulas pārdalei trūkst izstrādes koda\n")}
           } else if (all(sapply(c(3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                      all(sapply(c(1,2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                     #BLOĶĒJU, JO PIRMOREIZ
                      if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                          (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                          (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
@@ -107,4 +105,4 @@ return(list(x10s5_1 = a1,
             x10s5_6 = a6, 
             x10s5_7 = a7,
             x10s5_8 = a8))
-}
+} 
