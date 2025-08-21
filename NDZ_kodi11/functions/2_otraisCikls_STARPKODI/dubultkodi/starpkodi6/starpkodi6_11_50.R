@@ -36,7 +36,7 @@ starpkodi6_11_50 <- function(y, t, prev, v) {
                 } else {stop("starpkodi6_11_50: Trūkst izstrādes koda. \n")}
         } else if (t$zinkod[6] %in% c("41", "51", "54", "92")) {
                     if (diff(t$NDZ_sanemsanas_datums[1:2]) == 0 && diff(t$NDZ_sanemsanas_datums[5:6]) == 0 && all(diff(t$NDZ_sanemsanas_datums[2:5]) != 0)) {
-                      yt$dienas <- sum(sapply(seq(1, 6, by = 2), function(i) diff(t$NDZ_sanemsanas_datums[i:(i + 1)]))) + 1 
+                      yt$dienas <- sum(sapply(seq(1, 6, by = 2), function(i) diff(t$NDZ_sanemsanas_datums[i:(i + 1)]))) + 1 #mazliet jau bija jāpastrādā, lai tiktu dīkstāvē paša vainas dēļ.
                     } else if (diff(t$NDZ_sanemsanas_datums[4:5]) == 0 &&
                                all(sapply(c(1,2,3,5), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                                 yt$dienas <- sum(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)])),
