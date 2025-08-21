@@ -36,7 +36,7 @@ starpkodi5_11_50_51 <- function(y, t, prev, v) {
                                          as.numeric(difftime(t$last_date[5], t$NDZ_sanemsanas_datums[5], units = "days")) + 1) 
                       } else {stop("Starpkodi5_11_50_51: Trūkst izstrādes koda.")}
         } else if (t$zinkod[5] %in% c("21", "22", "23", "24", "25", "29")) {
-                if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {                     
+                if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
                      if ((t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                          (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                          (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
