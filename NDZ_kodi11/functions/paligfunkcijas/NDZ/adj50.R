@@ -2,12 +2,12 @@ adj50 <- function(NDZ) {
     
  if (isTRUE(NDZ$period[1] ==  '______')) {
     
+    
     NDZ <- NDZ %>% 
       dplyr::filter(!(PS_code  %in%  c'______________', '______________', '______________', '______________' & NM_code ==  '______________' & zinkod == '51'))
     
     NDZ <- NDZ %>% 
       dplyr::filter(!(PS_code  %in%  c'______________', '______________' & NM_code  ==  c'______________', '______________' & zinkod == '41'))
-
 
     NDZ <- NDZ %>% 
       dplyr::filter(!(PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '25'))
@@ -54,12 +54,11 @@ adj50 <- function(NDZ) {
    NDZ <- NDZ %>% 
      dplyr::filter(PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '29') %>% 
      mutate(zinkod = '40')
-   
+
    NDZ <- NDZ %>% 
      dplyr::filter(!(PS_code  ==  '______________' & NM_code ==  '______________' & NDZ_sanemsanas_datums == '2021-12-15'))
 
     } else if (isTRUE(NDZ$period[1] ==  '______' & kods == "50")) {
-
           NDZ <- NDZ %>% 
             dplyr::filter(!(PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '51' & NDZ_sanemsanas_datums == "2022-01-24"))
     
@@ -69,11 +68,10 @@ adj50 <- function(NDZ) {
       NDZ <- NDZ %>% 
         dplyr::filter(!(
           (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '40' & NDZ_sanemsanas_datums == "2022-02-16") | 
-          (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '91' & NDZ_sanemsanas_datums == "2022-02-01") | 
+          (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '91' & NDZ_sanemsanas_datums == "2022-02-01") |  
           (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '91' & NDZ_sanemsanas_datums == "2022-02-04") |  
-            #(PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '91' & NDZ_sanemsanas_datums == '2022-02-01') |
-            #ŠIS TIKA MAINĪTS AR SEKOJOŠO - izskatās loģiskāk.
-          (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '41' & NDZ_sanemsanas_datums == "2022-02-03")    
+            #(PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '91' & NDZ_sanemsanas_datums == '2022-02-01') | 
+          (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '41' & NDZ_sanemsanas_datums == "2022-02-03")
         ))
       
       NDZ <- NDZ %>% 
@@ -94,7 +92,7 @@ adj50 <- function(NDZ) {
           (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-02-21") |
           (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-02-22") |
           (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '25' & NDZ_sanemsanas_datums == "2022-02-01") |
-          (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-02-10") ##Dziļāka izpēte liek uzskatīt šo par kļūdu.
+          (PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-02-10") 
         ))
    
     } else if (isTRUE(NDZ$period[1] ==  '______' & kods == "11")) {
@@ -107,22 +105,18 @@ adj50 <- function(NDZ) {
         ))
       
     } else if (isTRUE(NDZ$period[1] ==  '______' & kods == "40")) {
- 
       NDZ <- NDZ %>% 
         dplyr::filter(!(PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '92' & NDZ_sanemsanas_datums == "2022-03-21"))
 
     } else if (isTRUE(NDZ$period[1] ==  '______' & kods == "50")) {
- 
       NDZ <- NDZ %>% 
         dplyr::filter(!(PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '51' & NDZ_sanemsanas_datums == "2022-03-31"))
       
-     
       NDZ <- NDZ %>% 
         dplyr::filter(!(PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '50' & NDZ_sanemsanas_datums == "2022-03-31"))
       
 
     } else if (isTRUE(NDZ$period[1] ==  '______' & kods == "11")) {
-      
       NDZ <- NDZ %>% 
         dplyr::filter(!(
           (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-04-05") |
@@ -140,7 +134,6 @@ adj50 <- function(NDZ) {
         dplyr::filter(!(PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '92' & NDZ_sanemsanas_datums == "2022-04-30"))
       
     } else if (isTRUE(NDZ$period[1] ==  '______' & kods == "50")) {
-
       NDZ <- NDZ %>% 
         dplyr::filter(!(PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '51' & NDZ_sanemsanas_datums == "2022-04-30"))
       
@@ -162,7 +155,6 @@ adj50 <- function(NDZ) {
   
     } else if (isTRUE(NDZ$period[1] ==  '______') && kods == "50") {
       
-
       NDZ <- NDZ %>% 
         mutate(
           NDZ_sanemsanas_datums = if_else(
@@ -195,7 +187,7 @@ adj50 <- function(NDZ) {
             sak_beidz
           )
         )
-
+      
       NDZ <- NDZ %>% 
         dplyr::filter(!(PS_code  ==  '______________'& NM_code ==  '______________' & zinkod == '51' & NDZ_sanemsanas_datums == "2022-05-04"))
       
@@ -266,14 +258,12 @@ adj50 <- function(NDZ) {
             as.Date('2022-07-24'), 
             NDZ_sanemsanas_datums))
       
-
       NDZ <- NDZ %>% 
         dplyr::filter(!(
           (PS_code  ==  "______________" & NM_code  ==  "______________" & zinkod == "25" & NDZ_sanemsanas_datums == "2022-07-12") |
           (PS_code  ==  "______________" & NM_code  ==  "______________" & zinkod == "21" & NDZ_sanemsanas_datums == "2022-07-18") |
           (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-07-15") |
-          (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-07-01") 
-          
+          (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-07-01")           
         ))
 
       
@@ -288,7 +278,6 @@ adj50 <- function(NDZ) {
           '41', 
           zinkod))
       
- 
       NDZ <- NDZ %>% 
         dplyr::filter(!(
           (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '41' & NDZ_sanemsanas_datums == "2022-07-01") |
@@ -301,8 +290,8 @@ adj50 <- function(NDZ) {
           (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '92' & NDZ_sanemsanas_datums == "2022-07-12") | 
           (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '92' & NDZ_sanemsanas_datums == "2022-07-29") |
           (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '92' & NDZ_sanemsanas_datums == "2022-07-30") | 
-          (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '41' & NDZ_sanemsanas_datums == "2022-07-09") |  
-          (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '41' & NDZ_sanemsanas_datums == "2022-07-29")    
+          (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '41' & NDZ_sanemsanas_datums == "2022-07-09") | 
+          (PS_code  ==  '______________' & NM_code ==  '______________' & zinkod == '41' & NDZ_sanemsanas_datums == "2022-07-29")   
         ))
       
 
