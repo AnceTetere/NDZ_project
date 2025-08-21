@@ -95,4 +95,4 @@ starpkodi5_51 <- function(y, t, prev, v) {
 
   rm(y, t, prev, v)
   return(yt)
-} 
+}
