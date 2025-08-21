@@ -19,8 +19,8 @@ processingTens_s5e12 <- function(a, o, kods) {
            } else {stop("processingTens_s5: Desmitnieku tabulas pārdalei trūkst izstrādes koda\n")}
          } else {stop("processingTens_s5: Desmitnieku tabulas pārdalei trūkst izstrādes koda\n")}
   } else if (all(a$sak_beidz[3:4] == c("2", "1"))) {
-          if (all(a$sak_beidz[5:6] == c("1", "2"))) {
-           if (all(diff(a$NDZ_sanemsanas_datums[1:5]) != 0)) {
+        if (all(a$sak_beidz[5:6] == c("1", "2"))) {
+          if (all(diff(a$NDZ_sanemsanas_datums[1:5]) != 0)) {
                    if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
                      a2 <- a[c(1,3), ]; a6 <- a[5:10, ]
                      if (kods %in% c("40", "50", "53") && o == "10") {ZERO_minus(a %>% slice(1))}
@@ -35,9 +35,6 @@ processingTens_s5e12 <- function(a, o, kods) {
           } else if (diff(a$NDZ_sanemsanas_datums[3:4]) == 0 && 
                      all(sapply(c(1,2,4,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                      if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                         (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                         (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                         (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                          (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                          (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                          (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
@@ -80,18 +77,16 @@ processingTens_s5e12 <- function(a, o, kods) {
         } else if (all(a$sak_beidz[5:6] == c("2", "1"))) {
                  if (all(sapply(c(1,3), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                      all(sapply(c(2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                    if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                        (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
-                          a2 <- a[1:2, ]; a8 <- a[c(4,3,5:10), ] #no 69.rindas
-                          if (kods %in% c("40", "50", "53") && o == "10") {ZERO_minus(a %>% slice(1))} #no 71. rindas
-                    } else {stop("processingTens_s5: Desmitnieku tabulas pārdalei trūkst izstrādes koda\n")}
+                    if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
+                    a2 <- a[1:2, ]; a8 <- a[c(4,3,5:10), ] #no 69.rindas
+                    if (kods %in% c("40", "50", "53") && o == "10") {ZERO_minus(a %>% slice(1))} #no 71. rindas
+              } else {stop("processingTens_s5: Desmitnieku tabulas pārdalei trūkst izstrādes koda\n")}
           } else if (all(sapply(c(3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                      all(sapply(c(1,2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                      if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                         (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                          (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
-                          a2 <- a[1:2, ]; a8 <- a[c(4,3,6,5,7:10), ]
-                          if (kods %in% c("40", "50", "53") && o == "10") {ZERO_minus(a %>% slice(1))}
+                      a2 <- a[1:2, ]; a8 <- a[c(4,3,6,5,7:10), ]
+                     if (kods %in% c("40", "50", "53") && o == "10") {ZERO_minus(a %>% slice(1))}
                      } else {stop("processingTens_s5: Desmitnieku tabulas pārdalei trūkst izstrādes koda\n")}
           } else {stop("processingTens_s5: Desmitnieku tabulas pārdalei trūkst izstrādes koda\n")}
        } else {stop("processingTens_s5: Desmitnieku tabulas pārdalei trūkst izstrādes koda\n")}
@@ -105,4 +100,4 @@ return(list(x10s5_1 = a1,
             x10s5_6 = a6, 
             x10s5_7 = a7,
             x10s5_8 = a8))
-} 
+}
