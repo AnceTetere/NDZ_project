@@ -14,13 +14,13 @@ processingEights_s5 <- function(x8s5, o, kods) {
   #    rm(x)}
   
   if (all(x8s5$sak_beidz[c(2,3,4,6,8)] == "1")) {
-              if (diff(x8s5$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x8s5$NDZ_sanemsanas_datums[2:5]) != 0)) {
-                if (x8s5$period[1] ==  '______' && x8s5$PS_code[1] ==  '______________' && x8s5$NM_code[1] ==  '______________') {
-                  x8s5_uzDivniekiem <- x8s5[c(2,1,4,5,6,7), ]
-                  x8s5_uzVieniniekiem <- x8s5[1, ]
-                  if (kods %in% c("40", "50", "53") && o == "8") {ZERO_minus(x8s5 %>% slice(2))} 
-                } else {stop("processingEights_s5: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
-              } else {stop("processingEights_s5: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
+    if (diff(x8s5$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x8s5$NDZ_sanemsanas_datums[2:5]) != 0)) {
+      if (x8s5$period[1] ==  '______' && x8s5$PS_code[1] ==  '______________' && x8s5$NM_code[1] ==  '______________') {
+        x8s5_uzDivniekiem <- x8s5[c(2,1,4,5,6,7), ]
+        x8s5_uzVieniniekiem <- x8s5[1, ]
+        if (kods %in% c("40", "50", "53") && o == "8") {ZERO_minus(x8s5 %>% slice(2))} 
+      } else {stop("processingEights_s5: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
+    } else {stop("processingEights_s5: Iztrūkst kods rindām ", r, " līdz ", r + 7,".\n")}
   } else if (all(x8s5$sak_beidz[c(1,3,5,7,8)] == "1") && 
              all(sapply(c(3, 6), function(i) all(diff(x8s5$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) &&
              all(sapply(c(1,2,4,5,7), function(i) all(diff(x8s5$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))) {
@@ -57,10 +57,9 @@ processingEights_s5 <- function(x8s5, o, kods) {
                           if (kods %in% c("40", "50", "53") && o == "8") {ZERO_minus(x8s5 %>% slice(1)); ZERO_plus(x8s5 %>% slice(8))} 
               } else {stop("processingEights: Iztrūkst kods.\n")}
   } else if (all(x8s5$sak_beidz[c(2,3,5,6,8)] == "1")) {
-          if (all(diff(x8s5$NDZ_sanemsanas_datums) != 0)) {
-            if ((x8s5$period[1] == '______' && x8s5$PS_code[1] ==  '______________' && x8s5$NM_code[1] ==  '______________') ||
-                (x8s5$period[1] == '______' && x8s5$PS_code[1] ==  '______________' && x8s5$NM_code[1] ==  '______________')) {
-                  x8s5_uzVieniniekiem <- x8s5[c(1,8),]; x8s5_uzCetriniekiem <- x8s5[c(3,4,6,7),]
+          if (all(diff(x8s5$NDZ_sanemsanas_datums) != 0)) {            
+            if (x8s5$period[1] == '______' && x8s5$PS_code[1] ==  '______________' && x8s5$NM_code[1] ==  '______________') {
+              x8s5_uzVieniniekiem <- x8s5[c(1,8),]; x8s5_uzCetriniekiem <- x8s5[c(3,4,6,7),]
             } else {stop("processingEights: Iztrūkst kods.\n")}
           } else {stop("processingEights: Iztrūkst kods.\n")}
   } else {stop("processingEights: Iztrūkst kods.\n")}
