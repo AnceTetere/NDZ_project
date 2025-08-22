@@ -1,7 +1,7 @@
 processingFives_s2e6 <- function(a, o, kods) {  
     #a <- x5s2 for testing
-     a <- a %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
-     a1 <- data.frame(); a2 <- data.frame(); a4 <- data.frame()
+  a <- a %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
+  a1 <- data.frame(); a2 <- data.frame(); a4 <- data.frame()
   
   if (all(a$sak_beidz[3:4] == "1")) {
            a1 <- a[1,]; a2 <- a[c(3,2,4,5),]
