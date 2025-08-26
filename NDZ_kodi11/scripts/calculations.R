@@ -1,9 +1,10 @@
-#kods <- kodu_vektors[4] #FOR TESTING
+#kods <- kodu_vektors[1] #FOR TESTING
 
 create_tempZERO()
 iztrukstKodi <- character(0)
 
 for(kods in kodu_vektors) {
+  #cat("______________________ KODS", kods, "______________________\n")
   NDZ <- NDZ_original(kods)
 
   if (nrow(NDZ) > 0) {
