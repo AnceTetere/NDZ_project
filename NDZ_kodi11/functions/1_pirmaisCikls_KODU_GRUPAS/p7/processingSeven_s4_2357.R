@@ -33,6 +33,7 @@ processingSeven_s4_2357 <- function(a, o, kods) {
              all(sapply(c(2,4,5,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                #JO PIRMOREIZ - bet te var būt arī svādāk - uzmanies pirms atbrīvo
                if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                   (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                    (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                    a6 <- a[c(2,1,3,4,5,6), ]; a1 <- a[7, ]
                    if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(2))}
@@ -47,3 +48,4 @@ processingSeven_s4_2357 <- function(a, o, kods) {
               x7s4_uzPieciniekiem = a5,
               x7s4_uzSesiniekiem = a6))
 }
+ 
