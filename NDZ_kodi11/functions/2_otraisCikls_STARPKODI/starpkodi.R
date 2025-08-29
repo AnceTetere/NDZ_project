@@ -1,5 +1,4 @@
-starpkodi <- function(y_2plus, n) { #y_2plus: apstrādā tabulas, kur ir divi atšķirīgi kodi vai vairāk; n: skaits, cik šo atšķirīgo kodu ir
-  y_2plus <- y_2plus %>% arrange(PS_code, DN_code, NM_code)
+starpkodi <- function(y_2plus, n) {   y_2plus <- y_2plus %>% arrange(PS_code, dnperk, NM_code)
   
   prev <- as.Date(paste0(substr(y_2plus$period[1], 1, 4), "-", substr(y_2plus$period[1], 5, 6), "-01")) - 1
   z <- data.frame()
@@ -21,6 +20,7 @@ starpkodi <- function(y_2plus, n) { #y_2plus: apstrādā tabulas, kur ir divi at
     )
     print(v)
     #testam  if(t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {stop("STOP")}
+
   }
   rm(prev, t, y_2plus)
   return(z) 
