@@ -54,11 +54,7 @@ processingSeven_s4_1212121 <- function(a, o, kods) {
                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                (a$period[1] == '______' && a$NM_code[1] ==  '______________') ||
-                (a$period[1] == '______' && a$NM_code[1] ==  '______________') ||
-                (a$period[1] == '______' && a$NM_code[1] ==  '______________')) {
+                (a$NM_code[1] ==  '______________')) {
                     a1 <- a[7, ]; a6 <- a[1:6, ]
                     if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
               } else {stop("processingSeven_s4_1212121 trūkst izstrādes koda.\n")}
@@ -79,4 +75,4 @@ processingSeven_s4_1212121 <- function(a, o, kods) {
               x7s4_uzCetriniekiem = a4, 
               x7s4_uzPieciniekiem = a5,
               x7s4_uzSesiniekiem = a6))
-}
+} 
