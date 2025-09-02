@@ -2,33 +2,36 @@ processingSeven_s4_1367 <- function(a, o, kods) {
   a1 <- data.frame(); a2 <- data.frame(); a3 <- data.frame(); a4 <- data.frame(); a5 <- data.frame(); a6 <- data.frame()
   #FOR TESTING a <- x7s4
 
-  if (all(diff(a$NDZ_sanemsanas_datums) != 0)) {
+  if (all(diff(a$ZDN_sanemsanas_datums) != 0)) {
           a4 <- a[c(1:3,5), ]; a1 <- a[7, ]
           if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
-  } else if (all(sapply(c(1:4,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
-             diff(a$NDZ_sanemsanas_datums[5:6]) == 0) {
+  } else if (all(sapply(c(1:4,6), function(i) diff(a$ZDN_sanemsanas_datums[i:(i+1)]) != 0)) &&
+             diff(a$ZDN_sanemsanas_datums[5:6]) == 0) {
                  a6 <- a[c(1,2,3,4,6,5), ]; a1 <- a[7, ]
                  if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
-  } else if (all(sapply(c(1,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
-             all(sapply(c(2,3,4,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                 if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                     (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                     (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
+  } else if (all(sapply(c(1,5), function(i) diff(a$ZDN_sanemsanas_datums[i:(i+1)]) == 0)) &&
+             all(sapply(c(2,3,4,6), function(i) diff(a$ZDN_sanemsanas_datums[i:(i+1)]) != 0))) {
+                 #IT KĀ VISS KĀRTĪBĀ, bet bloķēju, jo pirmoreiz
+                 if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+                     (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+                     (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
                      a1 <- a[7, ]; a6 <- a[c(1,2,3,4,6,5), ]
                      if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
                  } else {stop("processingSeven_s4_1367 trūkst izstrādes koda.\n")}
-  } else if (all(sapply(c(3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
-             all(sapply(c(1,2,4,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                 if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                     (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
+  } else if (all(sapply(c(3,5), function(i) diff(a$ZDN_sanemsanas_datums[i:(i+1)]) == 0)) &&
+             all(sapply(c(1,2,4,6), function(i) diff(a$ZDN_sanemsanas_datums[i:(i+1)]) != 0))) {
+                 #IT KĀ VISS KĀRTĪBĀ, bet bloķēju, jo pirmoreiz
+                 if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+                     (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
                      a1 <- a[7, ]; a6 <- a[c(1,2,3,4,6,5), ]
                      if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
                  } else {stop("processingSeven_s4_1367 trūkst izstrādes koda.\n")}
-  } else if (all(sapply(c(1,3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
-             all(sapply(c(2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                    (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                    (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
+  } else if (all(sapply(c(1,3,5), function(i) diff(a$ZDN_sanemsanas_datums[i:(i+1)]) == 0)) &&
+             all(sapply(c(2,4), function(i) diff(a$ZDN_sanemsanas_datums[i:(i+1)]) != 0))) {
+                #IT KĀ VISS KĀRTĪBĀ, bet bloķēju, jo pirmoreiz
+                if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+                    (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+                    (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
                       a2 <- a[1:2, ]; a5 <- a[3:7, ]
                       if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
                 } else {stop("processingSeven_s4_1367 trūkst izstrādes koda.\n")}
@@ -42,4 +45,3 @@ processingSeven_s4_1367 <- function(a, o, kods) {
               x7s4_uzPieciniekiem = a5,
               x7s4_uzSesiniekiem = a6))
   }
-
