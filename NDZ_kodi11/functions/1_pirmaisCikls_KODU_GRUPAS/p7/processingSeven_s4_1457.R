@@ -53,3 +53,4 @@ processingSeven_s4_1457 <- function(a, o, kods) {
               x7s4_uzPieciniekiem = a5,
               x7s4_uzSesiniekiem = a6))
 }
+ 
