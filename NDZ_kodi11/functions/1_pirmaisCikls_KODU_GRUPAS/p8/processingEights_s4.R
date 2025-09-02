@@ -14,6 +14,7 @@ result <- function(x) {
   rm(x)}
 
 if (x8s4PS_code ==  '______________' && x8s4NM_code ==  '______________') {
+        #Te kaut kas dīvains notiek, tāpēc, šķiet šim komplektam jāseko atsevišķi līdz.
         if (all(x8s4$sak_beidz == c("2","1","2","2","1","2","1","1"))) {
           x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[c(1,8), ])
           x8s4_uzCetriniekiem <- rbind(x8s4_uzCetriniekiem, x8s4[c(2,4,5,6),])
