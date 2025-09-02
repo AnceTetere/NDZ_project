@@ -9,28 +9,35 @@ processingNines_2121 <- function(a, o, kods) {
   } else if (all(sapply(c(2,8), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
              all(sapply(c(1,3,4,5,6,7), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
              #JO PIRMOREIZ
-             if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
+             if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') {
                  a1 <- a[1, ]; a8 <- a[2:9, ]
              } else {stop("processingNines2121() iztrūkst apstrādes kods. \n")}
   } else if (all(sapply(c(2,6,8), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
              all(sapply(c(1,3,4,5,7), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
              #JO PIRMOREIZ
-             if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
+             if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') {
                   a1 <- a[1, ]; a8 <- a[2:9, ]
             } else {stop("processingNines2121() iztrūkst apstrādes kods. \n")}
   } else if (diff(a$NDZ_sanemsanas_datums[2:3]) == 0 && 
              all(sapply(c(1,3,4,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
              #JO PIRMOREIZ
-             if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
+             if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
                  a1 <- a[1, ]; a8 <- a[2:9, ]
              } else {stop("processingNines2121() iztrūkst apstrādes kods. \n")}
   } else if (all(sapply(c(1,3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) ||
              all(sapply(c(2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
              #JO PIRMOREIZ
-             if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
+             if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') {
              a2 <- a[c(2,1,4,3), ]; a5 <- a[5:9, ]
-    } else {stop("processingNines2121() iztrūkst apstrādes kods. \n")}
+            } else {stop("processingNines2121() iztrūkst apstrādes kods. \n")}
+  } else if (all(sapply(c(4,6,8), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) ||
+             all(sapply(c(1,2,3,5,7), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+             #JO PIRMOREIZ
+             if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
+                  a1 <- a[1,]; a8 <- a[2:9, ]
+            } else {stop("processingNines2121() iztrūkst apstrādes kods. \n")}
   } else {stop("processingNines_1221() iztrūkst apstrādes kods. \n")}
   
   rm(a, kods)
