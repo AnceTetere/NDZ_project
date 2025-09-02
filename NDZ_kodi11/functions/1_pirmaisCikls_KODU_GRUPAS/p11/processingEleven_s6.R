@@ -72,7 +72,7 @@ processingEleven_s6 <- function(a, o, kods) {
               } else if (all(diff(a$NDZ_sanemsanas_datums[2:11]) != 0) &&
                          diff(a$NDZ_sanemsanas_datums[1:2]) == 0) {
                           #JO PIRMOREIZ
-                          if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
+                          if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') {
                             a <- a[c(2,1,3,4,5,6,7,8,9,10,11),]
                             a1 <- a[11, ]; a10 <- a[-11,]
                             if (kods %in% c("40", "50", "53") && o == "11") {ZERO_minus(a %>% slice(1))}
@@ -112,5 +112,4 @@ processingEleven_s6 <- function(a, o, kods) {
               x11_2 = a2,
               x11_uzDevini = a9,
               x11_uzDesmitniekiem = a10))
-}
-
+} 
