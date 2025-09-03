@@ -5,34 +5,34 @@ processingNines_2112 <- function(a, o, kods) {
   
   if (diff(a$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(a$NDZ_sanemsanas_datums[2:5]) != 0)) {
               #JO PIRMOREIZ
-               if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                   (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                   (a$period[1] == '______' && aNM_code ==  '______________') ||
-                   (a$period[1] == '______' && aNM_code ==  '______________') ||
-                   (a$period[1] == '______' && aNM_code ==  '______________') ||
-                   (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                   (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                   (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
+               if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                   (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                   (a$period[1] == '______' && a$NM_code[1] ==  '______________') ||
+                   (a$period[1] == '______' && a$NM_code[1] ==  '______________') ||
+                   (a$period[1] == '______' && a$NM_code[1] ==  '______________') ||
+                   (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                   (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                   (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                     a2 <- a[c(2,1), ]; a7 <- a[3:9, ]
                     if (kods %in% c("40", "50", "53") && o == "9") {ZERO_minus(a %>% slice(2))}
                } else {stop("processingNines2112() iztrūkst apstrādes kods. \n")}
   } else if (all(sapply(c(1,3), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
              all(sapply(c(2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
              #JO PIRMOREIZ
-             if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
+             if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                  a2 <- a[c(2,1), ]; a7 <- a[3:9, ]
                  if (kods %in% c("40", "50", "53") && o == "9") {ZERO_minus(a %>% slice(2))}
              } else {stop("processingNines2112() iztrūkst apstrādes kods. \n")} 
   } else if (all(diff(a$NDZ_sanemsanas_datums[1:5]) != 0)) {
              #JO PIRMOREIZ
-             if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
+             if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                  a1 <- a[1, ]; a7 <- a[3:9, ]
             } else {stop("processingNines2112() iztrūkst apstrādes kods. \n")} 
   } else {stop("processingNines_2112() iztrūkst apstrādes kods. \n")}
