@@ -76,4 +76,3 @@ if (nrow(x8_uzSeptini) > 0) {
 } else {cat("Tabula x8_uzSeptini ir tukša.\n")}
 rm(x8_uzSeptini)
 }
- 
