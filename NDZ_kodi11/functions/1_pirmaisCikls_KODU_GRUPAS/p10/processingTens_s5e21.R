@@ -62,3 +62,4 @@ processingTens_s5e21 <- function(a, o, kods) {
               x10s5_7 = a7,
               x10s5_8 = a8))
 }
+
