@@ -11,7 +11,7 @@ processingEleven <- function(x, o, kods) {
      x11_uzDevini <<- rbind(x11_uzDevini, y$x11_uzDevini)
      x11_uzDesmitniekiem <<- rbind(x11_uzDesmitniekiem, y$x11_uzDesmitniekiem)
     rm(y)}
-  
+
   for (r in seq(1, nrow(x), by = 11)) {
     x11 <- x[r:(r+10),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
       
@@ -19,8 +19,17 @@ processingEleven <- function(x, o, kods) {
           result(processingEleven_s6(x11, o, kods))
     } else if (sum(x11$sak_beidz == "2") == 6) {
         if (all(x11$sak_beidz[1:2] == c("2", "1")) && diff(x11$NDZ_sanemsanas_datums[1:2]) != 0) {
-          x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[1,])
-          x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[2:11,])
+              x11_uzVieniniekiem <- rbind(x11_uzVieniniekiem, x11[1,])
+              x11_uzDesmitniekiem <- rbind(x11_uzDesmitniekiem, x11[2:11,])
+        } else if (all(x11$sak_beidz[1:4] == c("2", "2", "1", "1")) && 
+                   all(sapply(c(1,3), function(i) diff(x11$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
+                   diff(x11$NDZ_sanemsanas_datums[2:3]) == 0) {
+                    
+                    if ((x11$period[1] == '______' && x11$PS_code[1] ==  '______________' && x11$NM_code[1] ==  '______________') ||
+                        (x11$period[1] == '______' && x11$PS_code[1] ==  '______________' && x11$NM_code[1] ==  '______________') ||
+                        (x11$period[1] == '______' && x11$PS_code[1] ==  '______________' && x11$NM_code[1] ==  '______________')) {
+                    x11_uzVieniniekiem <- x11[1,]; x11_uzDesmitniekiem <- x11[c(3,2,4:11),]
+                    } else {stop("processingEleven: Vienpadsmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 10, "\n")}
         } else {stop("processingEleven: Vienpadsmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 10, "\n")}
       } else {stop("processingEleven: Vienpadsmitnieku tabulas pārdalei trūkst izstrādes koda. Rindas: ", r, " līdz ", r + 10, "\n")}
       check_rows <- check_rows + 11
