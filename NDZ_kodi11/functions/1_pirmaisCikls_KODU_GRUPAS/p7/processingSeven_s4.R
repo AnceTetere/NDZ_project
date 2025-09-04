@@ -1,4 +1,4 @@
-processingSeven_s4 <- function(x7s4, o, kods) {
+  processingSeven_s4 <- function(x7s4, o, kods) {
   x7s4_uzVieniniekiem <- data.frame(); x7s4_uzDivniekiem <- data.frame(); x7s4_uzTrijniekiem <- data.frame(); x7s4_uzCetriniekiem <- data.frame(); x7s4_uzPieciniekiem <- data.frame(); x7s4_uzSesiniekiem <- data.frame()
   #x7s4 <- x7
   x7s4 <- x7s4 %>% dplyr::arrange(NDZ_sanemsanas_datums)
