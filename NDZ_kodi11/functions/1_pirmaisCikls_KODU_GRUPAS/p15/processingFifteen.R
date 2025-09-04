@@ -1,17 +1,26 @@
 processingFifteen <- function(x, o, kods) {
   x <- x %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
   x15_uz1 <- data.frame(); x15_uz2 <- data.frame(); x15_uzSesi <- data.frame()
-  x15_uz13 <- data.frame(); x15_uz14 <- data.frame()
+  x15_uz8 <- data.frame(); x15_uz13 <- data.frame(); x15_uz14 <- data.frame()
   check_rows <- 0
   
   for (r in seq(1, nrow(x), by = 15)) {
     x15 <- x[r:(r+14),] %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
     
-    if (all(x15$sak_beidz[1:4] == c("2", "1", "2", "1"))) {
+    if (all(x15$sak_beidz[1:8] == c("1", "2", "2", "2", "2", "2", "2", "1"))) {
+      if (all(diff(x15$NDZ_sanemsanas_datums[1:7]) != 0) && diff(x15$NDZ_sanemsanas_datums[7:8]) == 0) {
+           if (x15$period[1] == '______' && x15$PS_code[1] ==  '______________' && x15$NM_code[1] ==  '______________') {
+             #JO PIRMOREIZ
+             x15_uz2 <- x15[c(1,7),]; x15_uz8 <- x15[8:15, ]
+           } else {stop("15-niekos trūkst izstrādes kods.")}
+      } else {stop("15-niekos trūkst izstrādes kods.")}
+    } else if (all(x15$sak_beidz[1:5] == c("2", "1", "2", "1", "2"))) {
             if (all(sapply(c(1,3), function(i) diff(x15$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && diff(x15$NDZ_sanemsanas_datums[2:3]) != 0) {
               x15_uz2 <- rbind(x15_uz2, x15[c(2,1), ])
               x15_uz13 <- rbind(x15_uz13, x15[-(1:2), ])
             } else if (all(diff(x15$NDZ_sanemsanas_datums) != 0)) {
+              x15_uz1 <- rbind(x15_uz1, x15[1, ]); x15_uz14 <- rbind(x15_uz14, x15[-1, ])
+            } else if (all(diff(x15$NDZ_sanemsanas_datums[1:5]) != 0)) {
               x15_uz1 <- rbind(x15_uz1, x15[1, ]); x15_uz14 <- rbind(x15_uz14, x15[-1, ])
             } else {stop("15-niekos trūkst izstrādes kods.")}
     } else if (all(x15$sak_beidz[1:3] == c("1", "2", "1"))) {
@@ -55,15 +64,21 @@ if (nrow(x15_uzSesi) > 0) {
     x15_uzSesi %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingSixes(o, kods)
 } else {cat("Tabula x15_uzSesi ir tukša.\n")}
 rm(x15_uzSesi)
+
+#3 Apakštabulu x15_uz8 sūta caur processingEights().
+if (nrow(x15_uz8) > 0) {
+  x15_uz8 %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingEights(o, kods)
+} else {cat("Tabula x15_uz8 ir tukša.\n")}
+rm(x15_uz8)
       
-#3 Apakštabulu x15_uz13 sūta caur processingThirteen().
+#4 Apakštabulu x15_uz13 sūta caur processingThirteen().
 if (nrow(x15_uz13) > 0) {
   x15_uz13 %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingThirteen(o, kods)
 } else {cat("Tabula x15_uz13 ir tukša.\n")}
 rm(x15_uz13)
 
 
-#4 Apakštabulu x15_uz14 sūta caur processingFourteen().
+#5 Apakštabulu x15_uz14 sūta caur processingFourteen().
 if (nrow(x15_uz14) > 0) {
     x15_uz14 %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFourteen(o, kods)
 } else {cat("Tabula x15_uz14 ir tukša.\n")}
