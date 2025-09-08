@@ -6,12 +6,12 @@ processingCodes <- function(NDZ, kods) {
   rm(NDZ, result)
 
   tempNDZ()
-
+  
   options(warn = 2) #Warnings into errors: Pārliec uz warn = 1, lai atceltu  
 for(i in 1:length(tabs_zdn)) {
 # Ielādē attiecīgo tabulu  
-  x <- NDZ_list[[i]]    ### loadTables nekļūst lieka, jo tiek lietota 1-majā skriptā - skati vai to var aizvietot <- Ievēro, ja tu šādi lieto, funkcija load_table() kļūst lieka
-
+  x <- NDZ_list[[i]]   
+  
     if(nchar(tabs_zdn[i]) == 5) {
       o <- substr(tabs_zdn[i], 5, 5)
     } else if (nchar(tabs_zdn[i]) == 6) {
@@ -19,9 +19,8 @@ for(i in 1:length(tabs_zdn)) {
     } else {
       stop("Neatbilstošs tabulas nosaukuma garums")
     }
-  
-  cat("______________________ KODS", kods, "______________________\n")  
-  cat("---------------------- o =", o, " -------------------------\n")
+    
+  cat("------------------- o =", o, "\n")
   if (as.integer(o) > 26) {stop("TRŪKST APSTRĀDES KODA")}
   
   switch(   
@@ -34,12 +33,12 @@ for(i in 1:length(tabs_zdn)) {
       "5"= processingFives(x, o, kods),
       "6"= processingSixes(x, o, kods), 
       "7"= processingSeven(x, o, kods), 
-      "8"= processingEights(x, o, kods), # !! BLOĶĒTS processingEights_s4 testēšanai. Jāatbīvo lai ietu: tā nav kļūda.
+      "8"= processingEights(x, o, kods),
       "9"= processingNines(x, o, kods),
       "10"= processingTens(x, o, kods),
       "11"= processingEleven(x, o, kods), 
       "12"= processingTwelve(x, o, kods),
-      "13"= processingThirteen(x, o, kods), #PALIKU TE
+      "13"= processingThirteen(x, o, kods),
       "14"= processingFourteen(x, o, kods),
       "15"= processingFifteen(x, o, kods),
       "16"= processingSixteen(x, o, kods),
