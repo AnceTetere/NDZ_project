@@ -14,6 +14,7 @@ result <- function(x) {
   rm(x)}
 
 if (x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________') {
+
         if (all(x8s4$sak_beidz == c("2","1","2","2","1","2","1","1"))) {
           x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[c(1,8), ])
           x8s4_uzCetriniekiem <- rbind(x8s4_uzCetriniekiem, x8s4[c(2,4,5,6),])
@@ -24,7 +25,6 @@ if (x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________'
            cS <- list(c(1, 3, 6, 7), c(1,3,5,8), c(1, 4, 5, 8), c(1, 4, 6, 8), c(1, 4, 6, 7), c(1, 4, 5, 7), c(1, 3, 6, 8), c(1, 3, 5, 7), c(2, 4, 6, 7), c(2, 4, 5, 8), c(2, 4, 6, 8), c(2, 3, 6, 8), c(2, 3, 5, 7), c(2, 3, 5, 8), c(2, 3, 6, 7))
            found_match <- FALSE
            
-           #Salīdzina vai šajā apakštabulā kāda no cS kombinācijām atrodama.
            for (s in cS) {
              if (all(x8s4$sak_beidz[s] == "1")) {
                x8s4_uzCetriniekiem <- rbind(x8s4_uzCetriniekiem, x8s4)
@@ -36,18 +36,17 @@ if (x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________'
                   x8s4_uzVieniniekiem <- rbind(x8s4_uzVieniniekiem, x8s4[c(1, 8), ])
                   x8s4_uzDivniekiem <- rbind(x8s4_uzDivniekiem, x8s4[4:5, ])
              } else if (all(x8s4$sak_beidz[c(1,4,5,8)] == "1") && x8s4$zinkod[1] %in% c("11")) {
-                  #IT KĀ VISS KĀRTĪBĀ, bet bloķēju, jo pirmoreiz
-                   if (x8s4$period[1] == '______' && x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________') {
-                    x8s4_uzDivniekiem <- rbind(x8s4_uzDivniekiem, x8s4[c(1,2,4,3,5,6,8,7), ])
-                   } else {stop("processingEights_s4: Trūkst izstrādes koda.")}
+                        if (x8s4$period[1] == '______' && x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________') {
+                            x8s4_uzDivniekiem <- rbind(x8s4_uzDivniekiem, x8s4[c(1,2,4,3,5,6,8,7), ])
+                        } else {stop("processingEights_s4: Trūkst izstrādes koda.")}
              } else if (all(x8s4$sak_beidz[c(1,3,5,8)] == "1") && x8s4$zinkod[1] %in% c("11")) {
-               #IT KĀ VISS KĀRTĪBĀ, bet bloķēju, jo pirmoreiz
-               if (x8s4$period[1] == '______' && x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________') {
-                 x8s4_uzDivniekiem <- rbind(x8s4_uzDivniekiem, x8s4[c(1,2,4,3,5,6,8,7), ])
-               } else {stop("processingEights_s4: Trūkst izstrādes koda.")}
+                        if (x8s4$period[1] == '______' && x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________') {
+                            x8s4_uzDivniekiem <- rbind(x8s4_uzDivniekiem, x8s4[c(1,2,4,3,5,6,8,7), ])
+                        } else {stop("processingEights_s4: Trūkst izstrādes koda.")}
              } else if (all(x8s4$sak_beidz[c(2,4,5,7)] == "1") && kods == "11") {
                         #Ja šis izdzīvo 10-testēšanu, ieliec šo cS vektorā
                         if ((x8s4$period[1] == '______' && x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________') ||
+                            (x8s4$period[1] == '______' && x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________') || 
                             (x8s4$period[1] == '______' && x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________') || 
                             (x8s4$period[1] == '______' && x8s4$PS_code[1] ==  '______________' && x8s4$NM_code[1] ==  '______________')) { 
                               x8s4_uzCetriniekiem <- x8s4[c(2,1,4,3,5:8), ]
@@ -108,5 +107,4 @@ return(list(x8_uzVieniniekiem = x8s4_uzVieniniekiem,
             x8_uz5 = x8s4_uz5, 
             x8_uzSesi = x8s4_uzSesi, 
             x8_uzSeptini = x8s4_uzSeptini))
-}
-
+} 
