@@ -24,3 +24,4 @@ source("R/scripts/5_output.R")
 
 rm(list = mtab_nos, mtab_nos, kodu_vektors, kods, month, year, md, x)
 rm(list = ls())
+ 
