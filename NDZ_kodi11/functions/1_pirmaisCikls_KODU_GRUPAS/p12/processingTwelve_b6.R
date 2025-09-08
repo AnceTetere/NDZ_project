@@ -1,5 +1,3 @@
-
-
 processingTwelve_b6 <- function(a, o, kods) {
   
   a1 <- data.frame(); a2 <- data.frame(); a7 <- data.frame(); a8 <- data.frame(); a10 <- data.frame(); a11 <- data.frame()
