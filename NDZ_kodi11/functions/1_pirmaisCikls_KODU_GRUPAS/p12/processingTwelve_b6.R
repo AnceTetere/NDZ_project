@@ -13,7 +13,7 @@ processingTwelve_b6 <- function(a, o, kods) {
           } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
         } else if (a$sak_beidz[3] == "1") {
                  if (diff(a$NDZ_sanemsanas_datums[1:2]) == 0) {
-                     if (aNM_code ==  '______________') {
+                     if (a$NM_code[1] ==  '______________') {
                          a2 <- a[c(2,1), ]; a10 <- a[3:12, ]
                     } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
                  } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
@@ -32,8 +32,8 @@ processingTwelve_b6 <- function(a, o, kods) {
                                  if (all(sapply(c(1,3,5,7,9,11), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                                      all(sapply(c(2,4,6,8,10), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                                    if (kods == "40") {
-                                       if ((a$period[1] == '______' && aPS_code ==  '______________' && aNM_code ==  '______________') ||
-                                           (a$period[1] == '______' && aPS_code ==  '______________' && aNM_code ==  '______________')) {
+                                       if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                                           (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                                            a1 <- a[c(1,11), ]; a <- a[c(3,5,7,9),]
                                        } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
                                    } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
@@ -66,15 +66,15 @@ processingTwelve_b6 <- function(a, o, kods) {
                                    a2 <- a[c(1,3), ]; a9 <- a[4:12, ]
                         } else if (diff(a$NDZ_sanemsanas_datums[1:2]) == 0 && diff(a$NDZ_sanemsanas_datums[2:3]) != 0) {
                                    #BLOĶĒJU, JO PIRMOREIZ
-                                   if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                                       (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
+                                   if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                                       (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                                         a2 <- a[1:2, ]; a10 <- a[3:12, ]
                                     } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
                         } else if (all(diff(a$NDZ_sanemsanas_datums[1:3]) != 0) && diff(a$NDZ_sanemsanas_datums[3:4]) == 0) {
                                   #BLOĶĒJU, JO PIRMOREIZ
-                                  if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                                      (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                                      (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
+                                  if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                                      (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                                      (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                                        a2 <- a[1:2, ]; a10 <- a[3:12, ]
                                        if (kods %in% c("40", "50", "53") && o == "12") {ZERO_minus(a %>% slice(1))}
                                   } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
@@ -84,28 +84,28 @@ processingTwelve_b6 <- function(a, o, kods) {
                                 if (all(sapply(c(1,3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                                     all(sapply(c(2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                                         #BLOĶĒJU, JO PIRMOREIZ
-                                         if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                                             (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
+                                         if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                                             (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                                                 a2 <- a[1:2, ]; a10 <- a[c(4,3, 5:12), ]
                                          } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}           
                                 } else if (all(sapply(c(3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                                            all(sapply(c(1,2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                                                #BLOĶĒJU, JO PIRMOREIZ
-                                                if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') {
+                                                if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
                                                        a2 <- a[1:2, ]; a10 <- a[c(4,3, 5:12), ]
                                                } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}  
                                 }  else if (diff(a$NDZ_sanemsanas_datums[3:4]) == 0 && 
                                             all(sapply(c(1,2,4:6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                                             #BLOĶĒJU, JO PIRMOREIZ
-                                            if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                                                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                                                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                                                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
+                                            if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                                                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                                                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                                                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                                                  a2 <- a[1:2, ]; a10 <- a[c(4,3, 5:12), ]
                                             } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}  
                                 } else if (all(diff(a$NDZ_sanemsanas_datums[1:6]) != 0)) {
                                            #JO PIRMOREIZ
-                                           if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') {
+                                           if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
                                                a2 <- a[c(1,3), ]; a8 <- a[5:12, ]
                                            } else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}  
                                 }else {stop("12-nieku tabulas pārdalei trūkst izstrādes koda.")}
