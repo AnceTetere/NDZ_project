@@ -18,9 +18,12 @@ processingFives_s3e1 <- function(a, o, kods) {
               a1 <- a[5,]; a2 <- a[c(1,3),]
           } else {stop("processingFives_s3e1: Iztrūkst apstrādes koda!\n")}
 } else if (all(a$sak_beidz[c(2,3,5)] == "1")) {
-          if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
+          if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+              (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
             a1 <- a[c(1,5),]; a2 <- a[3:4,]
+          #JO PIRMOREIZ
           } else if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')  ||
+                     (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')  ||
                      (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')  ||
                      (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')  ||
                      (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')  ||
@@ -33,10 +36,12 @@ processingFives_s3e1 <- function(a, o, kods) {
                        if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1))}
           } else {stop("processingFives_s3e1: Iztrūkst apstrādes koda!\n")}
 } else if (all(a$sak_beidz[c(1,3,4)] == "1")) {
-  if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')  {
-    a2 <- a[c(1,2,4,5),]
-    if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1)); ZERO_plus(a %>% slice(5))}
-  } else {stop("processingFives_s3e1: Iztrūkst apstrādes koda!\n")}
+          #JO PIRMOREIZ
+          #pievērs uzmanību, ka uzņēmums ir viens un tas pats.
+          if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')  {
+              a2 <- a[c(1,2,4,5),]
+              if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1)); ZERO_plus(a %>% slice(5))}
+          } else {stop("processingFives_s3e1: Iztrūkst apstrādes koda!\n")}
 } else {stop("processingFives_s3e1: Iztrūkst apstrādes koda!\n")}
   
   rm(a)
@@ -44,4 +49,3 @@ processingFives_s3e1 <- function(a, o, kods) {
               x5s3_uzDivniekiem = a2,
               x5s3_uzCetriniekiem = a4)) 
   }
-
