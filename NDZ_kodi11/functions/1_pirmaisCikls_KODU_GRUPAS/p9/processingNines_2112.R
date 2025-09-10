@@ -6,6 +6,7 @@ processingNines_2112 <- function(a, o, kods) {
   if (diff(a$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(a$NDZ_sanemsanas_datums[2:5]) != 0)) {
               #JO PIRMOREIZ
                if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                   (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                    (a$period[1] == '______' && a$NM_code[1] ==  '______________') ||
                    (a$period[1] == '______' && a$NM_code[1] ==  '______________') ||
                    (a$period[1] == '______' && a$NM_code[1] ==  '______________') ||
@@ -30,6 +31,7 @@ processingNines_2112 <- function(a, o, kods) {
              if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                  (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                  (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
                  (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                  a1 <- a[1, ]; a7 <- a[3:9, ]
             } else {stop("processingNines2112() iztrūkst apstrādes kods. \n")} 
@@ -42,4 +44,3 @@ processingNines_2112 <- function(a, o, kods) {
               x9_uzSeptini = a7,
               x9_uzAstoniekiem = a8))
 }
-
