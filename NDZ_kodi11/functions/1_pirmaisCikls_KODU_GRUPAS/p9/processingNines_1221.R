@@ -1,4 +1,4 @@
- processingNines_1221 <- function(a, o, kods) {  
+processingNines_1221 <- function(a, o, kods) {  
   #a <- x9 for testing !!!PIEVĒRS UZMANĪBU KOMPANIJAI
    a <- a %>% arrange(PS_code, DN_code, NM_code, NDZ_sanemsanas_datums)
    a1 <- data.frame(); a2 <- data.frame(); a6 <- data.frame(); a7 <- data.frame(); a8 <- data.frame()
@@ -44,3 +44,4 @@
               x9_uzSeptini = a7,
               x9_uzAstoniekiem = a8))
 }
+ 
