@@ -58,7 +58,7 @@ if (sum(x17$sak_beidz == "2") == 9) {
   #4 Apakštabulu x17_uz15 sūta caur processingFifteen().
   if (nrow(x17_uz15) > 0) {
     x17_uz15 %>% arrange(PS_code, NM_code, NDZ_sanemsanas_datums) %>% processingFifteen(o, kods)
-  } else {cat("Tabula x17_uzTrīspadsmit ir tukša.\n")}
+  } else {cat("Tabula x17_uz15 ir tukša.\n")}
   rm(x17_uz15)
   
   #5 Apakštabulu x17_uzSespadsmit sūta caur processingSixteen().
