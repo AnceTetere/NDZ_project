@@ -7,10 +7,10 @@ processingFives_s3e2 <- function(a, o, kods) {
   } else if (all(a$sak_beidz[c(2,3,5)] == "1")) {
          a1 <- a[c(1,5), ]; a2 <- a[3:4, ]
   } else if (all(a$sak_beidz[3:5] == "1")) {
-         if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-             (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
-              a1 <- a[c(2,5), ]
-         } else {stop("processingFives_s3e2 iztrūkst apstrādes koda")} 
+              if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                  (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
+                   a1 <- a[c(2,5), ]
+             } else {stop("processingFives_s3e2 iztrūkst apstrādes koda")} 
   } else if (all(a$sak_beidz[2:4] == "1")) {
            a1 <- a[1, ]; a2 <- a[4:5, ]
   } else if (all(a$sak_beidz[c(1,3,5)] == "1")) {
@@ -20,19 +20,17 @@ processingFives_s3e2 <- function(a, o, kods) {
            a4 <- a[c(1,2,4,5),]
            if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1)); ZERO_plus(a %>% slice(5))}
   } else if (all(a$sak_beidz[c(1,2,4)] == "1")) {
-    if (a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
-      a[1, 'sak_beidz'] <- "2"
-      a[1, 'zinkod'] <- "50"
-      a1 <- rbind(a1, a[1,])
-      a4 <- rbind(a4, a[2:5,])
-      if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1)); ZERO_plus(a %>% slice(5))}
-    } else if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
-      a4 <- rbind(a4, a[2:5,])
-      if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1)); ZERO_plus(a %>% slice(5))}
-    } else {stop("processingFives_s3e2 iztrūkst apstrādes koda")}
+            #JO PIRMOREIZ 
+            if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
+                  a4 <- rbind(a4, a[2:5,])
+                  if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1)); ZERO_plus(a %>% slice(5))}
+           } else {stop("processingFives_s3e2 iztrūkst apstrādes koda")}
   } else {stop("processingFives_s3e2 iztrūkst apstrādes koda")} 
 
     rm(a, kods)
