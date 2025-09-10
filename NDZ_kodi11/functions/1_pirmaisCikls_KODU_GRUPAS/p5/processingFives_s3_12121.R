@@ -17,7 +17,6 @@ if (diff(x5s3s$NDZ_sanemsanas_datums[3:4]) == 0 && all(sapply(c(1,2,4), function
                   (x5s3s$period[1] == '______' && x5s3s$PS_code[1] ==  '______________' && x5s3s$NM_code[1] ==  '______________') ||
                   (x5s3s$period[1] == '______' && x5s3s$PS_code[1] ==  '______________' && x5s3s$NM_code[1] ==  '______________') ||
                   (x5s3s$period[1] == '______' && x5s3s$PS_code[1] ==  '______________' && x5s3s$NM_code[1] ==  '______________') ||
-                  (x5s3s$period[1] == '______' && x5s3s$PS_code[1] ==  '______________' && x5s3s$NM_code[1] ==  '______________') ||
                   (x5s3s$period[1] == '______' && x5s3s$PS_code[1] ==  '______________' && x5s3s$NM_code[1] ==  '______________')) {
                     x5s3s_uzVieniniekiem <- x5s3s[5,]; x5s3s_uzDivniekiem <- x5s3s[1:4,]
                     if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(x5s3s %>% slice(1))}
@@ -41,6 +40,7 @@ if (diff(x5s3s$NDZ_sanemsanas_datums[3:4]) == 0 && all(sapply(c(1,2,4), function
 } else if (all(sapply(c(2,4), function(i) diff(x5s3s$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
            all(sapply(c(1,3), function(i) diff(x5s3s$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                #JO PIRMOREIZ
+               #Skaties - šoreiz izlēmu pirmo 11 nodzēst caur adj50, taču te varētu būt arī citādi - uzmanīgi.
                if (x5s3s$period[1] == '______' && x5s3s$PS_code[1] ==  '______________' && x5s3s$NM_code[1] ==  '______________') {
                  x5s3s_uzCetriniekiem <- x5s3s[c(3,2,5,4),]
                  if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(x5s3s %>% slice(3))}
