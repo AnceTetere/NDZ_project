@@ -9,7 +9,7 @@ changes_202206 <- function(NDZ, kods) {
                  (PS_code ==  '______________' & NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-06-23") | 
                  (PS_code ==  '______________' & NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-06-01") | 
                  (PS_code ==  '______________' & NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-06-24") |  
-                 (PS_code ==  '______________' & NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-06-21") 
+                 (PS_code ==  '______________' & NM_code ==  '______________' & zinkod == '11' & NDZ_sanemsanas_datums == "2022-06-21")    
                 ))
   
                 
@@ -41,8 +41,8 @@ changes_202206 <- function(NDZ, kods) {
              
              NDZ <- NDZ %>% 
                dplyr::filter(!(
-                 (PS_code ==  '______________'& NM_code ==  '______________' & zinkod == '51' & NDZ_sanemsanas_datums == "2022-06-01") | 
-                 (PS_code ==  '______________'& NM_code ==  '______________' & zinkod == '50' & NDZ_sanemsanas_datums == "2022-06-01")   
+                 (PS_code ==  '______________'& NM_code ==  '______________' & zinkod == '51' & NDZ_sanemsanas_datums == "2022-06-01") | #Te un nākošajā mēnesī, kodam 51 nav jēga, jo iepriekšējā mēnesī darbinieks jau ir atlaists.
+                 (PS_code ==  '______________'& NM_code ==  '______________' & zinkod == '50' & NDZ_sanemsanas_datums == "2022-06-01")   #Te indivīds aiziet bezalgas atvaļinājumā nākamajā mēnesī, neatgriežoties no šī. Par cik šis kods nav izskaidrojams un atstājot maldina. pieņemu lēmumu to izņemt.
                 ))
              
              NDZ <- NDZ %>% 
@@ -56,7 +56,7 @@ changes_202206 <- function(NDZ, kods) {
              
              NDZ <- NDZ %>% 
                dplyr::filter(!(
-                 (PS_code ==  '______________'& NM_code ==  '______________' & zinkod == '51' & NDZ_sanemsanas_datums == "2022-06-01") 
+                 (PS_code ==  '______________'& NM_code ==  '______________' & zinkod == '51' & NDZ_sanemsanas_datums == "2022-06-01")  līdz ar to, tas maldina.
                ))
     
   } else if (kods == "53") {
@@ -68,4 +68,4 @@ changes_202206 <- function(NDZ, kods) {
   }
   
   return(NDZ)
-}
+} 
