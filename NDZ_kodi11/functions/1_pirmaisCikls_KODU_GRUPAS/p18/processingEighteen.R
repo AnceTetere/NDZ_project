@@ -15,7 +15,6 @@ processingEighteen <- function(x, o, kods) {
                     if (kods %in% c("40", "50", "53") && kods == "18") {ZERO_plus(x18 %>% slice(18))}
               } else {stop("18-nieku skriptā iztrūkst apstrādes koda. \n")}
             } else if (diff(x18$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x18$NDZ_sanemsanas_datums[2:5]) != 0)) {
-
                      #JO PIRMOREIZ
                      if (x18$period[1] == '______' && x18$PS_code[1] ==  '______________' && x18$NM_code[1] ==  '______________') {
                          x18_uzDivi <- rbind(x18_uzDivi, x18[c(2,1),])
@@ -39,10 +38,11 @@ processingEighteen <- function(x, o, kods) {
             if (all(diff(x18$NDZ_sanemsanas_datums[1:5]) != 0)) {
               #Jo pirmoreiz
               if ((x18$period[1] == '______' && x18$PS_code[1] ==  '______________' && x18$NM_code[1] ==  '______________') ||
+                  (x18$period[1] == '______' && x18$PS_code[1] ==  '______________' && x18$NM_code[1] ==  '______________') ||
                   (x18$period[1] == '______' && x18$PS_code[1] ==  '______________' && x18$NM_code[1] ==  '______________')) {
-                x18_uzDivi <- rbind(x18_uzDivi, x18[1:2,])
-                x18_uzSespadsmit <- rbind(x18_uzSespadsmit, x18[3:18, ])
-                if (kods %in% c("40", "50", "53") && kods == "18") {ZERO_minus(x18 %>% slice(1))}
+                    x18_uzDivi <- rbind(x18_uzDivi, x18[1:2,])
+                    x18_uzSespadsmit <- rbind(x18_uzSespadsmit, x18[3:18, ])
+                    if (kods %in% c("40", "50", "53") && kods == "18") {ZERO_minus(x18 %>% slice(1))}
               } else {stop("18-nieku skriptā iztrūkst apstrādes koda. \n")}
             } else if (all(sapply(c(1,3,5), function(i) diff(x18$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                        all(sapply(c(2,4), function(i) diff(x18$NDZ_sanemsanas_datums[i:(i+1)]) != 0)))   {
