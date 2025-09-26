@@ -6,6 +6,7 @@ starpkodi4_50_50_51 <- function(y, t, prev, v) {
                 if (diff(t$NDZ_sanemsanas_datums[2:3]) == 0 && all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                   if ((t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                       (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                      (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                       (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________')) {
                        t <- t[c(1,3,2,4),]; rownames(t) <- NULL
                        yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
@@ -47,7 +48,7 @@ starpkodi4_50_50_51 <- function(y, t, prev, v) {
                                  as.numeric(diff(t$NDZ_sanemsanas_datums[3:4])))
                 } else {stop("starpkodi4_50_50: Trūkst izstrādes koda.")}
               } else if (diff(t$NDZ_sanemsanas_datums[3:4]) == 0 && all(diff(t$NDZ_sanemsanas_datums[1:3]) != 0)) {
-         #TESTĒŠANĀ NOSKAIDRO, VAI ŠIS KAUT KĀ DALĀMS CITĀDI if ((t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+      #TESTĒŠANĀ NOSKAIDRO, VAI ŠIS KAUT KĀ DALĀMS CITĀDI if ((t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                         if (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {
                              yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
                                               as.numeric(diff(t$NDZ_sanemsanas_datums[3:4])))
