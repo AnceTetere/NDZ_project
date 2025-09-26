@@ -13,6 +13,8 @@ starpkodi7_50_51 <- function(y, t, prev, v) {
                   (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                   (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                   (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                  (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                  (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                   (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________')) {
                    t <- t[c(1,2,3,4,5,7,6),]; rownames(t) <- NULL
                    yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1,
@@ -85,4 +87,4 @@ starpkodi7_50_51 <- function(y, t, prev, v) {
   
   rm(y, t, prev, v)
   return(yt)
-} 
+}
