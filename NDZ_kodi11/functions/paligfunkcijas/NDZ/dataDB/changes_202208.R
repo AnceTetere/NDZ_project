@@ -41,4 +41,4 @@ if (kods == "11") {
 }
   
   return(NDZ)
-}
+} 
