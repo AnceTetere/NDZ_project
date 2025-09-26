@@ -6,9 +6,11 @@ starpkodi5 <- function(y, t, prev, v) {
     yt <- starpkodi5_50(y, t, prev, v) 
   } else if (t$zinkod[1] %in% c("41", "51", "54", "92")) {
     yt <- starpkodi5_51(y, t, prev, v)
+  } else if (t$zinkod[1] %in% c("21", "22", "23", "24", "25", "29")) {
+    yt <- starpkodi5_25(y, t, prev, v)
   } else {stop("Starpkodi5: iztrūkst apstrādes koda.")}
     
-    if(is.na(yt$pseidokods[1])) {stop("Dienas NA.")}
+    if(is.na(yt$PS_code[1])) {stop("Dienas NA.")}
     yt$zinkod <- "combined"  #jo starpkodu dienu sarēķins
     return(yt)
 }
@@ -34,7 +36,7 @@ starpkodi5 <- function(y, t, prev, v) {
 ##         t$zinkod[5] == "82" && t$NDZ_sanemsanas_datums[1] != t$NDZ_sanemsanas_datums[2] &&
 ##         all(diff(t$NDZ_sanemsanas_datums[2:5]) == 0)) {
 ## days1 <- as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) 
-## days2 <- 1 #uz vienu dienu paņemts
+## days2 <- 1 
 ## days <- days1 + days2
 ## rm(days1, days2)
 ## 
@@ -70,7 +72,8 @@ starpkodi5 <- function(y, t, prev, v) {
 ##         all(diff(t$NDZ_sanemsanas_datums[2:5]) != 0) && all(diff(t$NDZ_sanemsanas_datums[1:2]) == 0)) {
 ## days1 <- as.numeric(difftime(t$NDZ_sanemsanas_datums[1], t$NDZ_sanemsanas_datums[2], units = "days"))
 ## days2 <- as.numeric(difftime(t$NDZ_sanemsanas_datums[4], t$NDZ_sanemsanas_datums[3], units = "days")) 
-## days3 <- as.numeric(difftime(t$last_date[5], t$NDZ_sanemsanas_datums[5], units = "days")) + 1  
+## days3 <- as.numeric(difftime(t$last_date[5], t$NDZ_sanemsanas_datums[5], units = "days")) + 1 # jo darbs 
 ## 
 ## yt <- y[v, ]
 ## yt$dienas <- sum(days1, days2, days3)
+
