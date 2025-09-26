@@ -1,4 +1,5 @@
-starpkodi <- function(y_2plus, n) {   y_2plus <- y_2plus %>% arrange(PS_code, dnperk, NM_code)
+starpkodi <- function(y_2plus, n) { 
+  y_2plus <- y_2plus %>% arrange(PS_code, DN_code, NM_code)
   
   prev <- as.Date(paste0(substr(y_2plus$period[1], 1, 4), "-", substr(y_2plus$period[1], 5, 6), "-01")) - 1
   z <- data.frame()
@@ -10,7 +11,7 @@ starpkodi <- function(y_2plus, n) {   y_2plus <- y_2plus %>% arrange(PS_code, dn
     t <- subTable(y_2plus, n, v)
 
     if(!(all(t$PS_code == t$PS_code[1] & t$NM_code == t$NM_code[1]))) {
-      stop("Pseidokodu nesakritība! Tabula: y_2plus; rinda:", v)}
+      stop("PS_code nesakritība! Tabula: y_2plus; rinda:", v)}
 
     z <- switch(
       as.character(n),
