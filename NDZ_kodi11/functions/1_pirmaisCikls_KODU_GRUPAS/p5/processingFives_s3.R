@@ -44,3 +44,4 @@ return(list(x5_uzVieniniekiem = x5s3_uzVieniniekiem,
             x5_uzDivniekiem = x5s3_uzDivniekiem, 
             x5_uzCetriniekiem = x5s3_uzCetriniekiem))
 }
+ 
