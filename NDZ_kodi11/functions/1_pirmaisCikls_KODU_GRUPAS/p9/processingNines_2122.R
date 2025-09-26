@@ -4,13 +4,20 @@ processingNines_2122 <- function(a, o, kods) {
   a1 <- data.frame(); a2 <- data.frame(); a5 <- data.frame(); a6 <- data.frame(); a7 <- data.frame(); a8 <- data.frame()
   
   if (diff(a$NDZ_sanemsanas_datums[4:5]) == 0 && all(diff(a$NDZ_sanemsanas_datums[1:4]) != 0)) {
-           
-           if ((a$period[1] ==  '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] ==  '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] ==  '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] ==  '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
+           if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
+               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
                a1 <- a[1, ]; a8 <- a[2:9, ]
            } else {stop("processingNines_2122() iztrūkst apstrādes kods. \n")}
+  } else if (all(sapply(c(2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
+             all(sapply(c(1,3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) { 
+             if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') {
+                 a1 <- a[1, ]; a8 <- a[2:9, ]
+             } else {stop("processingNines_2122() iztrūkst apstrādes kods. \n")}
   } else {stop("processingNines_2122() iztrūkst apstrādes kods. \n")}
   
   rm(a, kods)
