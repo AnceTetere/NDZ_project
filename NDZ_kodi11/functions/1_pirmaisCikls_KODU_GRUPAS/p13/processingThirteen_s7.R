@@ -15,8 +15,7 @@ processingThirteen_s7 <- function(a, o, kods) {
             } else {stop("processingThirteen_s7 trūkst izstrādes koda.\n")}
           } else if (all(a$sak_beidz[10:13] == c("2", "2", "1", "1"))) {
             if (all(sapply(c(10, 12), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && diff(a$NDZ_sanemsanas_datums[11:12]) == 0) {
-              #Te viss kārtībā, BLOĶĒJU, JO PIRMO REIZ
-              if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
+              if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') {
                 a10 <- a[1:10,]; a3 <- a[c(12,11,13),]
                 if (kods %in% c("40", "50", "53") && o == "13") {ZERO_minus(a %>% slice(1))}
               } else {stop("processingThirteen_s7 trūkst izstrādes koda.\n")}
@@ -31,16 +30,14 @@ processingThirteen_s7 <- function(a, o, kods) {
       } else if (a$sak_beidz[3] == "2") {
                if (all(sapply(c(1,3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                    all(sapply(c(2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                   #JO PIRMOREIZ
-                   if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
+                   if (a$period[1] == '______' && aPS_code ==  '______________' && aNM_code ==  '______________') {
                      a2 <- a[1:2,]; a11 <- a[3:13,]
                      if (kods %in% c("40", "50", "53") && o == "13") {ZERO_minus(a %>% slice(1))}
                    } else {stop("processingThirteen_s7 trūkst izstrādes koda.\n")}
                } else if (all(sapply(c(3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                           all(sapply(c(1,2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                          #JO PIRMOREIZ
-                          if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-                              (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
+                          if ((a$period[1] == '______' && aPS_code ==  '______________' && aNM_code ==  '______________') ||
+                              (a$period[1] == '______' && aPS_code ==  '______________' && aNM_code ==  '______________')) {
                                a2 <- a[1:2,]; a11 <- a[c(4,3,5:13),]
                                if (kods %in% c("40", "50", "53") && o == "13") {ZERO_minus(a %>% slice(1))}
                           } else {stop("processingThirteen_s7 trūkst izstrādes koda.\n")}
@@ -62,8 +59,7 @@ processingThirteen_s7 <- function(a, o, kods) {
            if (a$sak_beidz[5] == "2") {
              if (all(sapply(c(2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
                  all(sapply(c(1,3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                 #JO PIRMOREIZ
-                 if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
+                 if (a$period[1] == '______' && aPS_code ==  '______________' && aNM_code ==  '______________') {
                    a2 <- a[c(1,3),]; a11 <- a[c(2,4:13), ] 
                  } else {stop("processingThirteen_s7 trūkst izstrādes koda.\n")} 
              } else {stop("processingThirteen_s7 trūkst izstrādes koda.\n")} 
