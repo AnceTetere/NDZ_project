@@ -467,3 +467,4 @@ adj50 <- function(NDZ, kods) {
   return(NDZ) 
 }
 
+
