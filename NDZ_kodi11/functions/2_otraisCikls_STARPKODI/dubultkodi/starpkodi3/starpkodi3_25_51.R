@@ -4,8 +4,13 @@ starpkodi3_25_51 <- function(y, t, prev, v) {
   
   if (t$zinkod[3] %in% c("40", "50", "53", "91")) {
             if (all(diff(t$NDZ_sanemsanas_datums) == 0)) {
-              #JO PIRMOREIZ
-              if (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {
+              if ((t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                  (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                  (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                  (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                  (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                  (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                  (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________')) {
                    t <- t[c(2,3,1),]; rownames(t) <- NULL
                    yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
               } else if ((t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
@@ -35,10 +40,13 @@ starpkodi3_25_51 <- function(y, t, prev, v) {
                yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
                ZERO_minus(t %>% slice(2))}
            } else if (all(diff(t$NDZ_sanemsanas_datums) == 0)) {
-             if (year == "2022") {  # vienkārši, lai pārbaudītu ka citos gados šis arī izpildās - atstāju kopīgo visiem
-               yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
-               ZERO_minus(t %>% slice(3))
-             } else {stop("Starpkodi3_25_51: Trūkst izstrādes koda.")}
+                     if (year == "2022") {
+                       yt$dienas <- as.numeric(diff(t$NDZ_sanemsanas_datums[1:2]))
+                     } else {stop("Starpkodi3_25_51: Trūkst izstrādes koda.")}
+           } else if (diff(t$NDZ_sanemsanas_datums[2:3]) == 0 && diff(t$NDZ_sanemsanas_datums[1:2]) != 0) {
+                    if (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {
+                        yt$dienas <- 0
+                    } else {stop("Starpkodi3_25_51: Trūkst izstrādes koda.")}
            } else {stop("Starpkodi3_25_51: Trūkst izstrādes koda.")}
  } else if (t$zinkod[3] %in% c("11", "14", "16", "61")) {
             if (diff(t$NDZ_sanemsanas_datums[2:3]) != 0 && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
@@ -49,3 +57,4 @@ starpkodi3_25_51 <- function(y, t, prev, v) {
   rm(y, t, prev, v)
   return(yt)
 }
+
