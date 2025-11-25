@@ -1,4 +1,4 @@
- starpkodi4_11_50_51 <- function(y, t, prev, v) {
+starpkodi4_11_50_51 <- function(y, t, prev, v) {
   
   yt <- y[v, ] 
   
@@ -20,7 +20,6 @@
                                             as.numeric(difftime(t$last_date[4], t$NDZ_sanemsanas_datums[4], units = "days")), 1)
                      } else {stop("Starpkodi4_11_50_51: Trūkst izstrādes koda.")}
           } else if (diff(t$NDZ_sanemsanas_datums[2:3]) == 0 && all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                    #JO PIRMOREIZ
                     if (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {
                         yt$dienas <- sum(as.numeric(diff(t$NDZ_sanemsanas_datums[1:2])),
                                          as.numeric(difftime(t$last_date[4], t$NDZ_sanemsanas_datums[4], units = "days")) + 1)
@@ -49,4 +48,3 @@
   rm(y, t, prev, v)
   return(yt) 
 }
- 
