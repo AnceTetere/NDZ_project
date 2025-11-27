@@ -12,24 +12,27 @@ processingSixteen <- function(x, o, kods) {
           if (x16$sak_beidz[3] == "1") {
             if (x16$sak_beidz[4] == "2") {    
               if (all(diff(x16$NDZ_sanemsanas_datums[1:3]) != 0)) {
+                         #IZIETAS 10-nieku PĀRBAUDES
                           x16_uz2 <- rbind(x16_uz2, x16[1:2, ]); x16_uz14 <- rbind(x16_uz14, x16[3:16, ])
               } else if (all(sapply(c(1,3), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && diff(x16$NDZ_sanemsanas_datums[2:3]) != 0) {
-                         if ((x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________')) {
+                         #JO PIRMOREIZ
+                         if ((x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________')) {
                                   x16_uz2 <- rbind(x16_uz2, x16[1:2, ]); x16_uz14 <- rbind(x16_uz14, x16[3:16, ])
                          } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
               } else if (diff(x16$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x16$NDZ_sanemsanas_datums[2:4]) != 0)) {
-                         if ((x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________')) {
+                         #JO PIRMOREIZ
+                         if ((x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                             (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________')) {
                               x16_uz2 <- rbind(x16_uz2, x16[1:2, ]); x16_uz14 <- rbind(x16_uz14, x16[3:16, ])
                         } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
               } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
@@ -41,15 +44,16 @@ processingSixteen <- function(x, o, kods) {
                  if (x16$sak_beidz[3] == "2") {
                    if (x16$sak_beidz[4] == "1") {    
                      if (all(diff(x16$NDZ_sanemsanas_datums[1:3]) != 0)) {
-                        if ((x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') ||
-                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________')) {
+                        #JO PIRMOREIZ
+                        if ((x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') ||
+                            (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________')) {
                              x16_uz1 <- rbind(x16_uz1, x16[1, ]); x16_uz15 <- rbind(x16_uz15, x16[-1, ])
                         } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
               } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
@@ -57,7 +61,8 @@ processingSixteen <- function(x, o, kods) {
           } else if (x16$sak_beidz[3] == "1") {
                    if (x16$sak_beidz[4] == "2") {    
                      if (diff(x16$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(x16$NDZ_sanemsanas_datums[2:5]) != 0)) {
-                       if (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') {
+                       #JO PIRMOREIZ
+                       if (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') {
                          x16_uz2 <- rbind(x16_uz2, x16[c(2,1), ]); x16_uz14 <- rbind(x16_uz14, x16[3:16, ])
                        } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
                      } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
@@ -69,7 +74,8 @@ processingSixteen <- function(x, o, kods) {
                             if (all(x16$sak_beidz[4:16] == c("1", "2", "2", "1", "1", "2", "2", "1", "1", "2", "2", "1", "1"))) {
                               if (all(sapply(seq(1,10,by=2), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                                   all(sapply(seq(2,10,by=2), function(i) diff(x16$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                                   if (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16NM_code ==  '______________') {
+                                #JO PIRMOREIZ
+                                   if (x16$period[1] == '______' && x16$PS_code[1] ==  '______________' && x16$NM_code[1] ==  '______________') {
                                        x16_uz1 <- rbind(x16_uz1, x16[1, ]); 
                                        x16_uz2 <- rbind(x16_uz2, x16[c(3,5,7,9), ]); x16_uz6 <- rbind(x16_uz6, x16[11:16, ])
                                    } else {stop("16-nieku tabulā trūkst izstrādes koda. \n")}
@@ -122,3 +128,4 @@ processingSixteen <- function(x, o, kods) {
   } else {cat("Tabula x16_uz15 ir tukša.\n")}
   rm(x16_uz15)
 }
+
