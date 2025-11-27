@@ -18,7 +18,6 @@ starpkodi4_25 <- function(y, t, prev, v) {
              } else {stop("2starpkodi4_25: Iztrūkst aptrādes koda.")}
            } else if (t$zinkod[3] %in% c("41", "51", "54", "92")) {
                     if (t$zinkod[4] %in% c("41", "51", "54", "92")) {
-                      #if (all(diff(t$NDZ_sanemsanas_datums[2:4]) != 0) && diff(t$NDZ_sanemsanas_datums[1:2]) == 0) {
                        #    yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days"))
                      #} else 
                          if (all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
@@ -88,4 +87,4 @@ starpkodi4_25 <- function(y, t, prev, v) {
 
   rm(y, t, prev, v)
   return(yt)
-}
+} 
