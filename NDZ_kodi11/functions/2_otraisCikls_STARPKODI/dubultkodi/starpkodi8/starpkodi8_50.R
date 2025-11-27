@@ -1,4 +1,4 @@
-starpkodi8_50 <- function(y, t, prev, v) {
+ starpkodi8_50 <- function(y, t, prev, v) {
   
   yt <- y[v, ]
 
