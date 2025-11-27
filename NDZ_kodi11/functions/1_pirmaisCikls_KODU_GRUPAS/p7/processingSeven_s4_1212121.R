@@ -20,45 +20,50 @@ processingSeven_s4_1212121 <- function(a, o, kods) {
               if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
   } else if (all(sapply(c(2,4,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
              all(sapply(c(1,3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') {
+                if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
                 a6 <- a[c(3,2,5,4,7,6), ]
-               } else if (a$period[1] == '______' && aNM_code ==  '______________') {
+               } else if (a$period[1] == '______' && a$NM_code[1] ==  '______________') {
+                          #TĀ KOMPANIJA, kur 202203 visi darbinieki vienādos datumos ņem bezalgas atvaļinājumus.
                             a6 <- a[1:6, ]; a1 <- a[7, ]
                             if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
               } else {stop("processingSeven_s4_1212121 trūkst izstrādes koda.\n")}
   } else if (all(sapply(seq(1,6,by=2), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) &&
              all(sapply(seq(2,7,by=2), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-             if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
+             #JO PIRMOREIZ
+             if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                 (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                a1 <- a[7, ]; a6 <- a[1:6, ]
                if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
              } else {stop("processingSeven_s4_1212121 trūkst izstrādes koda.\n")}
   } else if (diff(a$NDZ_sanemsanas_datums[5:6]) == 0 &&
              all(sapply(c(1:4,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-            if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                (aNM_code ==  '______________') ||
-                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                (a$period[1] == '______' && aNM_code ==  '______________')) {
+            #JO PIRMOREIZ
+            if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$NM_code[1] ==  '______________')) {
                   a1 <- a[7, ]; a6 <- a[1:6, ]
                   if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
             } else {stop("processingSeven_s4_1212121 trūkst izstrādes koda.\n")}
   } else if (diff(a$NDZ_sanemsanas_datums[1:2]) == 0 && all(diff(a$NDZ_sanemsanas_datums[2:7]) != 0)) {
-            if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                (aNM_code ==  '______________')) {
+            #JO PIRMOREIZ
+            if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                (a$NM_code[1] ==  '______________')) {
                     a1 <- a[7, ]; a6 <- a[1:6, ]
                     if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
               } else {stop("processingSeven_s4_1212121 trūkst izstrādes koda.\n")}
   } else if (all(sapply(c(1,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
              all(sapply(c(2,3,4,6), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-              if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________') ||
-                  (a$period[1] == '______' && a$PS_code[1] ==  '______________' && aNM_code ==  '______________')) {
+              #JO PIRMOREIZ
+              if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
+                  (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
                 a1 <- a[7, ]; a6 <- a[1:6, ]
                 if (kods %in% c("40", "50", "53") && o == "7") {ZERO_minus(a %>% slice(1))}
               } else {stop("processingSeven_s4_1212121 trūkst izstrādes koda.\n")}
@@ -72,4 +77,3 @@ processingSeven_s4_1212121 <- function(a, o, kods) {
               x7s4_uzPieciniekiem = a5,
               x7s4_uzSesiniekiem = a6))
 }
-
