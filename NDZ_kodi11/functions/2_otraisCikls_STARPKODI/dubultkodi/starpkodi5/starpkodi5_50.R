@@ -16,13 +16,13 @@ starpkodi5_50 <- function(y, t, prev, v) {
                         (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                         (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________')) {
                         t <- t[c(1,3,2,4,5), ]; rownames(t) <- NULL
-                        yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[2], prev, units = "days")) - 1, 
+                        yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[2], prev, units = "days")) - 1, #
                                          sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]))) + 1
                     } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")} 
                 } else if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
                            if ((t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                                (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________')) {
-                                yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[2], prev, units = "days")) - 1, 
+                                yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[2], prev, units = "days")) - 1, #
                                                  as.numeric(diff(t$NDZ_sanemsanas_datums[4:5]))) + 1
                            } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")} 
                } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")}
@@ -33,15 +33,16 @@ starpkodi5_50 <- function(y, t, prev, v) {
                              (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                              (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________')) {
                               t <- t[c(1,3,2,4,5), ]; rownames(t) <- NULL
-                              yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
+                              yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, #
                                                sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]))) + 1
                          } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")} 
                       } else if (all(sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                                  all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                                 if (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {
-                                      t <- t[c(1,3,2,4,5), ]; rownames(t) <- NULL
-                                      yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
-                                                       sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]))) + 1
+                                   if ((t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                                       (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________')) {
+                                         t <- t[c(1,3,2,4,5), ]; rownames(t) <- NULL
+                                         yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, #
+                                                          sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]))) + 1
                                  } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")} 
                       } else if (all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                                  all(sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
@@ -51,7 +52,7 @@ starpkodi5_50 <- function(y, t, prev, v) {
                                      (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                                      (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                                      (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________')) {
-                                 yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
+                                 yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, #
                                                   as.numeric(diff(t$NDZ_sanemsanas_datums[4:5]))) + 1
                         } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")} 
                       } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")}
@@ -60,7 +61,7 @@ starpkodi5_50 <- function(y, t, prev, v) {
                        if (t$zinkod[5] %in% c("41", "51", "54", "92")) {
                          if (all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) &&
                              all(sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-                              yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, 
+                              yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1, #
                                                sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]))) 
                           } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")}
                       } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")}
@@ -68,7 +69,7 @@ starpkodi5_50 <- function(y, t, prev, v) {
                       if (t$zinkod[5] %in% c("41", "51", "54", "92")) {
                          if (diff(t$NDZ_sanemsanas_datums[4:5]) == 0 && all(diff(t$NDZ_sanemsanas_datums[1:4]) != 0)) {
                            if (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {
-                              yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[2], prev, units = "days")) - 1, 
+                              yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[2], prev, units = "days")) - 1, #
                                                as.numeric(diff(t$NDZ_sanemsanas_datums[4:5])))
                            } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")}
                        } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")}
@@ -79,7 +80,7 @@ starpkodi5_50 <- function(y, t, prev, v) {
                      if (t$zinkod[5] %in% c("41", "51", "54", "92")) {
                        if (all(sapply(c(1,3), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && all(sapply(c(2,4), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
                            if (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {
-                              yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[2], prev, units = "days")) - 1, 
+                              yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[2], prev, units = "days")) - 1, #
                                                as.numeric(diff(t$NDZ_sanemsanas_datums[3:4])))
                            } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")}
                        } else {stop("Starpkodi5_50: iztrūkst apstrādes koda.")}
