@@ -15,10 +15,12 @@ starpkodi7_50_51 <- function(y, t, prev, v) {
                   (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                   (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                   (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                  (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
+                  (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') ||
                   (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________')) {
-                   t <- t[c(1,2,3,4,5,7,6),]; rownames(t) <- NULL
-                   yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1,
-                                    sapply(c(2,4,6), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)])))
+                      t <- t[c(1,2,3,4,5,7,6),]; rownames(t) <- NULL
+                      yt$dienas <- sum(as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1,
+                                       sapply(c(2,4,6), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)])))
                } else {stop("starpkodi7_50_51 iztrūkst apstrādes koda.")}
             } else if (all(sapply(c(1,3,4,5,6), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && 
                        diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
@@ -87,4 +89,4 @@ starpkodi7_50_51 <- function(y, t, prev, v) {
   
   rm(y, t, prev, v)
   return(yt)
-}
+} 
