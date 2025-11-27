@@ -37,7 +37,6 @@ processingFives_s3e1 <- function(a, o, kods) {
           } else {stop("processingFives_s3e1: Iztrūkst apstrādes koda!\n")}
 } else if (all(a$sak_beidz[c(1,3,4)] == "1")) {
           #JO PIRMOREIZ
-          #pievērs uzmanību, ka uzņēmums ir viens un tas pats.
           if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')  {
               a2 <- a[c(1,2,4,5),]
               if (kods %in% c("40", "50", "53") && o == "5") {ZERO_minus(a %>% slice(1)); ZERO_plus(a %>% slice(5))}
@@ -49,3 +48,4 @@ processingFives_s3e1 <- function(a, o, kods) {
               x5s3_uzDivniekiem = a2,
               x5s3_uzCetriniekiem = a4)) 
   }
+
