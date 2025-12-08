@@ -81,3 +81,4 @@ if(nrow(x9_uzAstoniekiem) > 0) {
 } else {cat("Tabula x9_uzAstoniekiem ir tukša.\n")}
 rm(x9_uzAstoniekiem) 
 }
+
