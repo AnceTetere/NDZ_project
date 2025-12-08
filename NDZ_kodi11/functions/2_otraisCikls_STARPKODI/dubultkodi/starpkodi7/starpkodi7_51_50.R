@@ -9,7 +9,9 @@ starpkodi7_51_50 <- function(y, t, prev, v) {
             if (t$zinkod[7] %in% c("41", "51", "54", "92")) {
               if (all(sapply(c(1,2,4,5,6), function(i) diff(t$NDZ_sanemsanas_datums[i:(i+1)]) != 0)) && 
                   diff(t$NDZ_sanemsanas_datums[3:4]) == 0) {
+                #Nezinu vai šo var vispārināt.
                 if (t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {
+                  #Indivīds iet daudzos bezalgas atvaļinājumos un, esot pēdējajā, tiek atlaists pavisam.
                   yt$dienas <- as.numeric(sum(diff(t$NDZ_sanemsanas_datums[1:2])),
                                           diff(t$NDZ_sanemsanas_datums[c(3,5)]) + 1)
                 } else {stop("starpkodi7_51_50 iztrūkst apstrādes koda.")}
@@ -57,6 +59,7 @@ starpkodi7_51_50 <- function(y, t, prev, v) {
             } else if (t$zinkod[7] %in% c("41", "51", "54", "92")) {
               if (all(diff(t$NDZ_sanemsanas_datums) != 0)) {
                 if (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {
+                  #JO PIRMOREIZ
                   yt$dienas <- sum(sapply(seq(1,6,by=2), function(i) as.numeric(diff(t$NDZ_sanemsanas_datums[i:(i+1)]))),
                                    as.numeric(difftime(t$last_date[7], t$NDZ_sanemsanas_datums[7], units = 'days')))
                 } else {stop("starpkodi7_51_50 iztrūkst apstrādes koda.")}
@@ -84,4 +87,5 @@ starpkodi7_51_50 <- function(y, t, prev, v) {
     
   rm(y, t, prev, v)
   return(yt)
-}
+} 
+
