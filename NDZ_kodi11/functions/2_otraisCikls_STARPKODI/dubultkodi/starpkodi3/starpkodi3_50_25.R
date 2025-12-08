@@ -20,6 +20,7 @@ starpkodi3_50_25 <- function(y, t, prev, v) {
         } else {stop("starpkodi3_50_25: Iztrūkst apstrādes koda.")}
   } else if (t$zinkod[3] %in% c("40", "50", "53", "91")) {
             if (diff(t$NDZ_sanemsanas_datums[1:2]) != 0 && diff(t$NDZ_sanemsanas_datums[2:3]) == 0) {
+                #JO PIRMOREIZ
                 if (t$period[1] == '______' && t$PS_code[1] ==  '______________' && t$NM_code[1] ==  '______________') {
                    yt$dienas <- as.numeric(difftime(t$NDZ_sanemsanas_datums[1], prev, units = "days")) - 1
                 } else {stop("starpkodi3_50_25: Iztrūkst apstrādes koda.")}             
@@ -28,4 +29,4 @@ starpkodi3_50_25 <- function(y, t, prev, v) {
 
   rm(y, t, prev, v)
   return(yt)
-} 
+}
