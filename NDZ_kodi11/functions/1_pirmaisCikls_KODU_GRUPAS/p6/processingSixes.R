@@ -35,28 +35,46 @@ processingSixes <- function(x, o, kods) {
     } else if (sum(x6$sak_beidz == "1") == 2) {
             if (all(x6$sak_beidz[3:4] == "1")) {
               if (all(diff(x6$NDZ_sanemsanas_datums[2:4]) != 0) && all(sapply(c(1,5), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
-                  if (x6$period[1] == '_____' && x6$PS_code[1] == '__________' && x6$NM_code[1] == '__________') {
+                  if (x6$period[1] == '202203' && x6$PS_code[1] == '______________' && x6$NM_code[1] == '______________') {
                   x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[2, ])
                   x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[4:5, ])
                   } else {stop("processingSixes trūkst izstrādes koda.\n")}
                 if (kods %in% c("40", "50", "53")) {ZERO_plus(x6 %>% slice(5))}
               } else if (all(sapply(c(1,3,5), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
                          all(sapply(c(2,4), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
-                        if ((x6$period[1] == '_____' && x6$PS_code[1] == '__________' && x6$NM_code[1] == '__________') ||
-                            (x6$period[1] == '_____' && x6$PS_code[1] == '__________' && x6$NM_code[1] == '__________')) {
+                        if ((x6$period[1] == '202204' && x6$PS_code[1] == '______________' && x6$NM_code[1] == '______________') ||
+                            (x6$period[1] == '202205' && x6$PS_code[1] == '______________' && x6$NM_code[1] == '______________')) {
                         x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[1, ])
                         x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[c(3,6), ])
                         } else {stop("processingSixes trūkst izstrādes koda.\n")}
                         if (kods %in% c("40", "50", "53") && o == "6") {ZERO_minus(x6 %>% slice(1)); ZERO_plus(x6 %>% slice(6))}
           } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
-      } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
+        } else if (all(x6$sak_beidz[c(3,5)] == "1")) {
+              if (all(diff(x6$NDZ_sanemsanas_datums[2:5]) != 0) && 
+                  all(sapply(c(1,5), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0))) {
+                if (x6$period[1] == '202207' && x6$PS_code[1] == '______________' && x6$NM_code[1] == '______________') {
+                  x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[2, ])
+                  x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[4:5, ])
+                } else {stop("processingSixes trūkst izstrādes koda.\n")}
+                if (kods %in% c("40", "50", "53")) {ZERO_plus(x6 %>% slice(5))}
+              } else if (all(sapply(c(1,3,5), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
+                         all(sapply(c(2,4), function(i) diff(x6$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) {
+                #JO PIRMOREIZ -- arī atceries, ka te ir tas gadījums ar diviem BK kodiem.
+                if ((x6$period[1] == '202204' && x6$PS_code[1] == '______________' && x6$NM_code[1] == '______________') ||
+                    (x6$period[1] == '202205' && x6$PS_code[1] == '______________' && x6$NM_code[1] == '______________')) {
+                  x6_uzVieniniekiem <- rbind(x6_uzVieniniekiem, x6[1, ])
+                  x6_uzDivniekiem <- rbind(x6_uzDivniekiem, x6[c(3,6), ])
+                } else {stop("processingSixes trūkst izstrādes koda.\n")}
+                if (kods %in% c("40", "50", "53") && o == "6") {ZERO_minus(x6 %>% slice(1)); ZERO_plus(x6 %>% slice(6))}
+              } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
+            } else {stop("processingSixes: trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
     } else {stop("processingSixes: Sešinieku tabulā trūkst apstrādes koda sešinieku apakštabulai!\n Rinda ", r, " līdz ", r+5, "\n")}
       
       check_rows <- check_rows + 6
   }
   
 #Pārbaude
-if(check_rows == nrow(x)) {
+if (check_rows == nrow(x)) {
   cat("PĀRBAUDE IZIETA:
       Rindu summa no sešiniekiem atvasinātajās tabulās sakrīt ar rindu skaitu oriģinālajā tabulā NDZ_6.\n")
 } else {stop("PĀRBAUDE NAV IZIETA.
