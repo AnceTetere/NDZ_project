@@ -5,19 +5,19 @@ processingNines_2122 <- function(a, o, kods) {
   
   if (diff(a$NDZ_sanemsanas_datums[4:5]) == 0 && all(diff(a$NDZ_sanemsanas_datums[1:4]) != 0)) {
            #JO PIRMOREIZ
-           if ((a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') ||
-               (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________')) {
+           if ((a$period[1] == "202201" && a$PS_code[1] == '______________' && a$NM_code[1] == '______________') ||
+               (a$period[1] == "202203" && a$PS_code[1] == '______________' && a$NM_code[1] == '______________') ||
+               (a$period[1] == "202203" && a$PS_code[1] == '______________' && a$NM_code[1] == '______________') ||
+               (a$period[1] == "202207" && a$PS_code[1] == '______________' && a$NM_code[1] == '______________') ||
+               (a$period[1] == "202207" && a$PS_code[1] == '______________' && a$NM_code[1] == '______________') ||
+               (a$period[1] == "202208" && a$PS_code[1] == '______________' && a$NM_code[1] == '______________') ||
+               (a$period[1] == "202208" && a$PS_code[1] == '______________' && a$NM_code[1] == '______________')) {
                a1 <- a[1, ]; a8 <- a[2:9, ]
            } else {stop("processingNines_2122() iztrūkst apstrādes kods. \n")}
   } else if (all(sapply(c(2,4), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) == 0)) && 
              all(sapply(c(1,3,5), function(i) diff(a$NDZ_sanemsanas_datums[i:(i+1)]) != 0))) { 
              #JO PIRMOREIZ
-             if (a$period[1] == '______' && a$PS_code[1] ==  '______________' && a$NM_code[1] ==  '______________') {
+             if (a$period[1] == "202202" && a$PS_code[1] == '______________' && a$NM_code[1] == '______________') {
                  a1 <- a[1, ]; a8 <- a[2:9, ]
              } else {stop("processingNines_2122() iztrūkst apstrādes kods. \n")}
   } else {stop("processingNines_2122() iztrūkst apstrādes kods. \n")}
